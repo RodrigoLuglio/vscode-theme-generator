@@ -1,34 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+# 🎨 VSCode Theme Generator
 
-## Getting Started
+Generate stunning, customized VSCode themes with our intelligent color algorithm and semantic token system.
 
-First, run the development server:
+## ✨ Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- 🖌️ Intelligent color generation algorithm
+- 🧠 Semantic token support for enhanced syntax highlighting
+- 🎭 Light and dark theme variants
+- 🔧 Customizable color palettes
+- 📦 Easy export to VSCode extension format
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🧬 Color Generation Algorithm
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Our algorithm creates harmonious color schemes by:
 
-## Learn More
+1. Selecting a base color
+2. Generating complementary and analogous colors
+3. Adjusting saturation and brightness for optimal contrast
+4. Applying color theory principles for visual appeal
 
-To learn more about Next.js, take a look at the following resources:
+## 🏷️ Semantic Tokens
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+We use semantic tokens to provide consistent and meaningful syntax highlighting:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `keyword`: Language keywords
+- `string`: String literals
+- `comment`: Comments
+- `function`: Function declarations and calls
+- `variable`: Local variables
+- `type`: Type annotations
+- `constant`: Constant values
+- `class`: Class declarations
+- `number`: Numeric literals
+- `operator`: Operators
+- `parameter`: Function parameters
+- `property`: Object properties
+- `punctuation`: Punctuation marks
+- `selector`: Selectors in CSS/SCSS
+- `storage`: Storage keywords
+- `support`: Support functions and classes
+- `modifier`: Modifiers and access specifiers
+- `control`: Control flow keywords
+- `decorator`: Decorators and annotations
+- `tag`: HTML/XML tags
+- `attribute`: HTML/XML attributes
+- `namespace`: Namespaces and packages
+- `regex`: Regular expressions
+- `escape`: Escape characters
+- `metaBrace`: Meta braces and brackets
+- `docKeyword`: Documentation keywords
+- `heading`: Markdown headings
+- `link`: Hyperlinks
+- `list`: List items
+- `quote`: Quotations
+- `raw`: Raw text blocks
 
-## Deploy on Vercel
+These tokens ensure a rich and nuanced syntax highlighting experience across various programming languages and file types.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🤝 How to Contribute
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Fork the repository
+2. Create a new branch: `git checkout -b feature/your-feature-name`
+3. Make your changes and commit: `git commit -m "Add your feature"`
+4. Push to your fork: `git push origin feature/your-feature-name`
+5. Create a pull request
+
+## 🚀 Future Improvements
+
+- [ ] Implement language-specific semantic tokens
+- [ ] Add support for popular frameworks (React, Vue, Angular)
+- [ ] Create theme templates for different coding styles
+- [ ] Improve accessibility options for color-blind users
+- [ ] Develop a web-based theme preview and customization tool
+
+We welcome contributions and ideas to make this theme generator even better!
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
