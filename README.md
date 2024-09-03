@@ -67,6 +67,7 @@ These tokens ensure a rich and nuanced syntax highlighting experience across var
 
 ## 🚀 Future Improvements
 
+- [ ] Improve Monaco editor preview to reflect VSCode themes with higher fidelity
 - [ ] Implement language-specific semantic tokens
 - [ ] Add support for popular frameworks (React, Vue, Angular)
 - [ ] Create theme templates for different coding styles
