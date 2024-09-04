@@ -506,7 +506,7 @@ export function generateThemeJSON(
       "editorOverviewRuler.incomingContentForeground": colors.AC2, // Incoming overview ruler foreground for inline merge conflicts
       // "editorOverviewRuler.commonContentForeground": colors.FG1, // Common ancestor overview ruler foreground for inline merge conflicts.
       // "editorOverviewRuler.commentForeground": colors.FG1, // Editor overview ruler decoration color for resolved comments. This color should be opaque.
-      // "editorOverviewRuler.commentUnresolvedForeground": colors.FG1, // Editor overview ruler decoration color for unresolved comments. This color should be opaque.
+      // "editorOverviewRuler.commentUnresolvedForeground": colors.FG1, // Editor overview ruler decoration color for unresolved comments. T
       "editorOverviewRuler.infoForeground": colors.INFO,
       "editorOverviewRuler.addedForeground": colors.SUCCESS,
       "editorOverviewRuler.deletedForeground": colors.ERROR,
@@ -551,7 +551,7 @@ export function generateThemeJSON(
       // outputView.background: # Output view background color.
       // outputViewStickyScroll.background: # Output view sticky scroll background color.
 
-      // STATUS BAR
+      // # Status Bar
       "statusBar.background": colors.AC2, // Standard Status Bar background color
       "statusBar.foreground": colors.FG1, // Status Bar foreground color
       // "statusBar.border": colors.BORDER, // Status Bar border color separating the Status Bar and editor.
@@ -561,7 +561,7 @@ export function generateThemeJSON(
       // "statusBar.debuggingBorder": colors.BORDER, // Status Bar border color separating the Status Bar and editor when a program is being debugged.
       "statusBar.noFolderBackground": colors.FG1, // Status Bar foreground color when no folder is opened
       "statusBar.noFolderForeground": colors.BORDER, // Status Bar background color when no folder is opened
-      // "statusBar.noFolderBorder": colors.BORDER, // Status Bar border color separating the Status Bar and editor when no folder is opened.
+      // "statusBar.noFolderBorder": colors.BORDER, // Status Bar border color when no folder is opened
       "statusBarItem.activeBackground": colors.lineHighlight, // Status Bar item background color when clicking
       // "statusBarItem.hoverForeground": colors.BORDER, // Status bar item foreground color when hovering. The status bar is shown in the bottom of the window.
       "statusBarItem.hoverBackground": colors.lineHighlight, // Status Bar item background color when hovering
@@ -743,7 +743,6 @@ export function generateThemeJSON(
       "settings.dropdownBackground": colors.BG2, // Dropdown background
       "settings.dropdownForeground": colors.FG1, // Dropdown foreground
       "settings.dropdownBorder": colors.BORDER, // Dropdown border
-      // settings.dropdownListBorder: # Dropdown list border.
       "settings.checkboxBackground": colors.BG1, // Checkbox background
       "settings.checkboxForeground": colors.FG1, // Checkbox foreground
       "settings.checkboxBorder": colors.BORDER, // Checkbox border
@@ -765,8 +764,8 @@ export function generateThemeJSON(
       "gitDecoration.modifiedResourceForeground": colors.INFO, // Color for modified Git resources. Used for file labels and the SCM viewlet.
       "gitDecoration.deletedResourceForeground": colors.ERROR, // Color for deleted Git resources. Used for file labels and the SCM viewlet.
       "gitDecoration.renamedResourceForeground": colors.AC1, // Color for renamed or copied Git resources. Used for file labels and the SCM viewlet.
-      // gitDecoration.stageModifiedResourceForeground: # Color for staged modifications git decorations. Used for file labels and the SCM viewlet.
-      // gitDecoration.stageDeletedResourceForeground: # Color for staged deletions git decorations. Used for file labels and the SCM viewlet.
+      //"gitDecoration.stageModifiedResourceForeground": colors.SUCCESS, // Color for staged modifications git decorations. Used for file labels and the SCM viewlet.
+      //"gitDecoration.stageDeletedResourceForeground": colors.ERROR, // Color for staged deletions git decorations. Used for file labels and the SCM viewlet.
       "gitDecoration.untrackedResourceForeground": syntaxColors.comment, // Color for untracked Git resources. Used for file labels and the SCM viewlet.
       "gitDecoration.ignoredResourceForeground": syntaxColors.comment, // Color for ignored Git resources. Used for file labels and the SCM viewlet.
       "gitDecoration.conflictingResourceForeground": colors.WARNING, // Color for conflicting Git resources. Used for file labels and the SCM viewlet.
@@ -784,6 +783,36 @@ export function generateThemeJSON(
         scope: ["keyword"],
         settings: {
           foreground: syntaxColors.keyword,
+        },
+      },
+      {
+        scope: ["string"],
+        settings: {
+          foreground: syntaxColors.string,
+        },
+      },
+      {
+        scope: ["string.quoted", "punctuation.definition.string"],
+        settings: {
+          foreground: syntaxColors.stringQuoted,
+        },
+      },
+      {
+        scope: ["string.template", "punctuation.definition.string.template"],
+        settings: {
+          foreground: syntaxColors.stringTemplate,
+        },
+      },
+      {
+        scope: ["string.regexp"],
+        settings: {
+          foreground: syntaxColors.stringRegex,
+        },
+      },
+      {
+        scope: ["constant.character.escape"],
+        settings: {
+          foreground: syntaxColors.stringEscape,
         },
       },
       {
@@ -889,6 +918,40 @@ export function generateThemeJSON(
         },
       },
       {
+        scope: ["keyword.control.flow.return"],
+        settings: {
+          foreground: syntaxColors.controlReturn,
+        },
+      },
+      {
+        scope: ["storage.modifier.async", "keyword.control.flow.await"],
+        settings: {
+          foreground: syntaxColors.controlAsyncAwait,
+        },
+      },
+      {
+        scope: [
+          "keyword.control.conditional",
+          "keyword.control.switch",
+          "keyword.control.case",
+          "keyword.control.default",
+        ],
+        settings: {
+          foreground: syntaxColors.controlConditional,
+        },
+      },
+      {
+        scope: [
+          "keyword.control.loop",
+          "keyword.control.for",
+          "keyword.control.while",
+          "keyword.control.do",
+        ],
+        settings: {
+          foreground: syntaxColors.controlLoop,
+        },
+      },
+      {
         scope: ["meta.decorator", "punctuation.decorator"],
         settings: {
           foreground: syntaxColors.decorator,
@@ -966,6 +1029,48 @@ export function generateThemeJSON(
           foreground: syntaxColors.raw,
         },
       },
+      {
+        scope: ["entity.name.function.declaration"],
+        settings: {
+          foreground: syntaxColors.functionDeclaration,
+        },
+      },
+      {
+        scope: ["entity.name.function.call", "meta.function-call"],
+        settings: {
+          foreground: syntaxColors.functionCall,
+        },
+      },
+      {
+        scope: ["meta.definition.variable variable"],
+        settings: {
+          foreground: syntaxColors.variableDeclaration,
+        },
+      },
+      {
+        scope: ["variable.object.property", "variable.other.property"],
+        settings: {
+          foreground: syntaxColors.variableProperty,
+        },
+      },
+      {
+        scope: ["entity.name.type.declaration"],
+        settings: {
+          foreground: syntaxColors.typeDeclaration,
+        },
+      },
+      {
+        scope: ["entity.name.type.parameter"],
+        settings: {
+          foreground: syntaxColors.typeParameter,
+        },
+      },
+      {
+        scope: ["meta.type.annotation"],
+        settings: {
+          foreground: syntaxColors.typeAnnotation,
+        },
+      },
     ],
   };
 
@@ -994,6 +1099,10 @@ export const initialColors: ColorAliases = {
 export const initialSyntaxColors: SyntaxColors = {
   keyword: "#569CD6",
   string: "#CE9178",
+  stringQuoted: "#CE9178",
+  stringTemplate: "#CE9178",
+  stringRegex: "#CE9178",
+  stringEscape: "#CE9178",
   comment: "#6A9955",
   function: "#DCDCAA",
   variable: "#9CDCFE",
@@ -1010,6 +1119,10 @@ export const initialSyntaxColors: SyntaxColors = {
   support: "#C586C0",
   modifier: "#C586C0",
   control: "#C586C0",
+  controlReturn: "#C586C0",
+  controlAsyncAwait: "#C586C0",
+  controlConditional: "#C586C0",
+  controlLoop: "#C586C0",
   decorator: "#C586C0",
   tag: "#C586C0",
   attribute: "#C586C0",
@@ -1023,4 +1136,11 @@ export const initialSyntaxColors: SyntaxColors = {
   list: "#C586C0",
   quote: "#C586C0",
   raw: "#C586C0",
+  functionDeclaration: "#DCDCAA",
+  functionCall: "#DCDCAA",
+  variableDeclaration: "#9CDCFE",
+  variableProperty: "#9CDCFE",
+  typeDeclaration: "#4EC9B0",
+  typeParameter: "#4EC9B0",
+  typeAnnotation: "#4EC9B0",
 };
