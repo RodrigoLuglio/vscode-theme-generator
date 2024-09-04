@@ -2,12 +2,23 @@
 
 import React, { ErrorInfo } from "react";
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import ThemeControls from "@/components/ThemeControls";
-import ColorList from "@/components/ColorList";
+// import ThemeControls from "@/components/ThemeControls";
+// import ColorList from "@/components/ColorList";
 import ActiveColorPicker from "@/components/ActiveColorPicker";
 import ThemePreview from "@/components/ThemePreview";
 import ExportButton from "@/components/ExportButton";
-import AnsiColorList from "@/components/AnsiColorList";
+// import AnsiColorList from "@/components/AnsiColorList";
+
+import dynamic from "next/dynamic";
+const ThemeControls = dynamic(() => import("@/components/ThemeControls"), {
+  ssr: false,
+});
+const ColorList = dynamic(() => import("@/components/ColorList"), {
+  ssr: false,
+});
+const AnsiColorList = dynamic(() => import("@/components/AnsiColorList"), {
+  ssr: false,
+});
 
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },
