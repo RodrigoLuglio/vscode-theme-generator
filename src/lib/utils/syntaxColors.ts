@@ -59,10 +59,10 @@ export function generateSyntaxColors(
     lightness: number
   ) => {
     if (!forceRegenerate) {
-      // Increase randomness
-      const randomHueShift = Math.random() * 60 - 30; // -30 to +30
-      const randomSaturationShift = Math.random() * 30 - 15; // -15 to +15
-      const randomLightnessShift = Math.random() * 20 - 10; // -10 to +10
+      // Increase randomness while maintaining harmony
+      const randomHueShift = Math.random() * 20 - 10; // -10 to +10
+      const randomSaturationShift = Math.random() * 10 - 5; // -5 to +5
+      const randomLightnessShift = Math.random() * 10 - 5; // -5 to +5
 
       hue = (hue + randomHueShift + 360) % 360;
       saturation = Math.max(
@@ -75,6 +75,12 @@ export function generateSyntaxColors(
     const color = Color.hsl(hue, saturation, lightness).hex();
     return color;
   };
+
+  const tagColor = generateColor(
+    schemeHues[2],
+    syntaxSaturation,
+    isDark ? 75 : 40
+  );
 
   console.log("Generating syntax colors");
   const syntaxColors: SyntaxColors = {
@@ -90,9 +96,9 @@ export function generateSyntaxColors(
     functionCall:
       lockedColors.functionCall ||
       generateColor(
-        (schemeHues[3] - 2) % 360,
-        syntaxSaturation * 0.98,
-        isDark ? 79 : 36
+        (schemeHues[3] + 15) % 360,
+        syntaxSaturation * 0.95,
+        isDark ? 78 : 37
       ),
     variable:
       lockedColors.variable ||
@@ -104,16 +110,16 @@ export function generateSyntaxColors(
     variableDeclaration:
       lockedColors.variableDeclaration ||
       generateColor(
-        (schemeHues[0] + 2) % 360,
-        syntaxSaturation * 0.82,
-        isDark ? 76 : 39
+        (schemeHues[0] + 45) % 360,
+        syntaxSaturation * 0.85,
+        isDark ? 77 : 38
       ),
     variableProperty:
       lockedColors.variableProperty ||
       generateColor(
-        (schemeHues[0] - 2) % 360,
-        syntaxSaturation * 0.78,
-        isDark ? 74 : 41
+        (schemeHues[0] + 15) % 360,
+        syntaxSaturation * 0.75,
+        isDark ? 73 : 42
       ),
     type:
       lockedColors.type ||
@@ -125,9 +131,9 @@ export function generateSyntaxColors(
     typeParameter:
       lockedColors.typeParameter ||
       generateColor(
-        (schemeHues[1] - 2) % 360,
-        syntaxSaturation * 0.98,
-        isDark ? 69 : 46
+        (schemeHues[1] + 15) % 360,
+        syntaxSaturation * 0.95,
+        isDark ? 68 : 47
       ),
     constant:
       lockedColors.constant ||
@@ -159,11 +165,7 @@ export function generateSyntaxColors(
       ),
     operator:
       lockedColors.operator ||
-      generateColor(
-        (schemeHues[0] - 1) % 360,
-        syntaxSaturation * 0.7,
-        isDark ? 76 : 38
-      ),
+      generateColor(schemeHues[0], syntaxSaturation * 0.6, isDark ? 80 : 35),
     storage:
       lockedColors.storage ||
       generateColor(
@@ -173,16 +175,16 @@ export function generateSyntaxColors(
       ),
     punctuation:
       lockedColors.punctuation ||
-      generateColor(schemeHues[0], syntaxSaturation * 0.5, isDark ? 80 : 35),
+      generateColor(schemeHues[0], syntaxSaturation * 0.4, isDark ? 85 : 30),
     punctuationQuote:
       lockedColors.punctuationQuote ||
-      generateColor(schemeHues[0], syntaxSaturation * 0.45, isDark ? 82 : 37),
+      generateColor(schemeHues[0], syntaxSaturation * 0.35, isDark ? 87 : 32),
     punctuationBrace:
       lockedColors.punctuationBrace ||
-      generateColor(schemeHues[0], syntaxSaturation * 0.55, isDark ? 77 : 32),
+      generateColor(schemeHues[0], syntaxSaturation * 0.45, isDark ? 82 : 27),
     punctuationComma:
       lockedColors.punctuationComma ||
-      generateColor(schemeHues[0], syntaxSaturation * 0.4, isDark ? 75 : 30),
+      generateColor(schemeHues[0], syntaxSaturation * 0.3, isDark ? 80 : 25),
     selector:
       lockedColors.selector ||
       generateColor(
@@ -221,31 +223,19 @@ export function generateSyntaxColors(
     controlFlow:
       lockedColors.controlFlow ||
       generateColor(
-        (schemeHues[0] + 130) % 360,
-        syntaxSaturation * 1.05,
-        isDark ? 66 : 49
+        (schemeHues[0] + 135) % 360,
+        syntaxSaturation * 1.15,
+        isDark ? 67 : 48
       ),
     controlImport:
       lockedColors.controlImport ||
       generateColor(
-        (schemeHues[0] + 110) % 360,
+        (schemeHues[0] + 105) % 360,
         syntaxSaturation * 1.1,
-        isDark ? 64 : 52
+        isDark ? 63 : 52
       ),
-    tag:
-      lockedColors.tag ||
-      generateColor(
-        (schemeHues[2] + 120) % 360,
-        syntaxSaturation * 1.0,
-        isDark ? 75 : 40
-      ),
-    tagPunctuation:
-      lockedColors.tagPunctuation ||
-      generateColor(
-        (schemeHues[2] + 115) % 360,
-        syntaxSaturation * 1.2,
-        isDark ? 72 : 38
-      ),
+    tag: lockedColors.tag || tagColor,
+    tagPunctuation: lockedColors.tagPunctuation || tagColor,
     attribute:
       lockedColors.attribute ||
       generateColor(
@@ -276,12 +266,13 @@ export function generateSyntaxColors(
       ),
   };
 
+  // Ensure readability and harmony
   Object.keys(syntaxColors).forEach((key) => {
     if (!lockedColors[key as keyof SyntaxColors]) {
       syntaxColors[key as keyof SyntaxColors] = ensureReadability(
         syntaxColors[key as keyof SyntaxColors],
         backgroundColor,
-        5.5 // Increased from 4.5 to 5.5 for stricter contrast
+        5.5
       );
     }
   });

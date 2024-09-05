@@ -90,14 +90,14 @@ export function generateThemeJSON(
 
       // # Button Control
       // # A set of colors for button widgets such as Open Folder button in the Explorer of a new window.
-      "button.background": colors.AC2, // Button background color
+      "button.background": colors.AC2 + "db", // Button background color
       "button.foreground": colors.FG3, // Button foreground color
       // "button.border": //# Button border color
       // "button.separator": colors.FG2, // Button separator color.
-      "button.hoverBackground": colors.lineHighlight, // Button background color when hovering
-      "button.secondaryBackground": colors.AC1, // Secondary button background color.
+      "button.hoverBackground": colors.AC2, // Button background color when hovering
+      "button.secondaryBackground": colors.AC1 + "db", // Secondary button background color.
       "button.secondaryForeground": colors.FG3, // Secondary button foreground color.
-      "button.secondaryHoverBackground": colors.lineHighlight, // Secondary button background color when hovering.
+      "button.secondaryHoverBackground": colors.AC1, // Secondary button background color when hovering.
       "checkbox.background": colors.BG1, // Background color of checkbox widget.
       "checkbox.foreground": colors.FG1, // Foreground color of checkbox widget.
       // "checkbox.border": // # Border color of checkbox widget.
@@ -160,7 +160,7 @@ export function generateThemeJSON(
       // "list.focusOutline": colors.BORDER, //# List/Tree outline color for the focused item when the list/tree is active. An active list/tree has keyboard focus, an inactive does not.
       // "list.focusAndSelectionOutline": colors.BORDER, //# List/Tree outline color for the focused item when the list/tree is active and selected. An active list/tree has keyboard focus, an inactive does not.
       // "list.focusHighlightForeground": colors.FG1, //# List/Tree foreground color of the match highlights on actively focused items when searching inside the list/tree.
-      "list.highlightForeground": colors.lineHighlight, // List/Tree foreground color of the match highlights when searching inside the list/tree
+      "list.highlightForeground": colors.AC1, // List/Tree foreground color of the match highlights when searching inside the list/tree
       "list.hoverBackground": colors.BG2 + "50", // List/Tree background when hovering over items using the mouse
       "list.hoverForeground": colors.FG1, // List/Tree foreground when hovering over items using the mouse
       "list.warningForeground": colors.WARNING, // Color of warning decorations in the explorer
@@ -252,7 +252,7 @@ export function generateThemeJSON(
       "editorGroupHeader.tabsBackground": colors.BG2, //# Background color of the Tabs container
       "editorGroupHeader.tabsBorder": colors.BORDER, //# Border color of the editor group title header when tabs are enabled. Editor groups are the containers of editors
       "editorGroupHeader.border": colors.BORDER, //# Border color between editor group header and editor (below breadcrumbs if enabled).
-      "tab.activeBackground": colors.lineHighlight, //# Active Tab background color
+      "tab.activeBackground": colors.BG1, //# Active Tab background color
       "tab.activeForeground": colors.FG1, //# Active Tab foreground color in an active group
       "tab.border": colors.BORDER, //# Border to separate Tabs from each other
       "tab.activeBorderTop": colors.AC1, //# A border drawn to the top of the active tab
@@ -260,7 +260,7 @@ export function generateThemeJSON(
       "tab.selectedBackground": colors.lineHighlight, //# Background of a selected tab. Tabs are the containers for editors in the editor area. Multiple tabs can be opened in one editor group. There can be multiple editor groups.
       // tab.selectedForeground: //# Foreground of a selected tab. Tabs are the containers for editors in the editor area. Multiple tabs can be opened in one editor group. There can be multiple editor groups.
       // tab.dragAndDropBorder: //# Border between tabs to indicate that a tab can be inserted between two tabs. Tabs are the containers for editors in the editor area. Multiple tabs can be opened in one editor group. There can be multiple editor groups.
-      "tab.inactiveBackground": colors.BG1, //# Inactive Tab background color
+      "tab.inactiveBackground": colors.BG2, //# Inactive Tab background color
       "tab.inactiveForeground": syntaxColors.comment, //# Inactive Tab foreground color in an active group
       // "tab.unfocusedActiveBorder": colors.BORDER, //# A border drawn to the bottom of the active tab in an editor group that is not focused
       // "tab.unfocusedActiveForeground": colors.FG1, //# Active tab foreground color in an inactive editor group
@@ -741,9 +741,9 @@ export function generateThemeJSON(
 
       // # SETTINGS
       "settings.headerForeground": colors.FG1, // The foreground color for a section header or active title
-      "settings.modifiedItemIndicator": colors.WARNING, // The color of the line that indicates a modified setting
+      "settings.modifiedItemIndicator": colors.INFO, // The color of the line that indicates a modified setting
       "settings.inactiveSelectedItemBorder": syntaxColors.comment, // The color of the selected setting row border, when the settings list does not have focus
-      "settings.dropdownBackground": colors.BG2, // Dropdown background
+      "settings.dropdownBackground": colors.BG1, // Dropdown background
       "settings.dropdownForeground": colors.FG1, // Dropdown foreground
       "settings.dropdownBorder": colors.BORDER, // Dropdown border
       "settings.checkboxBackground": colors.BG1, // Checkbox background
@@ -1276,7 +1276,6 @@ export function generateThemeJSON(
       {
         scope: [
           "keyword.other.important.css",
-          "support.variable.property",
           "keyword.control.flow",
           "keyword.control.loop",
           "keyword.control.conditional",
@@ -1489,7 +1488,7 @@ export function generateThemeJSON(
       {
         scope: ["variable.other.alias.yaml"],
         settings: {
-          foreground: syntaxColors.constant,
+          foreground: syntaxColors.variable,
           fontStyle: "underline",
         },
       },
@@ -1499,17 +1498,9 @@ export function generateThemeJSON(
           "variable.language punctuation.definition.variable.php",
           "variable.other.readwrite.instance.ruby",
           "variable.parameter.function.language.special",
-          "variable.other.constant",
         ],
         settings: {
-          foreground: syntaxColors.constant,
-        },
-      },
-
-      {
-        scope: ["variable.object.property", "variable.other.object.property"],
-        settings: {
-          foreground: syntaxColors.variableProperty,
+          foreground: syntaxColors.variable,
         },
       },
       {
@@ -1520,21 +1511,20 @@ export function generateThemeJSON(
         },
       },
       {
-        scope: [
-          "meta.import variable.other.readwrite",
-          "meta.object-binding-pattern-variable variable.object.property",
-          "meta.variable.assignment.destructured.object.coffee variable",
-        ],
+        scope: [],
         settings: {
           foreground: syntaxColors.variableDeclaration,
         },
       },
       {
         scope: [
+          "meta.import variable.other.readwrite",
           "meta.import variable.other.readwrite.alias",
           "meta.export variable.other.readwrite.alias",
-          "meta.variable.assignment.destructured.object.coffee variable variable",
+          "meta.object-binding-pattern-variable variable.object.property",
+          "meta.variable.assignment.destructured.object.coffee variable",
           "variable.other.readwrite.js",
+          "variable.other.constant",
         ],
         settings: {
           foreground: syntaxColors.variableDeclaration,
@@ -1547,13 +1537,19 @@ export function generateThemeJSON(
         },
       },
       {
-        scope: ["variable.graphql"],
+        scope: ["variable.graphql", "support.variable"],
         settings: {
           foreground: syntaxColors.variable,
         },
       },
       {
-        scope: ["support.variable.property", "keyword.operation.graphql"],
+        scope: [
+          "support.variable.property",
+          "support.variable.property.js",
+          "variable.object.property",
+          "variable.other.object.property",
+          "keyword.operation.graphql",
+        ],
         settings: {
           foreground: syntaxColors.variableProperty,
           //fontStyle: "bold"
@@ -1571,7 +1567,6 @@ export function generateThemeJSON(
       {
         scope: [
           "support.function.magic",
-          "support.variable",
           "variable.other.predefined",
           "storage.modifier.async",
         ],
@@ -1592,7 +1587,6 @@ export function generateThemeJSON(
           "meta.implementation storage.type.objc",
           "meta.interface-or-protocol storage.type.objc",
           "source.groovy storage.type.def",
-          "support.variable.property.js",
         ],
         settings: {
           foreground: syntaxColors.storage,
