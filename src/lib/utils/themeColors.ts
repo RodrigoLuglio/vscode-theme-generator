@@ -12,6 +12,7 @@ export interface ColorAliases {
   BG3: string;
   FG1: string;
   FG2: string;
+  FG3: string;
   AC1: string;
   AC2: string;
   BORDER: string;
@@ -92,6 +93,13 @@ export function generateThemeColors(
         uiSaturation * 0.1,
         isDark ? fgBase - 15 : fgBase + 15
       ),
+    FG3:
+      initialColors.FG3 ||
+      generateColor(
+        schemeHues[0],
+        uiSaturation * 0.05,
+        isDark ? bgBase : bgBase
+      ),
     AC1:
       initialColors.AC1 ||
       generateColor(schemeHues[1], uiSaturation * 1.2, isDark ? 60 : 40),
@@ -161,7 +169,8 @@ export function generateThemeColors(
       key !== "BORDER" &&
       key !== "BG1" &&
       key !== "BG2" &&
-      key !== "BG3"
+      key !== "BG3" &&
+      key !== "FG3"
     ) {
       colors[key as keyof ColorAliases] = ensureReadability(
         colors[key as keyof ColorAliases],
@@ -193,6 +202,7 @@ export function updateThemeColorsWithSaturation(
     BG3: updateColorSaturation(currentColors.BG3, newUiSaturation * 0.2),
     FG1: updateColorSaturation(currentColors.FG1, newUiSaturation * 0.05),
     FG2: updateColorSaturation(currentColors.FG2, newUiSaturation * 0.1),
+    FG3: updateColorSaturation(currentColors.FG3, newUiSaturation * 0.05),
     AC1: updateColorSaturation(currentColors.AC1, newUiSaturation * 1.2),
     AC2: updateColorSaturation(currentColors.AC2, newUiSaturation * 1.1),
     BORDER: updateColorSaturation(currentColors.BORDER, newUiSaturation * 0.2),

@@ -7,52 +7,37 @@ import Color from "color";
 
 export interface SyntaxColors {
   keyword: string;
-  string: string;
-  stringQuoted: string;
-  stringTemplate: string;
-  stringRegex: string;
-  stringEscape: string;
   comment: string;
   function: string;
-  functionDeclaration: string;
   functionCall: string;
   variable: string;
   variableDeclaration: string;
   variableProperty: string;
   type: string;
-  typeDeclaration: string;
   typeParameter: string;
-  typeAnnotation: string;
   constant: string;
   class: string;
-  number: string;
-  operator: string;
   parameter: string;
   property: string;
-  punctuation: string;
-  selector: string;
-  // New, more granular token types
+  operator: string;
   storage: string;
+  other: string;
+  language: string;
+  punctuation: string;
+  punctuationQuote: string;
+  punctuationBrace: string;
+  punctuationComma: string;
+  selector: string;
   support: string;
   modifier: string;
   control: string;
-  controlReturn: string;
-  controlAsyncAwait: string; // Combined async and await
-  controlConditional: string;
-  controlLoop: string;
-  decorator: string;
+  controlFlow: string;
+  controlImport: string;
   tag: string;
+  tagPunctuation: string;
   attribute: string;
-  namespace: string;
-  regex: string;
-  escape: string;
-  metaBrace: string;
-  docKeyword: string;
-  heading: string;
-  link: string;
-  list: string;
-  quote: string;
-  raw: string;
+  unit: string;
+  datetime: string;
 }
 
 export function generateSyntaxColors(
@@ -96,50 +81,12 @@ export function generateSyntaxColors(
     keyword:
       lockedColors.keyword ||
       generateColor(schemeHues[0], syntaxSaturation, isDark ? 70 : 40),
-    string:
-      lockedColors.string ||
-      generateColor(schemeHues[1], syntaxSaturation * 0.9, isDark ? 75 : 45),
-    stringQuoted:
-      lockedColors.stringQuoted ||
-      generateColor(
-        (schemeHues[1] + 2) % 360,
-        syntaxSaturation * 0.95,
-        isDark ? 77 : 43
-      ),
-    stringTemplate:
-      lockedColors.stringTemplate ||
-      generateColor(
-        (schemeHues[1] - 2) % 360,
-        syntaxSaturation * 0.97,
-        isDark ? 73 : 47
-      ),
-    stringRegex:
-      lockedColors.stringRegex ||
-      generateColor(
-        (schemeHues[1] + 4) % 360,
-        syntaxSaturation * 0.93,
-        isDark ? 72 : 48
-      ),
-    stringEscape:
-      lockedColors.stringEscape ||
-      generateColor(
-        (schemeHues[1] - 4) % 360,
-        syntaxSaturation * 1.05,
-        isDark ? 70 : 50
-      ),
     comment:
       lockedColors.comment ||
       generateColor(schemeHues[2], syntaxSaturation * 0.5, isDark ? 60 : 55),
     function:
       lockedColors.function ||
       generateColor(schemeHues[3], syntaxSaturation, isDark ? 80 : 35),
-    functionDeclaration:
-      lockedColors.functionDeclaration ||
-      generateColor(
-        (schemeHues[3] + 2) % 360,
-        syntaxSaturation * 1.02,
-        isDark ? 81 : 34
-      ),
     functionCall:
       lockedColors.functionCall ||
       generateColor(
@@ -175,26 +122,12 @@ export function generateSyntaxColors(
         syntaxSaturation,
         isDark ? 70 : 45
       ),
-    typeDeclaration:
-      lockedColors.typeDeclaration ||
-      generateColor(
-        (schemeHues[1] + 2) % 360,
-        syntaxSaturation * 1.02,
-        isDark ? 71 : 44
-      ),
     typeParameter:
       lockedColors.typeParameter ||
       generateColor(
         (schemeHues[1] - 2) % 360,
         syntaxSaturation * 0.98,
         isDark ? 69 : 46
-      ),
-    typeAnnotation:
-      lockedColors.typeAnnotation ||
-      generateColor(
-        (schemeHues[1] + 4) % 360,
-        syntaxSaturation * 0.96,
-        isDark ? 68 : 47
       ),
     constant:
       lockedColors.constant ||
@@ -210,20 +143,6 @@ export function generateSyntaxColors(
         syntaxSaturation,
         isDark ? 70 : 45
       ),
-    number:
-      lockedColors.number ||
-      generateColor(
-        (schemeHues[0] + 60) % 360,
-        syntaxSaturation * 0.9,
-        isDark ? 75 : 40
-      ),
-    operator:
-      lockedColors.operator ||
-      generateColor(
-        (schemeHues[1] + 60) % 360,
-        syntaxSaturation * 0.7,
-        isDark ? 80 : 35
-      ),
     parameter:
       lockedColors.parameter ||
       generateColor(
@@ -238,23 +157,38 @@ export function generateSyntaxColors(
         syntaxSaturation * 0.9,
         isDark ? 75 : 40
       ),
+    operator:
+      lockedColors.operator ||
+      generateColor(
+        (schemeHues[0] - 1) % 360,
+        syntaxSaturation * 0.7,
+        isDark ? 76 : 38
+      ),
+    storage:
+      lockedColors.storage ||
+      generateColor(
+        (schemeHues[1] + 180) % 360,
+        syntaxSaturation * 0.9,
+        isDark ? 70 : 40
+      ),
     punctuation:
       lockedColors.punctuation ||
       generateColor(schemeHues[0], syntaxSaturation * 0.5, isDark ? 80 : 35),
+    punctuationQuote:
+      lockedColors.punctuationQuote ||
+      generateColor(schemeHues[0], syntaxSaturation * 0.45, isDark ? 82 : 37),
+    punctuationBrace:
+      lockedColors.punctuationBrace ||
+      generateColor(schemeHues[0], syntaxSaturation * 0.55, isDark ? 77 : 32),
+    punctuationComma:
+      lockedColors.punctuationComma ||
+      generateColor(schemeHues[0], syntaxSaturation * 0.4, isDark ? 75 : 30),
     selector:
       lockedColors.selector ||
       generateColor(
         (schemeHues[1] + 90) % 360,
         syntaxSaturation,
         isDark ? 70 : 45
-      ),
-    // New, more granular token types
-    storage:
-      lockedColors.storage ||
-      generateColor(
-        (schemeHues[2] + 90) % 360,
-        syntaxSaturation * 1.1,
-        isDark ? 70 : 40
       ),
     modifier:
       lockedColors.modifier ||
@@ -263,6 +197,20 @@ export function generateSyntaxColors(
         syntaxSaturation * 0.9,
         isDark ? 75 : 45
       ),
+    other:
+      lockedColors.other ||
+      generateColor(
+        (schemeHues[2] + 210) % 360,
+        syntaxSaturation * 1.1,
+        isDark ? 69 : 47
+      ),
+    language:
+      lockedColors.language ||
+      generateColor(
+        (schemeHues[3] + 180) % 360,
+        syntaxSaturation * 1.25,
+        isDark ? 63 : 42
+      ),
     control:
       lockedColors.control ||
       generateColor(
@@ -270,40 +218,19 @@ export function generateSyntaxColors(
         syntaxSaturation * 1.2,
         isDark ? 65 : 50
       ),
-    controlReturn:
-      lockedColors.controlReturn ||
+    controlFlow:
+      lockedColors.controlFlow ||
       generateColor(
-        (schemeHues[0] + 2) % 360,
+        (schemeHues[0] + 130) % 360,
         syntaxSaturation * 1.05,
         isDark ? 66 : 49
       ),
-    controlAsyncAwait:
-      lockedColors.controlAsyncAwait ||
+    controlImport:
+      lockedColors.controlImport ||
       generateColor(
-        (schemeHues[0] - 2) % 360,
+        (schemeHues[0] + 110) % 360,
         syntaxSaturation * 1.1,
-        isDark ? 64 : 51
-      ),
-    controlConditional:
-      lockedColors.controlConditional ||
-      generateColor(
-        (schemeHues[0] + 4) % 360,
-        syntaxSaturation * 1.15,
-        isDark ? 63 : 52
-      ),
-    controlLoop:
-      lockedColors.controlLoop ||
-      generateColor(
-        (schemeHues[0] - 4) % 360,
-        syntaxSaturation * 1.08,
-        isDark ? 67 : 48
-      ),
-    decorator:
-      lockedColors.decorator ||
-      generateColor(
-        (schemeHues[1] + 120) % 360,
-        syntaxSaturation * 1.1,
-        isDark ? 70 : 45
+        isDark ? 64 : 52
       ),
     tag:
       lockedColors.tag ||
@@ -312,6 +239,13 @@ export function generateSyntaxColors(
         syntaxSaturation * 1.0,
         isDark ? 75 : 40
       ),
+    tagPunctuation:
+      lockedColors.tagPunctuation ||
+      generateColor(
+        (schemeHues[2] + 115) % 360,
+        syntaxSaturation * 1.2,
+        isDark ? 72 : 38
+      ),
     attribute:
       lockedColors.attribute ||
       generateColor(
@@ -319,82 +253,26 @@ export function generateSyntaxColors(
         syntaxSaturation * 0.9,
         isDark ? 80 : 35
       ),
-    namespace:
-      lockedColors.namespace ||
-      generateColor(
-        (schemeHues[0] + 150) % 360,
-        syntaxSaturation * 1.0,
-        isDark ? 70 : 45
-      ),
-    regex:
-      lockedColors.regex ||
-      generateColor(
-        (schemeHues[1] + 150) % 360,
-        syntaxSaturation * 1.1,
-        isDark ? 75 : 40
-      ),
-    escape:
-      lockedColors.escape ||
-      generateColor(
-        (schemeHues[2] + 150) % 360,
-        syntaxSaturation * 1.2,
-        isDark ? 70 : 45
-      ),
-    metaBrace:
-      lockedColors.metaBrace ||
-      generateColor(
-        (schemeHues[3] + 150) % 360,
-        syntaxSaturation * 0.8,
-        isDark ? 80 : 35
-      ),
-    docKeyword:
-      lockedColors.docKeyword ||
-      generateColor(
-        (schemeHues[0] + 180) % 360,
-        syntaxSaturation * 1.0,
-        isDark ? 75 : 40
-      ),
-    heading:
-      lockedColors.heading ||
-      generateColor(
-        (schemeHues[1] + 180) % 360,
-        syntaxSaturation * 1.2,
-        isDark ? 70 : 45
-      ),
-    link:
-      lockedColors.link ||
-      generateColor(
-        (schemeHues[2] + 180) % 360,
-        syntaxSaturation * 1.1,
-        isDark ? 75 : 40
-      ),
-    list:
-      lockedColors.list ||
-      generateColor(
-        (schemeHues[3] + 180) % 360,
-        syntaxSaturation * 0.9,
-        isDark ? 80 : 35
-      ),
-    quote:
-      lockedColors.quote ||
-      generateColor(
-        (schemeHues[0] + 210) % 360,
-        syntaxSaturation * 1.0,
-        isDark ? 75 : 40
-      ),
-    raw:
-      lockedColors.raw ||
-      generateColor(
-        (schemeHues[1] + 210) % 360,
-        syntaxSaturation * 1.1,
-        isDark ? 70 : 45
-      ),
     support:
       lockedColors.support ||
       generateColor(
         (schemeHues[2] + 210) % 360,
         syntaxSaturation * 1.2,
         isDark ? 65 : 50
+      ),
+    unit:
+      lockedColors.unit ||
+      generateColor(
+        (schemeHues[2] - 210) % 360,
+        syntaxSaturation * 1.2,
+        isDark ? 65 : 50
+      ),
+    datetime:
+      lockedColors.datetime ||
+      generateColor(
+        (schemeHues[0] + 180) % 360,
+        syntaxSaturation * 1.05,
+        isDark ? 70 : 57
       ),
   };
 
@@ -429,26 +307,6 @@ export function updateSyntaxColorsWithSaturation(
 
   return {
     keyword: updateColorSaturation(currentColors.keyword, newSyntaxSaturation),
-    string: updateColorSaturation(
-      currentColors.string,
-      newSyntaxSaturation * 0.9
-    ),
-    stringQuoted: updateColorSaturation(
-      currentColors.stringQuoted,
-      newSyntaxSaturation * 0.95
-    ),
-    stringTemplate: updateColorSaturation(
-      currentColors.stringTemplate,
-      newSyntaxSaturation * 1.0
-    ),
-    stringRegex: updateColorSaturation(
-      currentColors.stringRegex,
-      newSyntaxSaturation * 1.05
-    ),
-    stringEscape: updateColorSaturation(
-      currentColors.stringEscape,
-      newSyntaxSaturation * 1.1
-    ),
     comment: updateColorSaturation(
       currentColors.comment,
       newSyntaxSaturation * 0.5
@@ -456,10 +314,6 @@ export function updateSyntaxColorsWithSaturation(
     function: updateColorSaturation(
       currentColors.function,
       newSyntaxSaturation
-    ),
-    functionDeclaration: updateColorSaturation(
-      currentColors.functionDeclaration,
-      newSyntaxSaturation * 1.02
     ),
     functionCall: updateColorSaturation(
       currentColors.functionCall,
@@ -478,31 +332,15 @@ export function updateSyntaxColorsWithSaturation(
       newSyntaxSaturation * 0.78
     ),
     type: updateColorSaturation(currentColors.type, newSyntaxSaturation),
-    typeDeclaration: updateColorSaturation(
-      currentColors.typeDeclaration,
-      newSyntaxSaturation * 1.02
-    ),
     typeParameter: updateColorSaturation(
       currentColors.typeParameter,
       newSyntaxSaturation * 0.98
-    ),
-    typeAnnotation: updateColorSaturation(
-      currentColors.typeAnnotation,
-      newSyntaxSaturation * 0.96
     ),
     constant: updateColorSaturation(
       currentColors.constant,
       newSyntaxSaturation * 1.1
     ),
     class: updateColorSaturation(currentColors.class, newSyntaxSaturation),
-    number: updateColorSaturation(
-      currentColors.number,
-      newSyntaxSaturation * 0.9
-    ),
-    operator: updateColorSaturation(
-      currentColors.operator,
-      newSyntaxSaturation * 0.7
-    ),
     parameter: updateColorSaturation(
       currentColors.parameter,
       newSyntaxSaturation * 0.8
@@ -511,17 +349,41 @@ export function updateSyntaxColorsWithSaturation(
       currentColors.property,
       newSyntaxSaturation * 0.9
     ),
+    other: updateColorSaturation(
+      currentColors.other,
+      newSyntaxSaturation * 1.1
+    ),
+    language: updateColorSaturation(
+      currentColors.language,
+      newSyntaxSaturation * 1.25
+    ),
+    operator: updateColorSaturation(
+      currentColors.operator,
+      newSyntaxSaturation * 0.7
+    ),
+    storage: updateColorSaturation(
+      currentColors.storage,
+      newSyntaxSaturation * 0.9
+    ),
     punctuation: updateColorSaturation(
       currentColors.punctuation,
       newSyntaxSaturation * 0.5
     ),
+    punctuationQuote: updateColorSaturation(
+      currentColors.punctuationQuote,
+      newSyntaxSaturation * 0.45
+    ),
+    punctuationBrace: updateColorSaturation(
+      currentColors.punctuationBrace,
+      newSyntaxSaturation * 0.55
+    ),
+    punctuationComma: updateColorSaturation(
+      currentColors.punctuationComma,
+      newSyntaxSaturation * 0.4
+    ),
     selector: updateColorSaturation(
       currentColors.selector,
       newSyntaxSaturation
-    ),
-    storage: updateColorSaturation(
-      currentColors.storage,
-      newSyntaxSaturation * 1.1
     ),
     support: updateColorSaturation(
       currentColors.support,
@@ -535,61 +397,27 @@ export function updateSyntaxColorsWithSaturation(
       currentColors.control,
       newSyntaxSaturation * 1.2
     ),
-    controlReturn: updateColorSaturation(
-      currentColors.controlReturn,
+    controlFlow: updateColorSaturation(
+      currentColors.controlFlow,
       newSyntaxSaturation * 1.05
     ),
-    controlAsyncAwait: updateColorSaturation(
-      currentColors.controlAsyncAwait,
-      newSyntaxSaturation * 1.1
-    ),
-    controlConditional: updateColorSaturation(
-      currentColors.controlConditional,
-      newSyntaxSaturation * 1.15
-    ),
-    controlLoop: updateColorSaturation(
-      currentColors.controlLoop,
-      newSyntaxSaturation * 1.08
-    ),
-    decorator: updateColorSaturation(
-      currentColors.decorator,
+    controlImport: updateColorSaturation(
+      currentColors.controlImport,
       newSyntaxSaturation * 1.1
     ),
     tag: updateColorSaturation(currentColors.tag, newSyntaxSaturation * 1.0),
+    tagPunctuation: updateColorSaturation(
+      currentColors.tagPunctuation,
+      newSyntaxSaturation * 1.2
+    ),
     attribute: updateColorSaturation(
       currentColors.attribute,
       newSyntaxSaturation * 0.9
     ),
-    namespace: updateColorSaturation(
-      currentColors.namespace,
-      newSyntaxSaturation * 1.0
-    ),
-    regex: updateColorSaturation(
-      currentColors.regex,
+    unit: updateColorSaturation(currentColors.unit, newSyntaxSaturation * 1.1),
+    datetime: updateColorSaturation(
+      currentColors.datetime,
       newSyntaxSaturation * 1.1
     ),
-    escape: updateColorSaturation(
-      currentColors.escape,
-      newSyntaxSaturation * 1.2
-    ),
-    metaBrace: updateColorSaturation(
-      currentColors.metaBrace,
-      newSyntaxSaturation * 0.8
-    ),
-    docKeyword: updateColorSaturation(
-      currentColors.docKeyword,
-      newSyntaxSaturation * 1.0
-    ),
-    heading: updateColorSaturation(
-      currentColors.heading,
-      newSyntaxSaturation * 1.2
-    ),
-    link: updateColorSaturation(currentColors.link, newSyntaxSaturation * 1.1),
-    list: updateColorSaturation(currentColors.list, newSyntaxSaturation * 0.9),
-    quote: updateColorSaturation(
-      currentColors.quote,
-      newSyntaxSaturation * 1.0
-    ),
-    raw: updateColorSaturation(currentColors.raw, newSyntaxSaturation * 1.1),
   };
 }

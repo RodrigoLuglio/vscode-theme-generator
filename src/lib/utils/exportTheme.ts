@@ -10,6 +10,8 @@ export function generateThemeJSON(
   const theme = {
     name: "Generated Theme",
     type: colors.BG1.toLowerCase() === "#ffffff" ? "light" : "dark",
+    semanticClass: "theme.rlabs",
+    semanticHighlighting: true,
     colors: {
       // # Integrated Terminal Colors
       "terminal.background": colors.BG1,
@@ -60,7 +62,7 @@ export function generateThemeJSON(
       // # Base Colors
       focusBorder: colors.BORDER, // Overall border color for focused elements. This color is only used if not overridden by a component
       foreground: colors.FG1, // Overall foreground color. This color is only used if not overridden by a component
-      disabledForeground: colors.FG2, // Overall foreground for disabled elements. This color is only used if not overridden by a component.
+      disabledForeground: syntaxColors.comment, // Overall foreground for disabled elements. This color is only used if not overridden by a component.
       "widget.border": colors.BORDER, // Border color of widgets such as Find/Replace inside the editor.
       "widget.shadow": colors.FG2, // Shadow color of widgets such as Find/Replace inside the editor
       "selection.background": colors.AC2, // Background color of text selections in the workbench (for input fields or text areas, does not apply to selections within the editor and the terminal)
@@ -74,7 +76,7 @@ export function generateThemeJSON(
       "textBlockQuote.background": colors.BG3, // Background color for block quotes in text.
       "textBlockQuote.border": colors.BORDER, // Border color for block quotes in text.
       "textCodeBlock.background": colors.BG3, // Background color for code blocks in text.
-      "textLink.activeForeground": syntaxColors.link, // Foreground color for links in text when clicked on and on mouse hover.
+      "textLink.activeForeground": colors.INFO, // Foreground color for links in text when clicked on and on mouse hover.
       "textLink.foreground": colors.AC2, // Foreground color for links in text.
       "textPreformat.foreground": colors.FG1, // Foreground color for preformatted text segments.
       "textPreformat.background": colors.BG3, // Background color for preformatted text segments.
@@ -89,13 +91,13 @@ export function generateThemeJSON(
       // # Button Control
       // # A set of colors for button widgets such as Open Folder button in the Explorer of a new window.
       "button.background": colors.AC2, // Button background color
-      "button.foreground": colors.FG1, // Button foreground color
+      "button.foreground": colors.FG3, // Button foreground color
       // "button.border": //# Button border color
       // "button.separator": colors.FG2, // Button separator color.
-      "button.hoverBackground": colors.BG2, // Button background color when hovering
+      "button.hoverBackground": colors.lineHighlight, // Button background color when hovering
       "button.secondaryBackground": colors.AC1, // Secondary button background color.
-      "button.secondaryForeground": colors.FG2, // Secondary button foreground color.
-      "button.secondaryHoverBackground": colors.BG2, // Secondary button background color when hovering.
+      "button.secondaryForeground": colors.FG3, // Secondary button foreground color.
+      "button.secondaryHoverBackground": colors.lineHighlight, // Secondary button background color when hovering.
       "checkbox.background": colors.BG1, // Background color of checkbox widget.
       "checkbox.foreground": colors.FG1, // Foreground color of checkbox widget.
       // "checkbox.border": // # Border color of checkbox widget.
@@ -109,21 +111,21 @@ export function generateThemeJSON(
       "dropdown.foreground": colors.FG1, // Dropdown foreground
 
       //# Input Control
-      "input.background": "#333333", // Input box background
+      "input.background": colors.BG1, // Input box background
       "input.foreground": colors.FG1, // Input box foreground
-      "input.border": colors.BORDER, // Input box border
-      "input.placeholderForeground": colors.FG2, // Input box foreground color for placeholder text
-      "inputOption.activeBorder": colors.BORDER, // Border color of activated options in input fields
+      "input.border": syntaxColors.comment, // Input box border
+      "input.placeholderForeground": syntaxColors.comment, // Input box foreground color for placeholder text
+      "inputOption.activeBorder": colors.AC1, // Border color of activated options in input fields
       // "inputOption.activeBackground": // # Background color of activated options in input fields.
       // "inputOption.activeForeground": //# Foreground color of activated options in input fields.
       // "inputOption.hoverBackground": //# Background color of activated options in input fields.
       // "inputValidation.infoForeground": //# Input validation foreground color for information severity
       // "inputValidation.infoBackground": //# Input validation background color for information severity
-      "inputValidation.infoBorder": "#5775ad", //# Input validation border color for information severity
-      "inputValidation.warningForeground": colors.FG1, // Input validation foreground color for warning severity
+      "inputValidation.infoBorder": colors.INFO, //# Input validation border color for information severity
+      // "inputValidation.warningForeground": colors.FG1, // Input validation foreground color for warning severity
       // "inputValidation.warningBackground": colors.WARNING, // Input validation background color for information warning
       "inputValidation.warningBorder": colors.WARNING, // Input validation border color for warning severity
-      "inputValidation.errorForeground": colors.FG1, // Input validation foreground color for error severity
+      // "inputValidation.errorForeground": colors.FG1, // Input validation foreground color for error severity
       // "inputValidation.errorBackground": colors.ERROR, // Input validation background color for error severity
       "inputValidation.errorBorder": colors.ERROR, // Input validation border color for error severity
 
@@ -134,7 +136,7 @@ export function generateThemeJSON(
       // "scrollbarSlider.hoverBackground": //# Slider background color when hovering
 
       //# Badge
-      "badge.foreground": colors.FG1, //# Badge foreground color
+      "badge.foreground": colors.FG3, //# Badge foreground color
       "badge.background": colors.AC2, //# Badge background color
 
       //# Progress Bar
@@ -142,24 +144,24 @@ export function generateThemeJSON(
 
       //# List & Trees
       //# Colors for list and trees like the File Explorer. An active list/tree has keyboard focus, an inactive does not.
-      "list.activeSelectionBackground": colors.AC2, //# List/Tree background color for the selected item when the list/tree is active
+      "list.activeSelectionBackground": colors.BG2, //# List/Tree background color for the selected item when the list/tree is active
       "list.activeSelectionForeground": colors.FG1, //# List/Tree foreground color for the selected item when the list/tree is active
       "list.activeSelectionIconForeground": colors.FG1, //# List/Tree icon foreground color for the selected item when the list/tree is active. An active list/tree has keyboard focus, an inactive does not.
       "list.inactiveSelectionBackground": colors.BG2, //# List/Tree background color for the selected item when the list/tree is inactive
       "list.inactiveSelectionForeground": colors.FG1, //# List/Tree foreground color for the selected item when the list/tree is inactive. An active list/tree has keyboard focus, an inactive does not
       "list.inactiveSelectionIconForeground": colors.FG1, //# List/Tree icon foreground color for the selected item when the list/tree is inactive. An active list/tree has keyboard focus, an inactive does not
-      "list.inactiveFocusBackground": "#76543977", //# List background color for the focused item when the list is inactive. An active list has keyboard focus, an inactive does not. Currently only supported in lists.
+      "list.inactiveFocusBackground": colors.BG2, //# List background color for the focused item when the list is inactive. An active list has keyboard focus, an inactive does not. Currently only supported in lists.
       // "list.inactiveFocusOutline": colors.BORDER, //# List/Tree outline color for the focused item when the list/tree is inactive. An active list/tree has keyboard focus, an inactive does not.
       // "list.invalidItemForeground": colors.FG1, //# List/Tree foreground color for invalid items, for example an unresolved root in explorer.
-      "list.dropBackground": "#76543977", //# List/Tree drag and drop background when moving items around using the mouse
+      "list.dropBackground": colors.BG3, //# List/Tree drag and drop background when moving items around using the mouse
       "list.dropBetweenBackground": colors.BORDER, //# List/Tree drag and drop border color when moving items between items when using the mouse.
-      "list.focusBackground": colors.AC2, //# List/Tree background color for the focused item when the list/tree is active
+      "list.focusBackground": colors.BG2, //# List/Tree background color for the focused item when the list/tree is active
       "list.focusForeground": colors.FG1, //# List/Tree foreground color for the focused item when the list/tree is active. An active list/tree has keyboard focus, an inactive does not
       // "list.focusOutline": colors.BORDER, //# List/Tree outline color for the focused item when the list/tree is active. An active list/tree has keyboard focus, an inactive does not.
       // "list.focusAndSelectionOutline": colors.BORDER, //# List/Tree outline color for the focused item when the list/tree is active and selected. An active list/tree has keyboard focus, an inactive does not.
       // "list.focusHighlightForeground": colors.FG1, //# List/Tree foreground color of the match highlights on actively focused items when searching inside the list/tree.
-      "list.highlightForeground": "#e9e988", // List/Tree foreground color of the match highlights when searching inside the list/tree
-      "list.hoverBackground": colors.BG2, // List/Tree background when hovering over items using the mouse
+      "list.highlightForeground": colors.lineHighlight, // List/Tree foreground color of the match highlights when searching inside the list/tree
+      "list.hoverBackground": colors.BG2 + "50", // List/Tree background when hovering over items using the mouse
       "list.hoverForeground": colors.FG1, // List/Tree foreground when hovering over items using the mouse
       "list.warningForeground": colors.WARNING, // Color of warning decorations in the explorer
       "list.errorForeground": colors.ERROR, // Color of error decorations in the explorer
@@ -172,15 +174,15 @@ export function generateThemeJSON(
       // tree.tableColumnsBorder: //# Tree stroke color for the indentation guides.
       // tree.tableOddRowsBackground: //# Background color for odd table rows.
 
-      "listFilterWidget.background": "#2d4026", //# Background color of the type filter widget in lists and trees.
-      "listFilterWidget.outline": "#425047", //# Outline color of the type filter widget in lists and trees.
+      "listFilterWidget.background": colors.BG3, //# Background color of the type filter widget in lists and trees.
+      "listFilterWidget.outline": colors.BORDER, //# Outline color of the type filter widget in lists and trees.
       "listFilterWidget.noMatchesOutline": colors.ERROR, //# Outline color of the type filter widget in lists and trees, when there are no matches.
       // "listFilterWidget.shadow": "#2d4026", //# Shadow color of the type filter widget in lists and tree.
 
       //# Activity Bar
       //# The Activity Bar is usually displayed either on the far left or right of the workbench and allows fast switching between views of the Side Bar.
       "activityBar.background": colors.BG2, //# Activity Bar background color
-      "activityBar.inactiveForeground": colors.FG2, //# Activity bar item foreground color when it is inactive
+      "activityBar.inactiveForeground": syntaxColors.comment, //# Activity bar item foreground color when it is inactive
       "activityBar.dropBackground": colors.BG2, //# Drag and drop feedback color for the Activity Bar items
       "activityBar.foreground": colors.FG1, //# Activity bar foreground color (for example used for the icons)
       // "activityBar.border": colors.BORDER, //# Activity Bar border color with the Side Bar
@@ -190,7 +192,7 @@ export function generateThemeJSON(
       "activityBar.activeFocusBorder": colors.lineHighlight, // Activity bar focus border color for the active item.
       // "activityBar.activeFocusBorder": colors.lineHighlight, // Activity bar focus border color for the active item.
       "activityBarBadge.background": colors.AC2, // Activity notification badge background color
-      "activityBarBadge.foreground": colors.FG1, // Activity notification badge foreground color
+      "activityBarBadge.foreground": colors.FG3, // Activity notification badge foreground color
       "activityBarTop.foreground": colors.FG1, // Active foreground color of the item in the Activity bar when it is on top. The activity allows to switch between views of the side bar.
       // "activityBarTop.activeBorder": //# Focus border color for the active item in the Activity bar when it is on top. The activity allows to switch between views of the side bar.
       // activityBarTop.inactiveForeground: //# Inactive foreground color of the item in the Activity bar when it is on top. The activity allows to switch between views of the side bar.
@@ -240,7 +242,7 @@ export function generateThemeJSON(
       // # Editor Groups are the containers of editors. There can be many editor groups. A Tab is the container of an editor. Multiple Tabs can be opened in one editor group.
       // editorGroup.background: //# Background color of an editor group. The background color shows up when dragging editor groups around
       "editorGroup.border": colors.BORDER, //# Color to separate multiple editor groups from each other
-      "editorGroup.dropBackground": "#1f1f1f70", //# Background color when dragging editors around
+      "editorGroup.dropBackground": colors.BG3, //# Background color when dragging editors around
       "editorGroup.emptyBackground": colors.BG1, //# Background color of an empty editor group.
       // "editorGroup.focusedEmptyBorder": colors.BORDER, // Border color of an empty editor group that is focused.
       // editorGroup.dropIntoPromptForeground: //# Foreground color of text shown over editors when dragging files. This text informs the user that they can hold shift to drop into the editor.
@@ -254,12 +256,12 @@ export function generateThemeJSON(
       "tab.activeForeground": colors.FG1, //# Active Tab foreground color in an active group
       "tab.border": colors.BORDER, //# Border to separate Tabs from each other
       "tab.activeBorderTop": colors.AC1, //# A border drawn to the top of the active tab
-      "tab.activeBorder": colors.AC1, //# A border drawn to the bottom of the active tab
+      // "tab.activeBorder": colors.AC1, //# A border drawn to the bottom of the active tab
       "tab.selectedBackground": colors.lineHighlight, //# Background of a selected tab. Tabs are the containers for editors in the editor area. Multiple tabs can be opened in one editor group. There can be multiple editor groups.
       // tab.selectedForeground: //# Foreground of a selected tab. Tabs are the containers for editors in the editor area. Multiple tabs can be opened in one editor group. There can be multiple editor groups.
       // tab.dragAndDropBorder: //# Border between tabs to indicate that a tab can be inserted between two tabs. Tabs are the containers for editors in the editor area. Multiple tabs can be opened in one editor group. There can be multiple editor groups.
-      "tab.inactiveBackground": "#131313", //# Inactive Tab background color
-      "tab.inactiveForeground": colors.FG2, //# Inactive Tab foreground color in an active group
+      "tab.inactiveBackground": colors.BG1, //# Inactive Tab background color
+      "tab.inactiveForeground": syntaxColors.comment, //# Inactive Tab foreground color in an active group
       // "tab.unfocusedActiveBorder": colors.BORDER, //# A border drawn to the bottom of the active tab in an editor group that is not focused
       // "tab.unfocusedActiveForeground": colors.FG1, //# Active tab foreground color in an inactive editor group
       // "tab.unfocusedInactiveForeground": colors.FG2, //# Inactive tab foreground color in an inactive editor group
@@ -270,11 +272,11 @@ export function generateThemeJSON(
       "editor.background": colors.BG1,
       "editor.foreground": colors.FG1,
       "editorLineNumber.foreground": syntaxColors.comment,
-      "editorLineNumber.activeForeground": colors.FG1,
+      "editorLineNumber.activeForeground": colors.AC1,
       "editorLineNumber.dimmedForeground": syntaxColors.comment,
       "editorCursor.background": colors.lineHighlight,
-      "editorCursor.foreground": colors.FG1,
-      "editorMultiCursor.primary.foreground": colors.FG1,
+      "editorCursor.foreground": colors.AC1,
+      "editorMultiCursor.primary.foreground": colors.AC1,
       "editorMultiCursor.primary.background": colors.lineHighlight,
       "editorMultiCursor.secondary.foreground": colors.FG1,
       "editorMultiCursor.secondary.background": colors.lineHighlight,
@@ -308,7 +310,7 @@ export function generateThemeJSON(
 
       // "editor.lineHighlightBorder": colors.lineHighlight, // Background color for the border around the line at the cursor position
 
-      "editorLink.activeForeground": syntaxColors.link, // Color of active links
+      "editorLink.activeForeground": colors.INFO, // Color of active links
       // "editor.rangeHighlightBorder": colors.lineHighlight, // Background color of the border around highlighted ranges.
       "editor.rangeHighlightBackground": colors.lineHighlight, // Background color of highlighted ranges, like by Quick Open and Find features
 
@@ -320,7 +322,7 @@ export function generateThemeJSON(
       "editor.findMatchForeground": colors.FG1, //# Text color of the current search match.
       "editor.findMatchHighlightBackground": colors.lineHighlight, // Color of the other search matches
       "editor.findMatchHighlightForeground": colors.FG1, // Foreground color of the other search matches.
-      "editor.findRangeHighlightBackground": colors.lineHighlight, // Color the range limiting the search
+      "editor.findRangeHighlightBackground": colors.selection, // Color the range limiting the search
       // "editor.findMatchBorder": colors.BORDER, // Border color of the current search match.
       // "editor.findMatchHighlightBorder": colors.BORDER, // Border color of the other search matches.
       // "editor.findRangeHighlightBorder": colors.BORDER, // Border color the range limiting the search (Enable 'Find in Selection' in the find widget).
@@ -338,7 +340,7 @@ export function generateThemeJSON(
       // "editor.snippetFinalTabstopHighlightBorder": *FG2 // Highlight border color of the final tabstop of a snippet
 
       // CODE LENS
-      "editorCodeLens.foreground": colors.FG2,
+      "editorCodeLens.foreground": syntaxColors.comment,
 
       // "editorInlayHint.background": colors.BG1, // Background color of inline hints.
       // "editorInlayHint.foreground": colors.FG1, // Foreground color of inline hints.
@@ -397,22 +399,22 @@ export function generateThemeJSON(
       // editorCommentsWidget.rangeActiveBackground: # Color of background for currently selected or hovered comment range.
       // editorCommentsWidget.replyInputBackground: # Background color for comment reply input box.
 
-      "editorWidget.background": colors.BG3, // Background color of editor widgets, such as Find/Replace
+      "editorWidget.background": colors.BG1, // Background color of editor widgets, such as Find/Replace
       "editorWidget.foreground": colors.FG1, // Foreground color of editor widgets, such as find/replace.
       editorWidgetBorder: colors.BORDER, // Border color of the editor widget unless the widget does not contain a border or defines its own border color
       // editorWidget.resizeBorder: # Border color of the resize bar of editor widgets. The color is only used if the widget chooses to have a resize border and if the color is not overridden by a widget.
-      "editorSuggestWidget.background": colors.BG3, // Background color of the suggestion widget
+      "editorSuggestWidget.background": colors.BG1, // Background color of the suggestion widget
       "editorSuggestWidget.border": colors.BORDER, // Border color of the suggestion widget
       "editorSuggestWidget.foreground": syntaxColors.comment, // Foreground color of the suggestion widget
       "editorSuggestWidget.highlightForeground": colors.FG1, // Color of the match highlights in the suggestion widget
-      "editorSuggestWidget.selectedBackground": colors.lineHighlight, // Background color of the selected entry in the suggestion widget
+      "editorSuggestWidget.selectedBackground": colors.BG2, // Background color of the selected entry in the suggestion widget
       "editorSuggestWidget.focusHighlightForeground": colors.FG1, // Color of the match highlights in the suggest widget when an item is focused.
       "editorSuggestWidget.selectedForeground": colors.FG1, // Foreground color of the selected entry in the suggest widget.
       // "editorSuggestWidget.selectedIconForeground": colors.FG1, // Icon foreground color of the selected entry in the suggest widget.
       // editorSuggestWidgetStatus.foreground: # Foreground color of the suggest widget status.
-      "editorHoverWidget.background": colors.BG3, // Background color of the editor hover
+      "editorHoverWidget.background": colors.BG1, // Background color of the editor hover
       "editorHoverWidget.foreground": colors.FG1, // Foreground color of the editor hover.
-      "editorHoverWidget.border": colors.FG2, // Border color of the editor hover
+      "editorHoverWidget.border": colors.BORDER, // Border color of the editor hover
       "editorHoverWidget.highlightForeground": colors.FG1, // Foreground color of the active item in the parameter hint.
       "editorHoverWidget.statusBarBackground": colors.BG1, // Background color of the editor hover status bar.
       // editorGhostText.border: # Border color of the ghost text shown by inline completion providers and the suggest preview.
@@ -462,11 +464,11 @@ export function generateThemeJSON(
       "editorError.background": colors.BG1, // Background color of error text in the editor. The color must not be opaque so as not to hide underlying decorations.
       // "editorError.border": colors.BORDER, // Border color of error squigglies in the editor
       "editorWarning.foreground": colors.WARNING, // Foreground color of warning squigglies in the editor
-      // "editorWarning.background": colors.BG1, // Background color of warning text in the editor. The color must not be opaque so as not to hide underlying decorations.
+      "editorWarning.background": colors.BG1, // Background color of warning text in the editor. The color must not be opaque so as not to hide underlying decorations.
       // editorWarning.border: # Border color of warning squigglies in the editor
-      // editorInfo.foreground: # Foreground color of info squiggles in the editor.
+      "editorInfo.foreground": colors.INFO, // # Foreground color of info squiggles in the editor.
       // editorInfo.border: # Border color of info boxes in the editor.
-      // editorInfo.background: # Background color of info text in the editor. The color must not be opaque so as not to hide underlying decorations.
+      "editorInfo.background": colors.BG1, // # Background color of info text in the editor. The color must not be opaque so as not to hide underlying decorations.
       // editorHint.foreground: # Foreground color of hints in the editor.
       // editorHint.border: # Border color of hint boxes in the editor.
       // problemsErrorIcon.foreground: # The color used for the problems error icon.
@@ -480,13 +482,13 @@ export function generateThemeJSON(
       "peekView.border": colors.AC2, // Color of the peek view borders and arrow
       "peekViewEditor.background": colors.BG1, // Background color of the peek view editor
       // "peekViewEditorGutter.background": # Background color of the gutter in the peek view editor
-      "peekViewEditor.matchHighlightBackground": colors.lineHighlight, // Match highlight color in the peek view editor
+      "peekViewEditor.matchHighlightBackground": colors.findMatch, // Match highlight color in the peek view editor
       // "peekViewEditor.matchHighlightBorder": "#ffff8080", // Match highlight border color in the peek view editor.
       "peekViewResult.background": colors.BG1, // Background color of the peek view result list
       "peekViewResult.fileForeground": colors.FG1, // Foreground color for file nodes in the peek view result list
       "peekViewResult.lineForeground": colors.FG1, // Foreground color for line nodes in the peek view result list
       "peekViewResult.matchHighlightBackground": colors.lineHighlight, // Match highlight color in the peek view result list
-      "peekViewResult.selectionBackground": colors.AC2, // Background color of the selected entry in the peek view result list
+      "peekViewResult.selectionBackground": colors.BG2, // Background color of the selected entry in the peek view result list
       "peekViewResult.selectionForeground": colors.FG1, // Foreground color of the selected entry in the peek view result list
       "peekViewTitle.background": colors.BG1, // Background color of the peek view title area
       "peekViewTitleDescription.foreground": colors.FG2, // Color of the peek view title info
@@ -494,16 +496,16 @@ export function generateThemeJSON(
       // peekViewEditorStickyScroll.background: # Background color of sticky scroll in the peek view editor.
 
       // Merge Conflicts
-      "merge.currentHeaderBackground": colors.SUCCESS + "10", // Current header background in inline merge conflicts
-      "merge.currentContentBackground": colors.BG1, // Current content background in inline merge conflicts
-      "merge.incomingHeaderBackground": colors.SUCCESS + "30", // Incoming header background in inline merge conflicts
-      "merge.incomingContentBackground": colors.BG1, // Incoming content background in inline merge conflicts
+      "merge.currentHeaderBackground": colors.INFO + "40", // Current header background in inline merge conflicts
+      "merge.currentContentBackground": colors.INFO + "20", // Current content background in inline merge conflicts
+      "merge.incomingHeaderBackground": colors.SUCCESS + "40", // Incoming header background in inline merge conflicts
+      "merge.incomingContentBackground": colors.SUCCESS + "20", // Incoming content background in inline merge conflicts
       "merge.border": colors.BORDER, // Border color on headers and the splitter in inline merge conflicts
       // "merge.commonContentBackground": colors.BG1, // Common ancestor content background in inline merge-conflicts. The color must not be opaque so as not to hide underlying decorations.
       // "merge.commonHeaderBackground": colors.BG1, // Common ancestor header background in inline merge-conflicts. The color must not be opaque so as not to hide underlying decorations.
-      "editorOverviewRuler.border": colors.BG1, // Color of the overview ruler border
-      "editorOverviewRuler.currentContentForeground": colors.FG1, // Current overview ruler foreground for inline merge conflicts
-      "editorOverviewRuler.incomingContentForeground": colors.AC2, // Incoming overview ruler foreground for inline merge conflicts
+      "editorOverviewRuler.border": colors.BORDER, // Color of the overview ruler border
+      "editorOverviewRuler.currentContentForeground": colors.INFO, // Current overview ruler foreground for inline merge conflicts
+      "editorOverviewRuler.incomingContentForeground": colors.SUCCESS, // Incoming overview ruler foreground for inline merge conflicts
       // "editorOverviewRuler.commonContentForeground": colors.FG1, // Common ancestor overview ruler foreground for inline merge conflicts.
       // "editorOverviewRuler.commentForeground": colors.FG1, // Editor overview ruler decoration color for resolved comments. This color should be opaque.
       // "editorOverviewRuler.commentUnresolvedForeground": colors.FG1, // Editor overview ruler decoration color for unresolved comments. T
@@ -514,11 +516,11 @@ export function generateThemeJSON(
       "editorOverviewRuler.warningForeground": colors.WARNING,
       "editorOverviewRuler.findMatchForeground": colors.FG1,
       "editorOverviewRuler.rangeHighlightForeground": colors.lineHighlight,
-      "editorOverviewRuler.selectionHighlightForeground": colors.lineHighlight,
+      "editorOverviewRuler.selectionHighlightForeground": colors.selection,
       "editorOverviewRuler.wordHighlightForeground": colors.lineHighlight,
       "editorOverviewRuler.wordHighlightStrongForeground": colors.lineHighlight,
       "editorOverviewRuler.modifiedForeground": colors.INFO,
-      "mergeEditor.change.background": colors.BG2,
+      "mergeEditor.change.background": colors.WARNING,
       // mergeEditor.change.word.background: # The background color for word changes.
       // mergeEditor.conflict.unhandledUnfocused.border: # The border color of unhandled unfocused conflicts.
       // mergeEditor.conflict.unhandledFocused.border: # The border color of unhandled focused conflicts.
@@ -553,32 +555,32 @@ export function generateThemeJSON(
 
       // # Status Bar
       "statusBar.background": colors.AC2, // Standard Status Bar background color
-      "statusBar.foreground": colors.FG1, // Status Bar foreground color
+      "statusBar.foreground": colors.FG3, // Status Bar foreground color
       // "statusBar.border": colors.BORDER, // Status Bar border color separating the Status Bar and editor.
       // "statusBar.focusBorder": colors.BORDER, // Status bar border color when focused on keyboard navigation. The status bar is shown in the bottom of the window.
       "statusBar.debuggingBackground": colors.WARNING, // Status Bar background color when a program is being debugged
       "statusBar.debuggingForeground": colors.BORDER, // Status Bar foreground color when a program is being debugged
       // "statusBar.debuggingBorder": colors.BORDER, // Status Bar border color separating the Status Bar and editor when a program is being debugged.
       "statusBar.noFolderBackground": colors.FG1, // Status Bar foreground color when no folder is opened
-      "statusBar.noFolderForeground": colors.BORDER, // Status Bar background color when no folder is opened
+      "statusBar.noFolderForeground": colors.FG3, // Status Bar background color when no folder is opened
       // "statusBar.noFolderBorder": colors.BORDER, // Status Bar border color when no folder is opened
       "statusBarItem.activeBackground": colors.lineHighlight, // Status Bar item background color when clicking
       // "statusBarItem.hoverForeground": colors.BORDER, // Status bar item foreground color when hovering. The status bar is shown in the bottom of the window.
       "statusBarItem.hoverBackground": colors.lineHighlight, // Status Bar item background color when hovering
       "statusBarItem.prominentForeground": colors.FG1, // Status Bar prominent items foreground color.
       "statusBarItem.prominentBackground": colors.lineHighlight, // Status Bar prominent items background color. Prominent items stand out from other Status Bar entries to indicate importance
-      "statusBarItem.prominentHoverForeground": colors.BORDER, // Status bar prominent items foreground color when hovering. Prominent items stand out from other status bar entries to indicate importance. The status bar is shown in the bottom of the window.
+      "statusBarItem.prominentHoverForeground": colors.FG1, // Status bar prominent items foreground color when hovering. Prominent items stand out from other status bar entries to indicate importance. The status bar is shown in the bottom of the window.
       "statusBarItem.prominentHoverBackground": colors.lineHighlight, // Status Bar prominent items background color when hovering. Prominent items stand out from other Status Bar entries to indicate importance
-      "statusBarItem.remoteForeground": colors.BORDER, // Background color for the remote indicator on the status bar
+      "statusBarItem.remoteForeground": colors.FG3, // Background color for the remote indicator on the status bar
       "statusBarItem.remoteBackground": colors.AC2, // Foreground color for the remote indicator on the status bar
       "statusBarItem.remoteHoverBackground": colors.lineHighlight, // Background color for the remote indicator on the status bar when hovering.
       // "statusBarItem.remoteHoverForeground": colors.BORDER, // Foreground color for the remote indicator on the status bar when hovering.
       "statusBarItem.errorBackground": colors.ERROR, // Status bar error items background color. Error items stand out from other status bar entries to indicate error conditions.
-      "statusBarItem.errorForeground": colors.FG1, // Status bar error items foreground color. Error items stand out from other status bar entries to indicate error conditions.
+      "statusBarItem.errorForeground": colors.FG3, // Status bar error items foreground color. Error items stand out from other status bar entries to indicate error conditions.
       // statusBarItem.errorHoverBackground: # Status bar error items background color when hovering. Error items stand out from other status bar entries to indicate error conditions. The status bar is shown in the bottom of the window.
       // statusBarItem.errorHoverForeground: # Status bar error items foreground color when hovering. Error items stand out from other status bar entries to indicate error conditions. The status bar is shown in the bottom of the window.
       "statusBarItem.warningBackground": colors.WARNING, // Status bar warning items background color. Warning items stand out from other status bar entries to indicate warning conditions. The status bar is shown in the bottom of the window.
-      "statusBarItem.warningForeground": colors.FG1, // Status bar warning items foreground color. Warning items stand out from other status bar entries to indicate warning conditions. The status bar is shown in the bottom of the window.
+      "statusBarItem.warningForeground": colors.FG3, // Status bar warning items foreground color. Warning items stand out from other status bar entries to indicate warning conditions. The status bar is shown in the bottom of the window.
       "statusBarItem.warningHoverBackground": colors.lineHighlight, // Status bar warning items background color when hovering. Warning items stand out from other status bar entries to indicate warning conditions. The status bar is shown in the bottom of the window.
       // "statusBarItem.warningHoverForeground": colors.BORDER, // Status bar warning items foreground color when hovering. Warning items stand out from other status bar entries to indicate warning conditions. The status bar is shown in the bottom of the window.
       // statusBarItem.compactHoverBackground: # Status bar item background color when hovering an item that contains two hovers. The status bar is shown in the bottom of the window.
@@ -641,7 +643,7 @@ export function generateThemeJSON(
       "notifications.foreground": colors.FG1, // Notification foreground color.
       "notifications.background": colors.BG2, // Notification background color.
       "notifications.border": colors.BORDER, // Notification border color separating from other notifications in the Notification Center.
-      "notificationLink.foreground": syntaxColors.link, // Notification links foreground color.
+      "notificationLink.foreground": colors.INFO, // Notification links foreground color.
       "notificationsErrorIcon.foreground": colors.ERROR, // The color used for the notification error icon.
       "notificationsWarningIcon.foreground": colors.WARNING, // The color used for the notification warning icon.
       "notificationsInfoIcon.foreground": colors.INFO, // The color used for the notification info icon.
@@ -674,6 +676,7 @@ export function generateThemeJSON(
 
       // # Debug
       "debugToolBar.background": colors.INFO, // # Debug toolbar background color
+      "debugToolBar.foreground": colors.FG3, // # Debug toolbar foreground color
       // debugToolBar.border: # Debug toolbar border color.
       // editor.stackFrameHighlightBackground: # Background color of the top stack frame highlight in the editor.
       // editor.focusedStackFrameHighlightBackground: # Background color of the focused stack frame highlight in the editor.
@@ -772,137 +775,344 @@ export function generateThemeJSON(
       // gitDecoration.submoduleResourceForeground: # Color for submodule resources.
 
       // # Breadcrumbs
-      "breadcrumb.foreground": syntaxColors, // Color of breadcrumb items
+      "breadcrumb.foreground": syntaxColors.comment, // Color of breadcrumb items
       "breadcrumb.background": colors.BG2, // Color of breadcrumb items
       "breadcrumb.focusForeground": colors.FG1, // Color of focused breadcrumb items
       "breadcrumb.activeSelectionForeground": colors.FG1, // Color of selected breadcrumb items
-      "breadcrumbPicker.background": colors.BG2, // Background color of breadcrumb item picker
+      "breadcrumbPicker.background": colors.BG3, // Background color of breadcrumb item picker
     },
     tokenColors: [
       {
-        scope: ["keyword"],
+        scope: ["meta.tag", "string"],
         settings: {
-          foreground: syntaxColors.keyword,
+          foreground: colors.FG1,
         },
       },
       {
-        scope: ["string"],
-        settings: {
-          foreground: syntaxColors.string,
-        },
-      },
-      {
-        scope: ["string.quoted", "punctuation.definition.string"],
-        settings: {
-          foreground: syntaxColors.stringQuoted,
-        },
-      },
-      {
-        scope: ["string.template", "punctuation.definition.string.template"],
-        settings: {
-          foreground: syntaxColors.stringTemplate,
-        },
-      },
-      {
-        scope: ["string.regexp"],
-        settings: {
-          foreground: syntaxColors.stringRegex,
-        },
-      },
-      {
-        scope: ["constant.character.escape"],
-        settings: {
-          foreground: syntaxColors.stringEscape,
-        },
-      },
-      {
-        scope: ["string", "punctuation.definition.string"],
-        settings: {
-          foreground: syntaxColors.string,
-        },
-      },
-      {
-        scope: ["comment", "punctuation.definition.comment"],
+        scope: ["meta.diff", "meta.diff.header"],
         settings: {
           foreground: syntaxColors.comment,
         },
       },
       {
-        scope: ["entity.name.function", "support.function"],
-        settings: {
-          foreground: syntaxColors.function,
-        },
-      },
-      {
-        scope: ["variable", "support.variable"],
-        settings: {
-          foreground: syntaxColors.variable,
-        },
-      },
-      {
-        scope: ["entity.name.type", "support.type"],
-        settings: {
-          foreground: syntaxColors.type,
-        },
-      },
-      {
-        scope: ["constant", "support.constant"],
+        scope: [
+          "meta.link.reference.def.restructuredtext",
+          "string.other.link.description",
+          "string.other.link.title",
+        ],
         settings: {
           foreground: syntaxColors.constant,
         },
       },
       {
-        scope: ["entity.name.class", "entity.other.inherited-class"],
+        scope: ["emphasis"],
         settings: {
-          foreground: syntaxColors.class,
+          fontStyle: "italic",
         },
       },
       {
-        scope: ["constant.numeric"],
+        scope: ["strong"],
         settings: {
-          foreground: syntaxColors.number,
+          fontStyle: "bold",
         },
       },
       {
-        scope: ["keyword.operator"],
+        scope: ["invalid"],
         settings: {
-          foreground: syntaxColors.operator,
+          foreground: colors.ERROR,
+          fontStyle: "strikethrough",
         },
       },
       {
-        scope: ["variable.parameter"],
+        scope: ["invalid.deprecated"],
+        settings: {
+          foreground: colors.FG1,
+          fontStyle: "underline italic",
+        },
+      },
+      {
+        scope: ["header"],
+        settings: {
+          foreground: syntaxColors.constant,
+        },
+      },
+      {
+        scope: ["source.ini", "source.ignore", "source"],
+        settings: {
+          foreground: colors.FG2,
+        },
+      },
+      //--------------------------------------------------------------------
+      // MARKUP
+      //--------------------------------------------------------------------
+      {
+        scope: ["markup.inserted"],
+        settings: {
+          foreground: syntaxColors.constant,
+        },
+      },
+      {
+        scope: ["markup.deleted"],
+        settings: {
+          foreground: colors.ERROR,
+        },
+      },
+      {
+        scope: ["markup.changed"],
+        settings: {
+          foreground: colors.INFO,
+        },
+      },
+      {
+        scope: ["markup.error"],
+        settings: {
+          foreground: colors.ERROR,
+        },
+      },
+      {
+        scope: ["markup.underline"],
+        settings: {
+          fontStyle: "underline",
+        },
+      },
+      {
+        scope: ["markup.bold"],
+        settings: {
+          foreground: colors.WARNING,
+          fontStyle: "bold",
+        },
+      },
+      {
+        scope: ["markup.heading"],
+        settings: {
+          foreground: colors.AC1,
+          fontStyle: "bold",
+        },
+      },
+      {
+        scope: ["markup.italic"],
+        settings: {
+          foreground: colors.FG2,
+          fontStyle: "italic",
+        },
+      },
+      {
+        scope: ["markup.inline.raw", "markup.raw.restructuredtext"],
+        settings: {
+          foreground: colors.AC1,
+        },
+      },
+      {
+        scope: [
+          "markup.underline.link",
+          "markup.underline.link.image",
+          "markup.quote",
+        ],
+        settings: {
+          foreground: colors.INFO,
+        },
+      },
+      {
+        scope: [
+          "beginning.punctuation.definition.list.markdown",
+          "beginning.punctuation.definition.quote.markdown",
+          "punctuation.definition.link.restructuredtext",
+        ],
+        settings: {
+          foreground: colors.AC2,
+        },
+      },
+      {
+        scope: ["meta.separator.markdown"],
+        settings: {
+          foreground: colors.AC1,
+        },
+      },
+      {
+        scope: [
+          "fenced_code.block.language",
+          "markup.raw.inner.restructuredtext",
+          "markup.fenced_code.block.markdown punctuation.definition.markdown",
+        ],
+        settings: {
+          foreground: colors.SUCCESS,
+        },
+      },
+      {
+        scope: [
+          "markup.heading.markdown punctuation.definition.string.begin",
+          "markup.heading.markdown punctuation.definition.string.end",
+        ],
+        settings: {
+          foreground: colors.WARNING,
+        },
+      },
+
+      //--------------------------------------------------------------------
+      // ENTITIES
+      //--------------------------------------------------------------------
+      {
+        scope: ["entity.name.filename"],
+        settings: {
+          foreground: ansiColors.Yellow,
+        },
+      },
+      {
+        scope: ["entity.name.directive.restructuredtext"],
+        settings: {
+          foreground: ansiColors.Yellow,
+          fontStyle: "italic",
+        },
+      },
+      {
+        scope: [
+          "entity.name.class",
+          "entity.name.type",
+          "entity.name.type.class",
+          "entity.other.inherited-class",
+          "entity.name.fragment.graphql",
+          "variable.fragment.graphql",
+        ],
+        settings: {
+          foreground: colors.AC2,
+        },
+      },
+      {
+        scope: ["entity.name.tag"],
+        settings: {
+          foreground: syntaxColors.tag,
+          // fontStyle: "bold",
+        },
+      },
+      {
+        scope: ["entity.other.attribute-name.parent-selector"],
+        settings: {
+          foreground: syntaxColors.tag,
+        },
+      },
+      {
+        scope: ["entity.other.attribute-name", "meta.object-literal.key.js"],
+        settings: {
+          foreground: colors.AC2,
+          // fontStyle: "bold",
+        },
+      },
+      {
+        scope: [
+          "entity.name.function",
+          "meta.function-call.generic",
+          "meta.function-call.object",
+          "meta.function-call.php",
+          "meta.function-call.static",
+          "meta.method-call.java meta.method",
+          "meta.method.groovy",
+          "support.function.any-method.lua",
+          "keyword.operator.function.infix",
+        ],
+        settings: {
+          foreground: colors.AC1,
+        },
+      },
+      {
+        scope: [
+          "source.css",
+          "entity.other.attribute-name.class.css",
+          "entity.name.variable.parameter",
+          "meta.selector.css",
+          "meta.at-rule.function variable",
+          "meta.at-rule.mixin variable",
+          "meta.function.arguments variable.other.php",
+          "meta.selectionset.graphql meta.arguments.graphql variable.arguments.graphql",
+        ],
         settings: {
           foreground: syntaxColors.parameter,
         },
       },
       {
-        scope: ["support.type.property-name", "variable.object.property"],
+        scope: [
+          "support",
+          "entity.other.attribute-name.pseudo-class.css",
+          "entity.other.attribute-name.pseudo-element.css",
+        ],
+        settings: {
+          foreground: syntaxColors.support,
+          // fontStyle: "bold",
+        },
+      },
+      {
+        scope: [
+          "entity.name.function.target.makefile",
+          "entity.name.section.toml",
+          "entity.name.tag.yaml",
+          "variable.other.key.toml",
+        ],
+        settings: {
+          foreground: colors.AC1,
+        },
+      },
+      {
+        scope: [
+          "entity.name.type.type-parameter",
+          "meta.indexer.mappedtype.declaration entity.name.type",
+          "meta.type.parameters entity.name.type",
+        ],
+        settings: {
+          foreground: syntaxColors.typeParameter,
+        },
+      },
+      {
+        scope: ["entity.other.attribute-name", "meta.object-literal.key.js"],
+        settings: {
+          foreground: syntaxColors.attribute,
+          // fontStyle: "bold",
+        },
+      },
+
+      //--------------------------------------------------------------------
+      // TYPES
+      //--------------------------------------------------------------------
+      {
+        scope: [
+          "source.css support.type.property-name",
+          "source.sass support.type.property-name",
+          "source.scss support.type.property-name",
+          "source.less support.type.property-name",
+          "source.stylus support.type.property-name",
+          "source.postcss support.type.property-name",
+        ],
         settings: {
           foreground: syntaxColors.property,
         },
       },
+
+      //--------------------------------------------------------------------
+      // STORAGE
+      //--------------------------------------------------------------------
+
       {
-        scope: ["punctuation"],
+        scope: [
+          "entity.name.type",
+          "keyword.primitive-datatypes.swift",
+          "keyword.type.cs",
+          "meta.protocol-list.objc",
+          "meta.return-type.objc",
+          "source.go storage.type",
+          "source.groovy storage.type",
+          "source.java storage.type",
+          "source.powershell entity.other.attribute-name",
+          "storage.class.std.rust",
+          "storage.type.attribute.swift",
+          "storage.type.c",
+          "storage.type.core.rust",
+          "storage.type.cs",
+          "storage.type.groovy",
+          "storage.type.objc",
+          "storage.type.php",
+          "storage.type.haskell",
+          "storage.type.ocaml",
+        ],
         settings: {
-          foreground: syntaxColors.punctuation,
-        },
-      },
-      {
-        scope: ["entity.name.tag", "entity.other.attribute-name"],
-        settings: {
-          foreground: syntaxColors.selector,
-        },
-      },
-      {
-        scope: ["support"],
-        settings: {
-          foreground: syntaxColors.support,
-        },
-      },
-      {
-        scope: ["storage"],
-        settings: {
-          foreground: syntaxColors.storage,
+          foreground: colors.AC2,
         },
       },
       {
@@ -912,163 +1122,638 @@ export function generateThemeJSON(
         },
       },
       {
-        scope: ["keyword.control"],
+        scope: ["punctuation.definition.constant.restructuredtext"],
+        settings: {
+          foreground: syntaxColors.constant,
+        },
+      },
+      {
+        scope: ["storage.type.generic.java"],
+        settings: {
+          foreground: colors.AC1,
+        },
+      },
+
+      //--------------------------------------------------------------------
+      // COMMENTS
+      //--------------------------------------------------------------------
+      {
+        scope: [
+          "comment",
+          "punctuation.definition.comment",
+          "unused.comment",
+          "wildcard.comment",
+        ],
+        settings: {
+          foreground: syntaxColors.comment,
+        },
+      },
+      {
+        scope: [
+          "comment keyword.codetag.notation",
+          "comment.block.documentation keyword",
+          "comment.block.documentation storage.type.class",
+        ],
+        settings: {
+          foreground: syntaxColors.keyword,
+        },
+      },
+
+      //--------------------------------------------------------------------
+      // CONSTANTS
+      //--------------------------------------------------------------------
+      {
+        scope: ["constant"],
+        settings: {
+          foreground: syntaxColors.constant,
+        },
+      },
+      {
+        scope: ["constant.other.color", "constant.other.key.perl"],
+        settings: {
+          foreground: syntaxColors.other,
+        },
+      },
+
+      {
+        scope: [
+          "constant.character.escape",
+          "constant.character.string.escape",
+          "constant.regexp",
+          "constant.language",
+        ],
+        settings: {
+          foreground: syntaxColors.language,
+        },
+      },
+      {
+        scope: ["constant.other.date", "constant.other.timestamp"],
+        settings: {
+          foreground: syntaxColors.datetime,
+        },
+      },
+      {
+        scope: [
+          "constant.language.empty-list.haskell",
+          "constant.other.symbol.hashkey",
+          "constant.other.symbol.hashkey.ruby",
+        ],
+        settings: {
+          foreground: colors.FG2,
+        },
+      },
+
+      //--------------------------------------------------------------------
+      // KEYWORDS
+      //--------------------------------------------------------------------
+      {
+        scope: [
+          "keyword.operator.other.powershell",
+          "keyword.other.statement-separator.powershell",
+        ],
+        settings: {
+          foreground: syntaxColors.operator,
+        },
+      },
+      {
+        scope: [
+          "keyword.operator.dereference.java",
+          "keyword.operator.navigation.groovy",
+        ],
+        settings: {
+          foreground: syntaxColors.operator,
+        },
+      },
+      {
+        scope: ["keyword.operator"],
+        settings: {
+          foreground: syntaxColors.operator,
+        },
+      },
+      {
+        scope: ["keyword.other.unit"],
+        settings: {
+          foreground: syntaxColors.unit,
+        },
+      },
+      {
+        scope: [
+          "keyword.control",
+          "keyword.other.template",
+          "keyword.other.substitution",
+        ],
         settings: {
           foreground: syntaxColors.control,
         },
       },
       {
-        scope: ["keyword.control.flow.return"],
+        scope: ["keyword.expressions-and-types.swift", "keyword.other.this"],
         settings: {
-          foreground: syntaxColors.controlReturn,
+          foreground: syntaxColors.constant,
         },
       },
       {
-        scope: ["storage.modifier.async", "keyword.control.flow.await"],
+        scope: ["keyword.control.import", "keyword.control.from"],
         settings: {
-          foreground: syntaxColors.controlAsyncAwait,
+          foreground: syntaxColors.controlImport,
+          //fontStyle: "bold"
+        },
+      },
+      {
+        scope: ["keyword.control.new", "keyword.operator.new"],
+        settings: {
+          foreground: colors.AC2,
+          // fontStyle: "bold"
+        },
+      },
+
+      {
+        scope: ["meta.attribute-selector.scss"],
+        settings: {
+          foreground: syntaxColors.selector,
         },
       },
       {
         scope: [
-          "keyword.control.conditional",
-          "keyword.control.switch",
-          "keyword.control.case",
-          "keyword.control.default",
-        ],
-        settings: {
-          foreground: syntaxColors.controlConditional,
-        },
-      },
-      {
-        scope: [
+          "keyword.other.important.css",
+          "support.variable.property",
+          "keyword.control.flow",
           "keyword.control.loop",
-          "keyword.control.for",
-          "keyword.control.while",
-          "keyword.control.do",
+          "keyword.control.conditional",
+          "keyword.operator.logical",
+          "keyword.operator.relational",
+          "keyword.operator.comparison",
+          "keyword.operator.ternary",
         ],
         settings: {
-          foreground: syntaxColors.controlLoop,
+          foreground: syntaxColors.controlFlow,
+          // fontStyle: "bold",
         },
       },
       {
-        scope: ["meta.decorator", "punctuation.decorator"],
+        scope: ["keyword.control.at-rule.apply.tailwind"],
         settings: {
-          foreground: syntaxColors.decorator,
+          foreground: syntaxColors.control,
+          // fontStyle: "bold",
         },
       },
       {
-        scope: ["entity.name.tag"],
+        scope: ["meta.selector"],
         settings: {
-          foreground: syntaxColors.tag,
+          foreground: syntaxColors.selector,
+        },
+      },
+
+      {
+        scope: ["meta.at-rule.apply.tailwind"],
+        settings: {
+          foreground: syntaxColors.class,
         },
       },
       {
-        scope: ["entity.other.attribute-name"],
+        scope: [
+          "keyword.primitive-datatypes.swift",
+          "keyword.type.cs",
+          "meta.protocol-list.objc",
+          "meta.return-type.objc",
+          "source.powershell entity.other.attribute-name",
+        ],
         settings: {
           foreground: syntaxColors.attribute,
         },
       },
+
+      //--------------------------------------------------------------------
+      // PONCTUATION
+      //--------------------------------------------------------------------
       {
-        scope: ["entity.name.namespace"],
+        scope: [
+          "punctuation.definition.string.begin",
+          "punctuation.definition.string.end",
+          "punctuation.support.type.property-name.begin",
+          "punctuation.support.type.property-name.end",
+        ],
         settings: {
-          foreground: syntaxColors.namespace,
+          foreground: syntaxColors.punctuation,
         },
       },
       {
-        scope: ["string.regexp"],
+        scope: [
+          "string.quoted.docstring.multi",
+          "string.quoted.docstring.multi.python punctuation.definition.string.begin",
+          "string.quoted.docstring.multi.python punctuation.definition.string.end",
+          "string.quoted.docstring.multi.python constant.character.escape",
+        ],
         settings: {
-          foreground: syntaxColors.regex,
+          foreground: colors.AC1,
         },
       },
       {
-        scope: ["constant.character.escape"],
+        scope: ["punctuation.definition.keyword.css"],
         settings: {
-          foreground: syntaxColors.escape,
+          foreground: syntaxColors.other,
+          // fontStyle: "bold",
         },
       },
       {
-        scope: ["meta.brace"],
+        scope: [
+          "punctuation.definition.attribute-selector.end.bracket.square.scss",
+          "punctuation.definition.attribute-selector.begin.bracket.square.scss",
+        ],
         settings: {
-          foreground: syntaxColors.metaBrace,
+          foreground: colors.FG2,
         },
       },
       {
-        scope: ["keyword.other.documentation"],
+        scope: [
+          "punctuation",
+          "punctuation.definition.tag",
+          "punctuation.separator.inheritance.php",
+          "punctuation.definition.tag.html",
+          "punctuation.definition.tag.begin.html",
+          "punctuation.definition.tag.end.html",
+          "punctuation.section.embedded",
+        ],
         settings: {
-          foreground: syntaxColors.docKeyword,
+          foreground: syntaxColors.tagPunctuation,
         },
       },
       {
-        scope: ["markup.heading"],
+        scope: [
+          "punctuation.definition.constant.ruby",
+          "entity.other.attribute-name.placeholder punctuation",
+          "entity.other.attribute-name.pseudo-class punctuation",
+          "entity.other.attribute-name.pseudo-element punctuation",
+          "meta.group.double.toml",
+          "meta.brace.square",
+          "meta.group.toml",
+          "meta.object-binding-pattern-variable punctuation.destructuring",
+          "punctuation.colon.graphql",
+          "punctuation.definition.block.scalar.folded.yaml",
+          "punctuation.definition.block.scalar.literal.yaml",
+          "punctuation.definition.block.sequence.item.yaml",
+          "punctuation.definition.entity.other.inherited-class",
+          "punctuation.function.swift",
+          "punctuation.separator.dictionary.key-value",
+          "punctuation.separator.hash",
+          "punctuation.separator.inheritance",
+          "punctuation.separator.key-value",
+          "punctuation.separator.key-value.mapping.yaml",
+          "punctuation.separator.namespace",
+          "punctuation.separator.pointer-access",
+          "punctuation.separator.slice",
+          "string.unquoted.heredoc punctuation.definition.string",
+          "support.other.chomping-indicator.yaml",
+          "punctuation.separator.annotation",
+        ],
         settings: {
-          foreground: syntaxColors.heading,
+          foreground: ansiColors.White,
         },
       },
       {
-        scope: ["markup.underline.link"],
+        scope: [
+          "meta.brace.round",
+          "meta.function-call punctuation",
+          "punctuation.definition.arguments.begin",
+          "punctuation.definition.arguments.end",
+          "punctuation.definition.entity.begin",
+          "punctuation.definition.entity.end",
+          "punctuation.definition.tag.cs",
+          "punctuation.definition.type.begin",
+          "punctuation.definition.type.end",
+          "punctuation.section.scope.begin",
+          "punctuation.section.scope.end",
+          "string.template meta.brace",
+          "string.template punctuation.accessor",
+        ],
         settings: {
-          foreground: syntaxColors.link,
+          foreground: syntaxColors.punctuationBrace,
         },
       },
       {
-        scope: ["markup.list"],
+        scope: [
+          "meta.string-contents.quoted.double punctuation.definition.variable",
+          "punctuation.definition.interpolation.begin",
+          "punctuation.definition.interpolation.end",
+          "punctuation.definition.template-expression.begin",
+          "punctuation.definition.template-expression.end",
+          "punctuation.section.embedded.begin",
+          "punctuation.section.embedded.coffee",
+          "punctuation.section.embedded.end",
+          "punctuation.section.embedded.end source.php",
+          "punctuation.section.embedded.end source.ruby",
+          "punctuation.definition.variable.makefile",
+        ],
         settings: {
-          foreground: syntaxColors.list,
+          foreground: syntaxColors.punctuationQuote,
+          // fontStyle: "bold",
         },
       },
       {
-        scope: ["markup.quote"],
+        scope: [
+          "meta.scope.for-loop.shell punctuation.definition.string.begin",
+          "meta.scope.for-loop.shell punctuation.definition.string.end",
+          "meta.scope.for-loop.shell string",
+          "punctuation.section.embedded.begin.tsx",
+          "punctuation.section.embedded.end.tsx",
+          "punctuation.section.embedded.begin.jsx",
+          "punctuation.section.embedded.end.jsx",
+          "punctuation.separator.list.comma.css",
+        ],
         settings: {
-          foreground: syntaxColors.quote,
+          foreground: syntaxColors.punctuationComma,
         },
       },
       {
-        scope: ["markup.raw"],
+        scope: ["punctuation.definition.directive.restructuredtext"],
         settings: {
-          foreground: syntaxColors.raw,
+          foreground: syntaxColors.constant,
         },
       },
       {
-        scope: ["entity.name.function.declaration"],
+        scope: ["punctuation.separator.inheritance.php"],
         settings: {
-          foreground: syntaxColors.functionDeclaration,
+          foreground: syntaxColors.punctuation,
+        },
+      },
+
+      //--------------------------------------------------------------------
+      // VARIABLES
+      //--------------------------------------------------------------------
+      // {
+      //   scope: ["variable.parameter"],
+      //   settings: {
+      //     foreground: "#99B999"
+      //   }
+      // },
+      {
+        scope: ["variable.other.alias.yaml"],
+        settings: {
+          foreground: syntaxColors.constant,
+          fontStyle: "underline",
         },
       },
       {
-        scope: ["entity.name.function.call", "meta.function-call"],
+        scope: [
+          "variable.language",
+          "variable.language punctuation.definition.variable.php",
+          "variable.other.readwrite.instance.ruby",
+          "variable.parameter.function.language.special",
+          "variable.other.constant",
+        ],
         settings: {
-          foreground: syntaxColors.functionCall,
+          foreground: syntaxColors.constant,
         },
       },
+
       {
-        scope: ["meta.definition.variable variable"],
-        settings: {
-          foreground: syntaxColors.variableDeclaration,
-        },
-      },
-      {
-        scope: ["variable.object.property", "variable.other.property"],
+        scope: ["variable.object.property", "variable.other.object.property"],
         settings: {
           foreground: syntaxColors.variableProperty,
         },
       },
       {
-        scope: ["entity.name.type.declaration"],
+        scope: ["variable.other.object"],
         settings: {
-          foreground: syntaxColors.typeDeclaration,
+          foreground: syntaxColors.other,
+          // fontStyle: "bold",
         },
       },
       {
-        scope: ["entity.name.type.parameter"],
+        scope: [
+          "meta.import variable.other.readwrite",
+          "meta.object-binding-pattern-variable variable.object.property",
+          "meta.variable.assignment.destructured.object.coffee variable",
+        ],
         settings: {
-          foreground: syntaxColors.typeParameter,
+          foreground: syntaxColors.variableDeclaration,
         },
       },
       {
-        scope: ["meta.type.annotation"],
+        scope: [
+          "meta.import variable.other.readwrite.alias",
+          "meta.export variable.other.readwrite.alias",
+          "meta.variable.assignment.destructured.object.coffee variable variable",
+          "variable.other.readwrite.js",
+        ],
         settings: {
-          foreground: syntaxColors.typeAnnotation,
+          foreground: syntaxColors.variableDeclaration,
+        },
+      },
+      {
+        scope: ["meta.selectionset.graphql meta.arguments variable"],
+        settings: {
+          foreground: colors.AC2,
+        },
+      },
+      {
+        scope: ["variable.graphql"],
+        settings: {
+          foreground: syntaxColors.variable,
+        },
+      },
+      {
+        scope: ["support.variable.property", "keyword.operation.graphql"],
+        settings: {
+          foreground: syntaxColors.variableProperty,
+          //fontStyle: "bold"
+        },
+      },
+      {
+        scope: ["source.shell variable.other"],
+        settings: {
+          foreground: syntaxColors.constant,
+        },
+      },
+      //--------------------------------------------------------------------
+      // FUNCTIONS
+      //--------------------------------------------------------------------
+      {
+        scope: [
+          "support.function.magic",
+          "support.variable",
+          "variable.other.predefined",
+          "storage.modifier.async",
+        ],
+        settings: {
+          foreground: colors.WARNING,
+        },
+      },
+      {
+        scope: ["support.function", "support.type.property-name"],
+        settings: {
+          foreground: syntaxColors.functionCall,
+        },
+      },
+
+      {
+        scope: [
+          "storage",
+          "meta.implementation storage.type.objc",
+          "meta.interface-or-protocol storage.type.objc",
+          "source.groovy storage.type.def",
+          "support.variable.property.js",
+        ],
+        settings: {
+          foreground: syntaxColors.storage,
+        },
+      },
+      //--------------------------------------------------------------------
+      // REGEXP
+      //--------------------------------------------------------------------
+      {
+        scope: [
+          "string.regexp",
+          "constant.other.character-class.set.regexp",
+          "constant.character.escape.backslash.regexp",
+        ],
+        settings: {
+          foreground: ansiColors.Yellow,
+        },
+      },
+      {
+        scope: ["punctuation.definition.group.capture.regexp"],
+        settings: {
+          foreground: ansiColors.Red,
+        },
+      },
+      {
+        scope: [
+          "string.regexp punctuation.definition.string.begin",
+          "string.regexp punctuation.definition.string.end",
+        ],
+        settings: {
+          foreground: ansiColors.Red,
+        },
+      },
+      {
+        scope: ["punctuation.definition.character-class.regexp"],
+        settings: {
+          foreground: ansiColors.BrightYellow,
+        },
+      },
+      {
+        scope: ["punctuation.definition.group.regexp"],
+        settings: {
+          foreground: ansiColors.BrightBlue,
+        },
+      },
+      {
+        scope: [
+          "punctuation.definition.group.assertion.regexp",
+          "keyword.operator.negation.regexp",
+        ],
+        settings: {
+          foreground: ansiColors.Red,
+        },
+      },
+      {
+        scope: ["meta.assertion.look-ahead.regexp"],
+        settings: {
+          foreground: ansiColors.BrightBlue,
+        },
+      },
+
+      {
+        scope: ["meta.scope.prerequisites.makefile"],
+        settings: {
+          foreground: ansiColors.BrightYellow,
+        },
+      },
+
+      //--------------------------------------------------------------------
+      // JSON
+      //--------------------------------------------------------------------
+      {
+        scope: [
+          "source.json meta.structure.dictionary.json support.type.property-name.json",
+        ],
+        settings: {
+          foreground: colors.AC1,
+        },
+      },
+      {
+        scope: [
+          "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json",
+        ],
+        settings: {
+          foreground: colors.AC2,
+        },
+      },
+      {
+        scope: [
+          "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json",
+        ],
+        settings: {
+          foreground: colors.INFO,
+        },
+      },
+      {
+        scope: [
+          "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json",
+        ],
+        settings: {
+          foreground: colors.WARNING,
+        },
+      },
+      {
+        scope: [
+          "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json",
+        ],
+        settings: {
+          foreground: colors.ERROR,
+        },
+      },
+      {
+        scope: [
+          "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json",
+        ],
+        settings: {
+          foreground: colors.SUCCESS,
+        },
+      },
+      {
+        scope: [
+          "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json",
+        ],
+        settings: {
+          foreground: colors.AC1,
+        },
+      },
+      {
+        scope: [
+          "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json",
+        ],
+        settings: {
+          foreground: colors.AC2,
+        },
+      },
+
+      //--------------------------------------------------------------------
+      // MISC
+      //--------------------------------------------------------------------
+      {
+        scope: "token.info-token",
+        settings: {
+          foreground: colors.INFO,
+        },
+      },
+      {
+        scope: "token.warn-token",
+        settings: {
+          foreground: colors.WARNING,
+        },
+      },
+      {
+        scope: "token.error-token",
+        settings: {
+          foreground: colors.ERROR,
+        },
+      },
+      {
+        scope: "token.debug-token",
+        settings: {
+          foreground: colors.WARNING,
         },
       },
     ],
@@ -1084,6 +1769,7 @@ export const initialColors: ColorAliases = {
   BG3: "#2D2D30",
   FG1: "#D4D4D4",
   FG2: "#CCCCCC",
+  FG3: "#121212",
   AC1: "#007ACC",
   AC2: "#0098FF",
   BORDER: "#474747",
@@ -1098,49 +1784,35 @@ export const initialColors: ColorAliases = {
 
 export const initialSyntaxColors: SyntaxColors = {
   keyword: "#569CD6",
-  string: "#CE9178",
-  stringQuoted: "#CE9178",
-  stringTemplate: "#CE9178",
-  stringRegex: "#CE9178",
-  stringEscape: "#CE9178",
   comment: "#6A9955",
   function: "#DCDCAA",
   variable: "#9CDCFE",
   type: "#4EC9B0",
   constant: "#4FC1FF",
   class: "#4EC9B0",
-  number: "#B5CEA8",
   operator: "#D4D4D4",
   parameter: "#9CDCFE",
   property: "#9CDCFE",
+  other: "#D4D4D4",
   punctuation: "#D4D4D4",
+  punctuationQuote: "#D4D4D4",
+  punctuationBrace: "#D4D4D4",
+  punctuationComma: "#D4D4D4",
   selector: "#D7BA7D",
   storage: "#C586C0",
   support: "#C586C0",
   modifier: "#C586C0",
   control: "#C586C0",
-  controlReturn: "#C586C0",
-  controlAsyncAwait: "#C586C0",
-  controlConditional: "#C586C0",
-  controlLoop: "#C586C0",
-  decorator: "#C586C0",
+  controlFlow: "#C586C0",
+  controlImport: "#C586C0",
   tag: "#C586C0",
+  tagPunctuation: "#C586C0",
   attribute: "#C586C0",
-  namespace: "#C586C0",
-  regex: "#C586C0",
-  escape: "#C586C0",
-  metaBrace: "#C586C0",
-  docKeyword: "#C586C0",
-  heading: "#C586C0",
-  link: "#C586C0",
-  list: "#C586C0",
-  quote: "#C586C0",
-  raw: "#C586C0",
-  functionDeclaration: "#DCDCAA",
   functionCall: "#DCDCAA",
   variableDeclaration: "#9CDCFE",
   variableProperty: "#9CDCFE",
-  typeDeclaration: "#4EC9B0",
   typeParameter: "#4EC9B0",
-  typeAnnotation: "#4EC9B0",
+  language: "#D4D4D4",
+  unit: "#D4D4D4",
+  datetime: "#D4D4D4",
 };
