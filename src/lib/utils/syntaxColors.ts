@@ -124,8 +124,8 @@ export function generateSyntaxColors(
     modifier: lockedColors.modifier || generateColor(1, 1, 5),
     other: lockedColors.other || generateColor(3, 1.1, -1),
     language: lockedColors.language || generateColor(0, 1.2, -7),
-    control: lockedColors.control || generateColor(2, 1.15, -5),
-    controlFlow: lockedColors.controlFlow || generateColor(2, 1.1, -3),
+    control: lockedColors.control || generateColor(2, 1.15, -10),
+    controlFlow: lockedColors.controlFlow || generateColor(2, 1.1, -5),
     controlImport: lockedColors.controlImport || generateColor(2, 1.05, -7),
     tag: lockedColors.tag || generateColor(1, 1.1, 5),
     tagPunctuation: lockedColors.tagPunctuation || generateColor(1, 1, 3),
@@ -180,12 +180,76 @@ export function updateSyntaxColorsWithSaturation(
   currentColors: SyntaxColors,
   newSyntaxSaturation: number,
   backgroundColor: string,
-  schemeHues: number[]
+  lockedColors: Set<string>
 ): SyntaxColors {
-  return generateSyntaxColors(
-    backgroundColor,
-    schemeHues,
-    newSyntaxSaturation,
-    currentColors
-  );
+  const updateColorSaturation = (
+    color: string,
+    saturationMultiplier: number
+  ) => {
+    const hsl = Color(color).hsl();
+    const newSaturation = Math.min(
+      100,
+      newSyntaxSaturation * saturationMultiplier
+    );
+    return Color.hsl(hsl.hue(), newSaturation, hsl.lightness()).hex();
+  };
+
+  const updatedColors: SyntaxColors = { ...currentColors };
+
+  const saturationMultipliers = {
+    keyword: 1.1,
+    comment: 0.5,
+    function: 1.05,
+    functionCall: 1,
+    variable: 0.9,
+    variableDeclaration: 0.95,
+    variableProperty: 0.85,
+    type: 1.05,
+    typeParameter: 1,
+    constant: 1.15,
+    class: 1.1,
+    parameter: 0.9,
+    property: 0.95,
+    operator: 0.7,
+    storage: 1.05,
+    punctuation: 0.5,
+    punctuationQuote: 0.45,
+    punctuationBrace: 0.55,
+    punctuationComma: 0.4,
+    selector: 1.05,
+    modifier: 1,
+    other: 1.1,
+    language: 1.2,
+    control: 1.15,
+    controlFlow: 1.1,
+    controlImport: 1.05,
+    tag: 1.1,
+    tagPunctuation: 1,
+    attribute: 0.95,
+    support: 1.15,
+    unit: 1.1,
+    datetime: 1.05,
+  };
+
+  Object.keys(updatedColors).forEach((key) => {
+    if (!lockedColors.has(key)) {
+      updatedColors[key as keyof SyntaxColors] = updateColorSaturation(
+        currentColors[key as keyof SyntaxColors],
+        saturationMultipliers[key as keyof typeof saturationMultipliers]
+      );
+    }
+  });
+
+  // Ensure readability
+  Object.keys(updatedColors).forEach((key) => {
+    if (!lockedColors.has(key)) {
+      updatedColors[key as keyof SyntaxColors] = ensureReadability(
+        updatedColors[key as keyof SyntaxColors],
+        backgroundColor,
+        5.5
+      );
+    }
+  });
+
+  return updatedColors;
 }

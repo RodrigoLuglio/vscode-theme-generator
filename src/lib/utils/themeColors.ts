@@ -186,50 +186,46 @@ export function generateThemeColors(
 export function updateThemeColorsWithSaturation(
   currentColors: ColorAliases,
   newUiSaturation: number,
-  isDark: boolean,
-  baseHue: number,
-  scheme: ColorScheme
-): { colors: ColorAliases; schemeHues: number[] } {
-  const updateColorSaturation = (color: string, saturation: number) => {
+  lockedColors: Set<string>
+): ColorAliases {
+  const updateColorSaturation = (
+    color: string,
+    saturationMultiplier: number
+  ) => {
     const hsl = Color(color).hsl();
-    return Color.hsl(hsl.hue(), saturation, hsl.lightness()).hex();
+    const newSaturation = Math.min(100, newUiSaturation * saturationMultiplier);
+    return Color.hsl(hsl.hue(), newSaturation, hsl.lightness()).hex();
   };
 
-  const schemeHues = generateSchemeColors(baseHue, scheme);
+  const updatedColors: ColorAliases = { ...currentColors };
 
-  const updatedColors: ColorAliases = {
-    BG1: updateColorSaturation(currentColors.BG1, newUiSaturation * 0.1),
-    BG2: updateColorSaturation(currentColors.BG2, newUiSaturation * 0.15),
-    BG3: updateColorSaturation(currentColors.BG3, newUiSaturation * 0.2),
-    FG1: updateColorSaturation(currentColors.FG1, newUiSaturation * 0.05),
-    FG2: updateColorSaturation(currentColors.FG2, newUiSaturation * 0.1),
-    FG3: updateColorSaturation(currentColors.FG3, newUiSaturation * 0.05),
-    AC1: updateColorSaturation(currentColors.AC1, newUiSaturation * 1.2),
-    AC2: updateColorSaturation(currentColors.AC2, newUiSaturation * 1.1),
-    BORDER: updateColorSaturation(currentColors.BORDER, newUiSaturation * 0.2),
-    INFO: updateColorSaturation(currentColors.INFO, newUiSaturation * 0.2),
-    ERROR: updateColorSaturation(currentColors.ERROR, newUiSaturation * 1.2),
-    WARNING: updateColorSaturation(
-      currentColors.WARNING,
-      newUiSaturation * 1.1
-    ),
-    SUCCESS: updateColorSaturation(
-      currentColors.SUCCESS,
-      newUiSaturation * 0.9
-    ),
-    lineHighlight: updateColorSaturation(
-      currentColors.lineHighlight,
-      newUiSaturation * 0.3
-    ),
-    selection: updateColorSaturation(
-      currentColors.selection,
-      newUiSaturation * 0.4
-    ),
-    findMatch: updateColorSaturation(
-      currentColors.findMatch,
-      newUiSaturation * 0.6
-    ),
+  const saturationMultipliers = {
+    BG1: 0.1,
+    BG2: 0.15,
+    BG3: 0.2,
+    FG1: 0.05,
+    FG2: 0.1,
+    FG3: 0.05,
+    AC1: 1.2,
+    AC2: 1.1,
+    BORDER: 0.2,
+    INFO: 0.2,
+    ERROR: 1.2,
+    WARNING: 1.1,
+    SUCCESS: 0.9,
+    lineHighlight: 0.3,
+    selection: 0.4,
+    findMatch: 0.6,
   };
 
-  return { colors: updatedColors, schemeHues };
+  Object.keys(updatedColors).forEach((key) => {
+    if (!lockedColors.has(key)) {
+      updatedColors[key as keyof ColorAliases] = updateColorSaturation(
+        currentColors[key as keyof ColorAliases],
+        saturationMultipliers[key as keyof typeof saturationMultipliers]
+      );
+    }
+  });
+
+  return updatedColors;
 }

@@ -42,8 +42,8 @@ interface ThemeContextType {
     }
   ) => void;
   updateColorsWithSaturation: (
-    uiSaturation: number,
-    syntaxSaturation: number
+    newUiSaturation: number,
+    newSyntaxSaturation: number
   ) => void;
   toggleColorLock: (colorKey: string) => void;
   setActiveColor: (colorKey: string | null) => void;
@@ -161,27 +161,23 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateColorsWithSaturation = useCallback(
     (newUiSaturation: number, newSyntaxSaturation: number) => {
-      const { colors: newColors, schemeHues: newSchemeHues } =
-        updateThemeColorsWithSaturation(
-          colors,
-          newUiSaturation,
-          isDark,
-          baseHue,
-          scheme
-        );
+      const newColors = updateThemeColorsWithSaturation(
+        colors,
+        newUiSaturation,
+        lockedColors
+      );
 
       const newSyntaxColors = updateSyntaxColorsWithSaturation(
         syntaxColors,
         newSyntaxSaturation,
         newColors.BG1,
-        newSchemeHues
+        lockedColors
       );
 
       setColors(newColors);
       setSyntaxColors(newSyntaxColors);
-      setSchemeHues(newSchemeHues);
     },
-    [isDark, baseHue, scheme, colors, syntaxColors]
+    [colors, syntaxColors, lockedColors]
   );
 
   const setUiSaturation = useCallback(
