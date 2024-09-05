@@ -50,6 +50,7 @@ interface ThemeContextType {
   handleColorChange: (colorKey: string, newColor: string) => void;
   ansiColors: AnsiColors;
   regenerateAnsiColors: () => void;
+  schemeHues: number[];
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -70,6 +71,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   const [ansiColors, setAnsiColors] = useState<AnsiColors>(() =>
     generateAnsiColors(initialColors.BG1)
   );
+  const [schemeHues, setSchemeHues] = useState<number[]>([]);
 
   const generateColorsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -98,17 +100,20 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
             options.lockedColors ?? Array.from(lockedColors)
           );
 
-          const newColors = generateThemeColors(
-            fullOptions,
-            Object.fromEntries(
-              Object.entries(colors).filter(([key]) => lockedColorSet.has(key))
-            ) as Partial<ColorAliases>,
-            options.forceRegenerate
-          );
+          const { colors: newColors, schemeHues: newSchemeHues } =
+            generateThemeColors(
+              fullOptions,
+              Object.fromEntries(
+                Object.entries(colors).filter(([key]) =>
+                  lockedColorSet.has(key)
+                )
+              ) as Partial<ColorAliases>,
+              options.forceRegenerate
+            );
 
           const newSyntaxColors = generateSyntaxColors(
             newColors.BG1,
-            fullOptions.scheme,
+            newSchemeHues,
             fullOptions.syntaxSaturation,
             Object.fromEntries(
               Object.entries(syntaxColors).filter(([key]) =>
@@ -120,6 +125,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
           setColors(newColors);
           setSyntaxColors(newSyntaxColors);
+          setSchemeHues(newSchemeHues);
         } catch (error) {
           console.error("Error generating colors:", error);
         }
@@ -155,23 +161,25 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateColorsWithSaturation = useCallback(
     (newUiSaturation: number, newSyntaxSaturation: number) => {
-      const newColors = updateThemeColorsWithSaturation(
-        colors,
-        newUiSaturation,
-        isDark,
-        baseHue,
-        scheme
-      );
+      const { colors: newColors, schemeHues: newSchemeHues } =
+        updateThemeColorsWithSaturation(
+          colors,
+          newUiSaturation,
+          isDark,
+          baseHue,
+          scheme
+        );
 
       const newSyntaxColors = updateSyntaxColorsWithSaturation(
         syntaxColors,
         newSyntaxSaturation,
-        colors.BG1,
-        scheme
+        newColors.BG1,
+        newSchemeHues
       );
 
       setColors(newColors);
       setSyntaxColors(newSyntaxColors);
+      setSchemeHues(newSchemeHues);
     },
     [isDark, baseHue, scheme, colors, syntaxColors]
   );
@@ -227,7 +235,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
         if (colorKey === "BG1") {
           setSyntaxColors((prevSyntaxColors) => ({
             ...prevSyntaxColors,
-            ...generateSyntaxColors(newColor, scheme, syntaxSaturation),
+            ...generateSyntaxColors(newColor, schemeHues, syntaxSaturation),
           }));
         }
       } else if (colorKey in syntaxColors) {
@@ -237,7 +245,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
         }));
       }
     },
-    [colors, syntaxColors, scheme, syntaxSaturation]
+    [colors, syntaxColors, schemeHues, syntaxSaturation]
   );
 
   const regenerateAnsiColors = useCallback(() => {
@@ -270,6 +278,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     toggleColorLock,
     setActiveColor,
     handleColorChange,
+    schemeHues,
   };
 
   return (

@@ -29,7 +29,7 @@ export function generateThemeColors(
   options: ThemeGenerationOptions,
   initialColors: Partial<ColorAliases> = {},
   forceRegenerate: boolean = false
-): ColorAliases {
+): { colors: ColorAliases; schemeHues: number[] } {
   const {
     isDark,
     baseHue = Math.random() * 360,
@@ -180,7 +180,7 @@ export function generateThemeColors(
     }
   });
 
-  return colors;
+  return { colors, schemeHues };
 }
 
 export function updateThemeColorsWithSaturation(
@@ -189,14 +189,15 @@ export function updateThemeColorsWithSaturation(
   isDark: boolean,
   baseHue: number,
   scheme: ColorScheme
-): ColorAliases {
+): { colors: ColorAliases; schemeHues: number[] } {
   const updateColorSaturation = (color: string, saturation: number) => {
     const hsl = Color(color).hsl();
     return Color.hsl(hsl.hue(), saturation, hsl.lightness()).hex();
   };
 
-  return {
-    ...currentColors,
+  const schemeHues = generateSchemeColors(baseHue, scheme);
+
+  const updatedColors: ColorAliases = {
     BG1: updateColorSaturation(currentColors.BG1, newUiSaturation * 0.1),
     BG2: updateColorSaturation(currentColors.BG2, newUiSaturation * 0.15),
     BG3: updateColorSaturation(currentColors.BG3, newUiSaturation * 0.2),
@@ -229,4 +230,6 @@ export function updateThemeColorsWithSaturation(
       newUiSaturation * 0.6
     ),
   };
+
+  return { colors: updatedColors, schemeHues };
 }
