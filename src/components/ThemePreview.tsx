@@ -681,7 +681,7 @@ const ThemePreview: React.FC = () => {
         scope: ["entity.name.tag"],
         settings: {
           foreground: syntaxColors.tag,
-          fontStyle: "bold",
+          // fontStyle: "bold",
         },
       },
       {
@@ -694,7 +694,7 @@ const ThemePreview: React.FC = () => {
         scope: ["entity.other.attribute-name", "meta.object-literal.key.js"],
         settings: {
           foreground: colors.AC2,
-          fontStyle: "bold",
+          // fontStyle: "bold",
         },
       },
       {
@@ -736,7 +736,7 @@ const ThemePreview: React.FC = () => {
         ],
         settings: {
           foreground: syntaxColors.support,
-          fontStyle: "bold",
+          // fontStyle: "bold",
         },
       },
       {
@@ -764,7 +764,7 @@ const ThemePreview: React.FC = () => {
         scope: ["entity.other.attribute-name", "meta.object-literal.key.js"],
         settings: {
           foreground: syntaxColors.attribute,
-          fontStyle: "bold",
+          // fontStyle: "bold",
         },
       },
 
@@ -976,7 +976,6 @@ const ThemePreview: React.FC = () => {
       {
         scope: [
           "keyword.other.important.css",
-          "support.variable.property",
           "keyword.control.flow",
           "keyword.control.loop",
           "keyword.control.conditional",
@@ -987,14 +986,14 @@ const ThemePreview: React.FC = () => {
         ],
         settings: {
           foreground: syntaxColors.controlFlow,
-          fontStyle: "bold",
+          // fontStyle: "bold",
         },
       },
       {
         scope: ["keyword.control.at-rule.apply.tailwind"],
         settings: {
           foreground: syntaxColors.control,
-          fontStyle: "bold",
+          // fontStyle: "bold",
         },
       },
       {
@@ -1052,7 +1051,7 @@ const ThemePreview: React.FC = () => {
         scope: ["punctuation.definition.keyword.css"],
         settings: {
           foreground: syntaxColors.other,
-          fontStyle: "bold",
+          // fontStyle: "bold",
         },
       },
       {
@@ -1146,7 +1145,7 @@ const ThemePreview: React.FC = () => {
         ],
         settings: {
           foreground: syntaxColors.punctuationQuote,
-          fontStyle: "bold",
+          // fontStyle: "bold",
         },
       },
       {
@@ -1189,7 +1188,7 @@ const ThemePreview: React.FC = () => {
       {
         scope: ["variable.other.alias.yaml"],
         settings: {
-          foreground: syntaxColors.constant,
+          foreground: syntaxColors.variable,
           fontStyle: "underline",
         },
       },
@@ -1199,42 +1198,33 @@ const ThemePreview: React.FC = () => {
           "variable.language punctuation.definition.variable.php",
           "variable.other.readwrite.instance.ruby",
           "variable.parameter.function.language.special",
-          "variable.other.constant",
         ],
         settings: {
-          foreground: syntaxColors.constant,
-        },
-      },
-
-      {
-        scope: ["variable.object.property", "variable.other.object.property"],
-        settings: {
-          foreground: syntaxColors.variableProperty,
+          foreground: syntaxColors.variable,
         },
       },
       {
         scope: ["variable.other.object"],
         settings: {
           foreground: syntaxColors.other,
-          fontStyle: "bold",
+          // fontStyle: "bold",
         },
       },
       {
-        scope: [
-          "meta.import variable.other.readwrite",
-          "meta.object-binding-pattern-variable variable.object.property",
-          "meta.variable.assignment.destructured.object.coffee variable",
-        ],
+        scope: [],
         settings: {
           foreground: syntaxColors.variableDeclaration,
         },
       },
       {
         scope: [
+          "meta.import variable.other.readwrite",
           "meta.import variable.other.readwrite.alias",
           "meta.export variable.other.readwrite.alias",
-          "meta.variable.assignment.destructured.object.coffee variable variable",
+          "meta.object-binding-pattern-variable variable.object.property",
+          "meta.variable.assignment.destructured.object.coffee variable",
           "variable.other.readwrite.js",
+          "variable.other.constant",
         ],
         settings: {
           foreground: syntaxColors.variableDeclaration,
@@ -1247,13 +1237,19 @@ const ThemePreview: React.FC = () => {
         },
       },
       {
-        scope: ["variable.graphql"],
+        scope: ["variable.graphql", "support.variable"],
         settings: {
           foreground: syntaxColors.variable,
         },
       },
       {
-        scope: ["support.variable.property", "keyword.operation.graphql"],
+        scope: [
+          "support.variable.property",
+          "support.variable.property.js",
+          "variable.object.property",
+          "variable.other.object.property",
+          "keyword.operation.graphql",
+        ],
         settings: {
           foreground: syntaxColors.variableProperty,
           //fontStyle: "bold"
@@ -1271,7 +1267,6 @@ const ThemePreview: React.FC = () => {
       {
         scope: [
           "support.function.magic",
-          "support.variable",
           "variable.other.predefined",
           "storage.modifier.async",
         ],
@@ -1292,7 +1287,6 @@ const ThemePreview: React.FC = () => {
           "meta.implementation storage.type.objc",
           "meta.interface-or-protocol storage.type.objc",
           "source.groovy storage.type.def",
-          "support.variable.property.js",
         ],
         settings: {
           foreground: syntaxColors.storage,
@@ -1535,10 +1529,103 @@ const ThemePreview: React.FC = () => {
         }
       ) ?? [];
 
+    // Debug logging
+    console.log("Theme object:", themeObject);
+    console.log("Token rules:", tokenRules);
+
+    // Add some common Monaco Editor tokens
+    const commonTokens: editor.ITokenThemeRule[] = [
+      { token: "keyword", foreground: syntaxColors.keyword.slice(1) },
+      { token: "keyword.control", foreground: syntaxColors.control.slice(1) },
+      { token: "keyword.operator", foreground: syntaxColors.operator.slice(1) },
+      { token: "keyword.other", foreground: syntaxColors.keyword.slice(1) },
+      { token: "string", foreground: syntaxColors.constant.slice(1) },
+      { token: "string.quoted", foreground: syntaxColors.constant.slice(1) },
+      { token: "string.regexp", foreground: ansiColors.Yellow.slice(1) },
+      { token: "constant", foreground: syntaxColors.constant.slice(1) },
+      { token: "constant.numeric", foreground: syntaxColors.constant.slice(1) },
+      {
+        token: "constant.language",
+        foreground: syntaxColors.language.slice(1),
+      },
+      { token: "comment", foreground: syntaxColors.comment.slice(1) },
+      { token: "type", foreground: syntaxColors.type.slice(1) },
+      { token: "type.identifier", foreground: syntaxColors.type.slice(1) },
+      { token: "class", foreground: syntaxColors.class.slice(1) },
+      { token: "class.name", foreground: syntaxColors.class.slice(1) },
+      { token: "function", foreground: syntaxColors.function.slice(1) },
+      { token: "function.name", foreground: syntaxColors.function.slice(1) },
+      { token: "variable", foreground: syntaxColors.variable.slice(1) },
+      { token: "variable.name", foreground: syntaxColors.variable.slice(1) },
+      {
+        token: "variable.parameter",
+        foreground: syntaxColors.parameter.slice(1),
+      },
+      { token: "variable.other", foreground: syntaxColors.other.slice(1) },
+      { token: "property", foreground: syntaxColors.property.slice(1) },
+      { token: "support", foreground: syntaxColors.support.slice(1) },
+      {
+        token: "support.function",
+        foreground: syntaxColors.functionCall.slice(1),
+      },
+      { token: "support.class", foreground: syntaxColors.class.slice(1) },
+      { token: "support.type", foreground: syntaxColors.type.slice(1) },
+      { token: "entity.name.tag", foreground: syntaxColors.tag.slice(1) },
+      {
+        token: "entity.other.attribute-name",
+        foreground: syntaxColors.attribute.slice(1),
+      },
+      { token: "punctuation", foreground: syntaxColors.punctuation.slice(1) },
+      {
+        token: "punctuation.definition",
+        foreground: syntaxColors.punctuation.slice(1),
+      },
+      { token: "storage", foreground: syntaxColors.storage.slice(1) },
+      { token: "storage.type", foreground: syntaxColors.storage.slice(1) },
+      { token: "storage.modifier", foreground: syntaxColors.modifier.slice(1) },
+      {
+        token: "markup.heading",
+        foreground: colors.AC1.slice(1),
+        fontStyle: "bold",
+      },
+      {
+        token: "markup.italic",
+        foreground: colors.FG2.slice(1),
+        fontStyle: "italic",
+      },
+      { token: "markup.bold", fontStyle: "bold" },
+      { token: "markup.underline", fontStyle: "underline" },
+      // HTML
+      { token: "tag", foreground: syntaxColors.tag.slice(1) },
+      { token: "tag.id", foreground: syntaxColors.tag.slice(1) },
+      { token: "tag.class", foreground: syntaxColors.tag.slice(1) },
+      { token: "attribute.name", foreground: syntaxColors.attribute.slice(1) },
+      { token: "attribute.value", foreground: syntaxColors.constant.slice(1) },
+
+      // CSS
+      { token: "selector", foreground: syntaxColors.selector.slice(1) },
+      { token: "property", foreground: syntaxColors.property.slice(1) },
+      { token: "value", foreground: syntaxColors.constant.slice(1) },
+
+      // Markdown
+      { token: "emphasis", fontStyle: "italic" },
+      { token: "strong", fontStyle: "bold" },
+      { token: "heading", foreground: colors.AC1.slice(1), fontStyle: "bold" },
+      { token: "link", foreground: colors.INFO.slice(1) },
+      {
+        token: "quote",
+        foreground: syntaxColors.comment.slice(1),
+        fontStyle: "italic",
+      },
+      { token: "code", foreground: syntaxColors.constant.slice(1) },
+    ];
+
+    const updatedTokenRules = [...commonTokens, ...tokenRules];
+
     return {
       base: themeObject.type === "light" ? "vs" : "vs-dark",
       inherit: true,
-      rules: tokenRules,
+      rules: updatedTokenRules,
       colors: themeObject.colors ?? {},
     };
   }, [colors, syntaxColors, ansiColors]);
@@ -1546,6 +1633,10 @@ const ThemePreview: React.FC = () => {
   const handleEditorDidMount = (editor: any, monaco: any) => {
     editorRef.current = { editor, monaco };
     updateTheme();
+
+    // Debug logging
+    console.log("Monaco:", monaco);
+    console.log("Editor:", editor);
   };
 
   const updateTheme = useCallback(() => {
@@ -1558,6 +1649,15 @@ const ThemePreview: React.FC = () => {
   }, [getTheme]);
 
   useEffect(() => {
+    console.log("Theme or selected file changed");
+    console.log("Selected file:", selectedFile);
+    if (editorRef.current) {
+      const { editor, monaco } = editorRef.current;
+      monaco.editor.setModelLanguage(
+        editor.getModel(),
+        getLanguage(selectedFile)
+      );
+    }
     updateTheme();
   }, [updateTheme, selectedFile]);
 
@@ -1575,6 +1675,8 @@ const ThemePreview: React.FC = () => {
         return "html";
       case "css":
         return "css";
+      case "md":
+        return "markdown";
       default:
         return "plaintext";
     }
@@ -1685,6 +1787,7 @@ const ThemePreview: React.FC = () => {
             onMount={handleEditorDidMount}
             beforeMount={(monaco) => {
               monaco.editor.defineTheme("custom-theme", getTheme());
+              monaco.editor.setTheme("custom-theme");
             }}
             onChange={() => {
               updateTheme();

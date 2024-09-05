@@ -124,7 +124,7 @@ export function generateSyntaxColors(
     modifier: lockedColors.modifier || generateColor(1, 1, 5),
     other: lockedColors.other || generateColor(3, 1.1, -1),
     language: lockedColors.language || generateColor(0, 1.2, -7),
-    control: lockedColors.control || generateColor(2, 1.15, -10),
+    control: lockedColors.control || generateColor(2, 1.15, -9),
     controlFlow: lockedColors.controlFlow || generateColor(2, 1.1, -5),
     controlImport: lockedColors.controlImport || generateColor(2, 1.05, -7),
     tag: lockedColors.tag || generateColor(1, 1.1, 5),
