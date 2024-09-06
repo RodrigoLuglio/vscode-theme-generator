@@ -1,4 +1,5 @@
 import {
+  adjustCommentReadability,
   ColorScheme,
   ensureReadability,
   generateSchemeColors,
@@ -97,7 +98,7 @@ export function generateSyntaxColors(
 
   const syntaxColors: SyntaxColors = {
     keyword: lockedColors.keyword || generateColor(0, 1.1, 5),
-    comment: lockedColors.comment || generateColor(1, 0.5, -10),
+    comment: lockedColors.comment || generateColor(1, 0.5, -15),
     function: lockedColors.function || generateColor(2, 1.05, 10),
     functionCall: lockedColors.functionCall || generateColor(2, 1, 8),
     variable: lockedColors.variable || generateColor(3, 0.9, 5),
@@ -124,7 +125,7 @@ export function generateSyntaxColors(
     modifier: lockedColors.modifier || generateColor(1, 1, 5),
     other: lockedColors.other || generateColor(3, 1.1, -1),
     language: lockedColors.language || generateColor(0, 1.2, -7),
-    control: lockedColors.control || generateColor(2, 1.15, -9),
+    control: lockedColors.control || generateColor(2, 1.15, -10),
     controlFlow: lockedColors.controlFlow || generateColor(2, 1.1, -5),
     controlImport: lockedColors.controlImport || generateColor(2, 1.05, -7),
     tag: lockedColors.tag || generateColor(1, 1.1, 5),
@@ -172,6 +173,13 @@ export function generateSyntaxColors(
       );
     }
   });
+
+  syntaxColors.comment = adjustCommentReadability(
+    syntaxColors.comment,
+    backgroundColor,
+    2,
+    4
+  );
 
   return syntaxColors;
 }

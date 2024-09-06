@@ -114,21 +114,16 @@ export function generateThemeColors(
         isDark ? bgBase + 10 : bgBase - 10
       ),
     INFO:
-      initialColors.INFO ||
-      generateColor(
-        schemeHues[0],
-        uiSaturation * 0.2,
-        isDark ? bgBase + 10 : bgBase - 10
-      ),
+      initialColors.INFO || generateColor(210, uiSaturation, isDark ? 65 : 45), // Blue spectrum
     ERROR:
       initialColors.ERROR ||
-      generateColor(0, uiSaturation * 1.2, isDark ? 65 : 45),
+      generateColor(0, uiSaturation * 1.2, isDark ? 65 : 45), // Red spectrum
     WARNING:
       initialColors.WARNING ||
-      generateColor(30, uiSaturation * 1.1, isDark ? 65 : 45),
+      generateColor(30, uiSaturation * 1.1, isDark ? 65 : 45), // Orange spectrum
     SUCCESS:
       initialColors.SUCCESS ||
-      generateColor(120, uiSaturation * 0.9, isDark ? 40 : 35),
+      generateColor(120, uiSaturation * 0.9, isDark ? 40 : 35), // Green spectrum
     lineHighlight:
       initialColors.lineHighlight ||
       Color(
@@ -158,14 +153,15 @@ export function generateThemeColors(
       ).hex() + "70",
   };
 
+  // Ensure readability for specific colors
   Object.keys(colors).forEach((key) => {
     if (
       !initialColors[key as keyof ColorAliases] &&
       key !== "lineHighlight" &&
       key !== "selection" &&
       key !== "findMatch" &&
-      key !== "AC1" &&
-      key !== "AC2" &&
+      // key !== "AC1" &&
+      // key !== "AC2" &&
       key !== "BORDER" &&
       key !== "BG1" &&
       key !== "BG2" &&

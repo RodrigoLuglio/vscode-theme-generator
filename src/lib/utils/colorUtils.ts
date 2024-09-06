@@ -32,6 +32,32 @@ export function generateHarmonizedColor(
   return Color(baseColor).rotate(hueOffset).saturate(0.1).hex();
 }
 
+export function adjustCommentReadability(
+  foreground: string,
+  background: string,
+  minContrast = 2,
+  maxContrast = 5
+): string {
+  let color = Color(foreground);
+  const bgColor = Color(background);
+  let iterations = 0;
+  const maxIterations = 100;
+
+  color.darken(0.8);
+
+  // while (
+  //   color.contrast(bgColor) < minContrast ||
+  //   (color.contrast(bgColor) > maxContrast && iterations < maxIterations)
+  // ) {
+  //   color = color.isLight()
+  //     ? color.darken(0.05).saturate(0.05)
+  //     : color.lighten(0.05).saturate(0.05);
+  //   iterations++;
+  // }
+
+  return color.hex();
+}
+
 export function ensureReadability(
   foreground: string,
   background: string,

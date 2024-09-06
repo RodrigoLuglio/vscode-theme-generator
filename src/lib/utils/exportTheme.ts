@@ -64,7 +64,7 @@ export function generateThemeJSON(
       foreground: colors.FG1, // Overall foreground color. This color is only used if not overridden by a component
       disabledForeground: syntaxColors.comment, // Overall foreground for disabled elements. This color is only used if not overridden by a component.
       "widget.border": colors.BORDER, // Border color of widgets such as Find/Replace inside the editor.
-      "widget.shadow": colors.FG2, // Shadow color of widgets such as Find/Replace inside the editor
+      // "widget.shadow": colors.FG2, // Shadow color of widgets such as Find/Replace inside the editor
       "selection.background": colors.AC2, // Background color of text selections in the workbench (for input fields or text areas, does not apply to selections within the editor and the terminal)
       descriptionForeground: colors.FG2, // Foreground color for description text providing additional information, for example for a label.
       errorForeground: colors.ERROR, // Overall foreground color for error messages (this color is only used if not overridden by a component)
@@ -249,10 +249,10 @@ export function generateThemeJSON(
       // editorGroup.dropIntoPromptBackground: //# Background color of text shown over editors when dragging files. This text informs the user that they can hold shift to drop into the editor.
       // editorGroup.dropIntoPromptBorder: //# Border color of text shown over editors when dragging files. This text informs the user that they can hold shift to drop into the editor.
       // editorGroupHeader.noTabsBackground: //# Background color of the editor group title header when Tabs are disabled
-      "editorGroupHeader.tabsBackground": colors.BG2, //# Background color of the Tabs container
+      "editorGroupHeader.tabsBackground": colors.BG1, //# Background color of the Tabs container
       "editorGroupHeader.tabsBorder": colors.BORDER, //# Border color of the editor group title header when tabs are enabled. Editor groups are the containers of editors
       "editorGroupHeader.border": colors.BORDER, //# Border color between editor group header and editor (below breadcrumbs if enabled).
-      "tab.activeBackground": colors.BG1, //# Active Tab background color
+      "tab.activeBackground": colors.BG2, //# Active Tab background color
       "tab.activeForeground": colors.FG1, //# Active Tab foreground color in an active group
       "tab.border": colors.BORDER, //# Border to separate Tabs from each other
       "tab.activeBorderTop": colors.AC1, //# A border drawn to the top of the active tab
@@ -260,7 +260,7 @@ export function generateThemeJSON(
       "tab.selectedBackground": colors.lineHighlight, //# Background of a selected tab. Tabs are the containers for editors in the editor area. Multiple tabs can be opened in one editor group. There can be multiple editor groups.
       // tab.selectedForeground: //# Foreground of a selected tab. Tabs are the containers for editors in the editor area. Multiple tabs can be opened in one editor group. There can be multiple editor groups.
       // tab.dragAndDropBorder: //# Border between tabs to indicate that a tab can be inserted between two tabs. Tabs are the containers for editors in the editor area. Multiple tabs can be opened in one editor group. There can be multiple editor groups.
-      "tab.inactiveBackground": colors.BG2, //# Inactive Tab background color
+      "tab.inactiveBackground": colors.BG1, //# Inactive Tab background color
       "tab.inactiveForeground": syntaxColors.comment, //# Inactive Tab foreground color in an active group
       // "tab.unfocusedActiveBorder": colors.BORDER, //# A border drawn to the bottom of the active tab in an editor group that is not focused
       // "tab.unfocusedActiveForeground": colors.FG1, //# Active tab foreground color in an inactive editor group
