@@ -146,9 +146,6 @@ export interface ThemeGenerationOptions {
   uiSaturation?: number;
   syntaxSaturation?: number;
   scheme?: ColorScheme;
-  // lineHighlightAlpha: number;
-  // selectionAlpha: number;
-  // findMatchAlpha: number;
 }
 
 export const presets = {

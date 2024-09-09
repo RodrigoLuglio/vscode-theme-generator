@@ -3,42 +3,42 @@ import {
   ColorScheme,
   ensureReadability,
   generateSchemeColors,
-} from "./colorUtils";
-import Color from "color";
+} from './colorUtils'
+import Color from 'color'
 
 export interface SyntaxColors {
-  keyword: string;
-  comment: string;
-  function: string;
-  functionCall: string;
-  variable: string;
-  variableDeclaration: string;
-  variableProperty: string;
-  type: string;
-  typeParameter: string;
-  constant: string;
-  class: string;
-  parameter: string;
-  property: string;
-  operator: string;
-  storage: string;
-  other: string;
-  language: string;
-  punctuation: string;
-  punctuationQuote: string;
-  punctuationBrace: string;
-  punctuationComma: string;
-  selector: string;
-  support: string;
-  modifier: string;
-  control: string;
-  controlFlow: string;
-  controlImport: string;
-  tag: string;
-  tagPunctuation: string;
-  attribute: string;
-  unit: string;
-  datetime: string;
+  keyword: string
+  comment: string
+  function: string
+  functionCall: string
+  variable: string
+  variableDeclaration: string
+  variableProperty: string
+  type: string
+  typeParameter: string
+  constant: string
+  class: string
+  parameter: string
+  property: string
+  operator: string
+  storage: string
+  other: string
+  language: string
+  punctuation: string
+  punctuationQuote: string
+  punctuationBrace: string
+  punctuationComma: string
+  selector: string
+  support: string
+  modifier: string
+  control: string
+  controlFlow: string
+  controlImport: string
+  tag: string
+  tagPunctuation: string
+  attribute: string
+  unit: string
+  datetime: string
 }
 
 function generateHarmonizedColor(
@@ -47,14 +47,14 @@ function generateHarmonizedColor(
   lightness: number,
   shift: number
 ): string {
-  const hue = (baseHue + shift) % 360;
-  return Color.hsl(hue, saturation, lightness).hex();
+  const hue = (baseHue + shift) % 360
+  return Color.hsl(hue, saturation, lightness).hex()
 }
 
 function blendColors(color1: string, color2: string, ratio: number): string {
-  const c1 = Color(color1);
-  const c2 = Color(color2);
-  return c1.mix(c2, ratio).hex();
+  const c1 = Color(color1)
+  const c2 = Color(color2)
+  return c1.mix(c2, ratio).hex()
 }
 
 export function generateSyntaxColors(
@@ -64,9 +64,9 @@ export function generateSyntaxColors(
   lockedColors: Partial<SyntaxColors> = {},
   forceRegenerate: boolean = false
 ): SyntaxColors {
-  const baseColor = Color(backgroundColor);
-  const isDark = baseColor.isDark();
-  const baseLightness = isDark ? 70 : 40;
+  const baseColor = Color(backgroundColor)
+  const isDark = baseColor.isDark()
+  const baseLightness = isDark ? 70 : 40
 
   const generateColor = (
     hueIndex: number,
@@ -74,27 +74,24 @@ export function generateSyntaxColors(
     lightnessShift: number = 0,
     hueShift: number = 0
   ) => {
-    const hue = (schemeHues[hueIndex] + hueShift) % 360;
-    const saturation = Math.min(100, syntaxSaturation * saturationMultiplier);
-    const lightness = Math.min(
-      100,
-      Math.max(0, baseLightness + lightnessShift)
-    );
+    const hue = (schemeHues[hueIndex] + hueShift) % 360
+    const saturation = Math.min(100, syntaxSaturation * saturationMultiplier)
+    const lightness = Math.min(100, Math.max(0, baseLightness + lightnessShift))
 
     if (!forceRegenerate) {
-      const randomHueShift = Math.random() * 10 - 5;
-      const randomSaturationShift = Math.random() * 5 - 2.5;
-      const randomLightnessShift = Math.random() * 5 - 2.5;
+      const randomHueShift = Math.random() * 10 - 5
+      const randomSaturationShift = Math.random() * 5 - 2.5
+      const randomLightnessShift = Math.random() * 5 - 2.5
 
       return Color.hsl(
         (hue + randomHueShift + 360) % 360,
         Math.max(0, Math.min(100, saturation + randomSaturationShift)),
         Math.max(0, Math.min(100, lightness + randomLightnessShift))
-      ).hex();
+      ).hex()
     }
 
-    return Color.hsl(hue, saturation, lightness).hex();
-  };
+    return Color.hsl(hue, saturation, lightness).hex()
+  }
 
   const syntaxColors: SyntaxColors = {
     keyword: lockedColors.keyword || generateColor(0, 1.1, 5),
@@ -134,34 +131,34 @@ export function generateSyntaxColors(
     support: lockedColors.support || generateColor(0, 1.15, -5),
     unit: lockedColors.unit || generateColor(1, 1.1, -5),
     datetime: lockedColors.datetime || generateColor(3, 1.05, 0),
-  };
+  }
 
   // Apply color harmony and blending
   syntaxColors.functionCall = blendColors(
     syntaxColors.function,
     syntaxColors.functionCall,
     0.3
-  );
+  )
   syntaxColors.variableProperty = blendColors(
     syntaxColors.variable,
     syntaxColors.property,
     0.5
-  );
+  )
   syntaxColors.typeParameter = blendColors(
     syntaxColors.type,
     syntaxColors.parameter,
     0.5
-  );
+  )
   syntaxColors.controlFlow = blendColors(
     syntaxColors.control,
     syntaxColors.keyword,
     0.3
-  );
+  )
   syntaxColors.controlImport = blendColors(
     syntaxColors.control,
     syntaxColors.keyword,
     0.6
-  );
+  )
 
   // Ensure readability and harmony
   Object.keys(syntaxColors).forEach((key) => {
@@ -170,18 +167,18 @@ export function generateSyntaxColors(
         syntaxColors[key as keyof SyntaxColors],
         backgroundColor,
         5.5
-      );
+      )
     }
-  });
+  })
 
   syntaxColors.comment = adjustCommentReadability(
     syntaxColors.comment,
     backgroundColor,
     2,
     4
-  );
+  )
 
-  return syntaxColors;
+  return syntaxColors
 }
 
 export function updateSyntaxColorsWithSaturation(
@@ -194,15 +191,15 @@ export function updateSyntaxColorsWithSaturation(
     color: string,
     saturationMultiplier: number
   ) => {
-    const hsl = Color(color).hsl();
+    const hsl = Color(color).hsl()
     const newSaturation = Math.min(
       100,
       newSyntaxSaturation * saturationMultiplier
-    );
-    return Color.hsl(hsl.hue(), newSaturation, hsl.lightness()).hex();
-  };
+    )
+    return Color.hsl(hsl.hue(), newSaturation, hsl.lightness()).hex()
+  }
 
-  const updatedColors: SyntaxColors = { ...currentColors };
+  const updatedColors: SyntaxColors = { ...currentColors }
 
   const saturationMultipliers = {
     keyword: 1.1,
@@ -237,16 +234,16 @@ export function updateSyntaxColorsWithSaturation(
     support: 1.15,
     unit: 1.1,
     datetime: 1.05,
-  };
+  }
 
   Object.keys(updatedColors).forEach((key) => {
     if (!lockedColors.has(key)) {
       updatedColors[key as keyof SyntaxColors] = updateColorSaturation(
         currentColors[key as keyof SyntaxColors],
         saturationMultipliers[key as keyof typeof saturationMultipliers]
-      );
+      )
     }
-  });
+  })
 
   // Ensure readability
   Object.keys(updatedColors).forEach((key) => {
@@ -255,9 +252,9 @@ export function updateSyntaxColorsWithSaturation(
         updatedColors[key as keyof SyntaxColors],
         backgroundColor,
         5.5
-      );
+      )
     }
-  });
+  })
 
-  return updatedColors;
+  return updatedColors
 }
