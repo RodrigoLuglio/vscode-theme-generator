@@ -32,30 +32,59 @@ export function generateHarmonizedColor(
   return Color(baseColor).rotate(hueOffset).saturate(0.1).hex();
 }
 
-export function adjustCommentReadability(
-  foreground: string,
-  background: string,
-  minContrast = 2,
-  maxContrast = 5
+export function adjustCommentColor(
+  commentColor: string,
+  backgroundColor: string,
+  minContrast: number = 1.1,
+  maxContrast: number = 1.5,
+  targetLuminanceRatio: number = 0.1
 ): string {
-  let color = Color(foreground);
-  const bgColor = Color(background);
-  let iterations = 0;
-  const maxIterations = 100;
+  const bgColor = Color(backgroundColor);
+  let comment = Color(commentColor);
+  const bgLuminosity = bgColor.luminosity();
+  const isDarkTheme = bgColor.isDark();
 
-  color.darken(0.8);
+  // Adjust the comment color until it meets our criteria
+  while (true) {
+    const contrast = comment.contrast(bgColor);
+    const luminanceRatio =
+      Math.abs(comment.luminosity() - bgLuminosity) /
+      Math.max(comment.luminosity(), bgLuminosity);
 
-  // while (
-  //   color.contrast(bgColor) < minContrast ||
-  //   (color.contrast(bgColor) > maxContrast && iterations < maxIterations)
-  // ) {
-  //   color = color.isLight()
-  //     ? color.darken(0.05).saturate(0.05)
-  //     : color.lighten(0.05).saturate(0.05);
-  //   iterations++;
-  // }
+    if (isDarkTheme) {
+      // For dark themes, we want to darken the comment color
+      if (contrast > maxContrast || luminanceRatio > targetLuminanceRatio) {
+        comment = comment.darken(0.02);
+      } else if (contrast < minContrast) {
+        comment = comment.lighten(0.01);
+      } else {
+        break;
+      }
+    } else {
+      // For light themes, keep the current behavior
+      if (contrast < minContrast || luminanceRatio < targetLuminanceRatio) {
+        comment = comment.darken(0.01);
+      } else if (contrast > maxContrast) {
+        comment = comment.lighten(0.01);
+      } else {
+        break;
+      }
+    }
 
-  return color.hex();
+    // Prevent infinite loop and ensure the color doesn't get too dark or too light
+    if (isDarkTheme && comment.luminosity() < 0.05) break;
+    if (!isDarkTheme && comment.luminosity() > 0.95) break;
+  }
+
+  // Final adjustment to ensure the color is within the desired range
+  if (isDarkTheme) {
+    const maxLuminosity = bgColor.luminosity() + 0.2;
+    while (comment.luminosity() > maxLuminosity) {
+      comment = comment.darken(0.01);
+    }
+  }
+
+  return comment.hex();
 }
 
 export function ensureReadability(
@@ -85,6 +114,15 @@ export enum ColorScheme {
   SplitComplementary,
   Triadic,
   Tetradic,
+  GoldenRatio,
+  Fibonacci,
+  PentagramStar,
+  VesicaPiscis,
+  FlowerOfLife,
+  PlatonicSolids,
+  SpiralOfTheodorus,
+  MetatronsCube,
+  SeedOfLife,
 }
 
 export function generateSchemeColors(
@@ -136,6 +174,86 @@ export function generateSchemeColors(
         (baseHue + 270) % 360,
       ];
       break;
+    case ColorScheme.GoldenRatio:
+      const goldenRatio = 0.618033988749895;
+      result = [
+        baseHue,
+        (baseHue + 360 * goldenRatio) % 360,
+        (baseHue + 360 * goldenRatio * 2) % 360,
+        (baseHue + 360 * goldenRatio * 3) % 360,
+      ];
+      break;
+    case ColorScheme.Fibonacci:
+      result = [
+        baseHue,
+        (baseHue + 360 / 13) % 360,
+        (baseHue + 360 / 8) % 360,
+        (baseHue + 360 / 5) % 360,
+      ];
+      break;
+    case ColorScheme.PentagramStar:
+      result = [
+        baseHue,
+        (baseHue + 72) % 360,
+        (baseHue + 144) % 360,
+        (baseHue + 216) % 360,
+        (baseHue + 288) % 360,
+      ];
+      break;
+    case ColorScheme.VesicaPiscis:
+      result = [(baseHue + 33) % 360, (baseHue + 66) % 360];
+      break;
+    case ColorScheme.FlowerOfLife:
+      result = [
+        (baseHue + 60) % 360,
+        (baseHue + 120) % 360,
+        (baseHue + 180) % 360,
+        (baseHue + 240) % 360,
+        (baseHue + 300) % 360,
+      ];
+      break;
+    case ColorScheme.PlatonicSolids:
+      result = [
+        (baseHue + 72) % 360,
+        (baseHue + 144) % 360,
+        (baseHue + 216) % 360,
+        (baseHue + 288) % 360,
+      ];
+      break;
+    case ColorScheme.SpiralOfTheodorus:
+      result = [
+        (baseHue + Math.sqrt(2) * 180) % 360,
+        (baseHue + Math.sqrt(3) * 180) % 360,
+        (baseHue + Math.sqrt(4) * 180) % 360,
+      ];
+      break;
+    case ColorScheme.MetatronsCube:
+      result = [
+        (baseHue + 60) % 360,
+        (baseHue + 120) % 360,
+        (baseHue + 180) % 360,
+        (baseHue + 240) % 360,
+        (baseHue + 300) % 360,
+        (baseHue + 30) % 360,
+        (baseHue + 90) % 360,
+        (baseHue + 150) % 360,
+        (baseHue + 210) % 360,
+        (baseHue + 270) % 360,
+        (baseHue + 330) % 360,
+      ];
+      break;
+    case ColorScheme.SeedOfLife:
+      result = [
+        (baseHue + 51.4) % 360,
+        (baseHue + 102.8) % 360,
+        (baseHue + 154.2) % 360,
+        (baseHue + 205.6) % 360,
+        (baseHue + 257) % 360,
+        (baseHue + 308.4) % 360,
+      ];
+      break;
+    default:
+      result = [baseHue];
   }
   return result;
 }
@@ -245,4 +363,50 @@ export function adjustSaturation(saturation: number): number {
 
 export function adjustLightness(lightness: number): number {
   return Math.max(0, Math.min(100, lightness));
+}
+
+export function generateAdditionalHues(
+  baseHue: number,
+  scheme: ColorScheme
+): number[] {
+  switch (scheme) {
+    case ColorScheme.Monochromatic:
+      return [baseHue];
+    case ColorScheme.Analogous:
+      return [(baseHue + 30) % 360, (baseHue - 30 + 360) % 360];
+    case ColorScheme.Complementary:
+      return [(baseHue + 180) % 360];
+    case ColorScheme.SplitComplementary:
+      return [(baseHue + 150) % 360, (baseHue + 210) % 360];
+    case ColorScheme.Triadic:
+      return [(baseHue + 120) % 360, (baseHue + 240) % 360];
+    case ColorScheme.Tetradic:
+      return [
+        (baseHue + 90) % 360,
+        (baseHue + 180) % 360,
+        (baseHue + 270) % 360,
+      ];
+    case ColorScheme.GoldenRatio:
+      const goldenRatio = 0.618033988749895;
+      return [
+        (baseHue + 360 * goldenRatio) % 360,
+        (baseHue + 360 * goldenRatio * 2) % 360,
+        (baseHue + 360 * goldenRatio * 3) % 360,
+      ];
+    case ColorScheme.Fibonacci:
+      return [
+        (baseHue + 360 / 13) % 360,
+        (baseHue + 360 / 8) % 360,
+        (baseHue + 360 / 5) % 360,
+      ];
+    case ColorScheme.PentagramStar:
+      return [
+        (baseHue + 72) % 360,
+        (baseHue + 144) % 360,
+        (baseHue + 216) % 360,
+        (baseHue + 288) % 360,
+      ];
+    default:
+      return [];
+  }
 }

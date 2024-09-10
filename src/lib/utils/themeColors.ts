@@ -29,7 +29,13 @@ export function generateThemeColors(
   options: ThemeGenerationOptions,
   initialColors: Partial<ColorAliases> = {},
   forceRegenerate: boolean = false
-): { colors: ColorAliases; schemeHues: number[] } {
+): {
+  colors: ColorAliases;
+  schemeHues: number[];
+  ac1Hue: number;
+  ac2Hue: number;
+  scheme: ColorScheme;
+} {
   const {
     isDark,
     baseHue = Math.random() * 360,
@@ -176,7 +182,10 @@ export function generateThemeColors(
     }
   });
 
-  return { colors, schemeHues };
+  const ac1Hue = Color(colors.AC1).hue();
+  const ac2Hue = Color(colors.AC2).hue();
+
+  return { colors, schemeHues, ac1Hue, ac2Hue, scheme };
 }
 
 export function updateThemeColorsWithSaturation(

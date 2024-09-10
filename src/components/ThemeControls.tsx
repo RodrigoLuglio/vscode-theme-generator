@@ -12,6 +12,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 const ThemeControls: React.FC = () => {
   const {
@@ -41,11 +48,13 @@ const ThemeControls: React.FC = () => {
       Math.floor(Math.random() * schemeValues.length)
     ] as ColorScheme;
 
+    // Update the state values immediately
     setBaseHue(newBaseHue);
     setUiSaturation(newUiSaturation);
     setSyntaxSaturation(newSyntaxSaturation);
     setScheme(newScheme);
 
+    // Then generate colors with these new values
     generateColors({
       isDark,
       baseHue: newBaseHue,
@@ -53,6 +62,7 @@ const ThemeControls: React.FC = () => {
       syntaxSaturation: newSyntaxSaturation,
       scheme: newScheme,
       lockedColors: Array.from(lockedColors),
+      forceRegenerate: true,
     });
   };
 
@@ -78,101 +88,220 @@ const ThemeControls: React.FC = () => {
     });
   };
 
+  const getSaturationGradient = (baseHue: number) => `
+    linear-gradient(to right, 
+      hsl(${baseHue}, 0%, 50%), 
+      hsl(${baseHue}, 100%, 50%)
+    )
+  `;
+
+  const handleSchemeChange = (newScheme: ColorScheme) => {
+    setScheme(newScheme);
+    generateColors({
+      scheme: newScheme,
+      forceRegenerate: true,
+    });
+  };
+
   return (
-    <div className="mb-4 space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">Theme Controls</h2>
+    <TooltipProvider>
+      <div className="mb-4 space-y-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-semibold">Theme Controls</h2>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  checked={isDark}
+                  onCheckedChange={(checked) => setIsDark(checked as boolean)}
+                />
+                <label className="">Dark Theme</label>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Switch between dark and light theme modes</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div>
+              <label className="">Color Scheme:</label>
+              <Select
+                onValueChange={(value) =>
+                  handleSchemeChange(Number(value) as ColorScheme)
+                }
+                value={scheme.toString()}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Color Scheme">
+                    {
+                      Object.entries(ColorScheme).filter(
+                        ([key, value]) => value === scheme
+                      )[0][0]
+                    }
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.entries(ColorScheme)
+                    .filter(([key]) => isNaN(Number(key)))
+                    .map(([key, value]) => (
+                      <SelectItem key={key} value={value as string}>
+                        {key}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>
+              Choose a color harmony scheme to generate complementary colors
+            </p>
+          </TooltipContent>
+        </Tooltip>
+
         <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-2">
-            <Checkbox
-              checked={isDark}
-              onCheckedChange={(checked) => setIsDark(checked as boolean)}
-            />
-            <label className="">Dark Theme</label>
+          <div className="flex gap-2">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button onClick={handleRandomize}>Randomize</Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Generate a completely new random theme</p>
+              </TooltipContent>
+            </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button onClick={handleRegenerateUnlockedColors}>
+                  Regenerate Unlocked
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>
+                  Slightly adjust the current theme, keeping locked colors
+                  unchanged
+                </p>
+              </TooltipContent>
+            </Tooltip>
           </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button className="w-full" onClick={regenerateAnsiColors}>
+                Regenerate ANSI Colors
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Regenerate terminal colors based on the current theme</p>
+            </TooltipContent>
+          </Tooltip>
         </div>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div>
+              <label className="">Base Hue:</label>
+              <div className="flex items-center gap-2">
+                <div className="flex-grow">
+                  <Slider
+                    value={[baseHue]}
+                    min={0}
+                    max={359}
+                    step={1}
+                    onValueChange={(value) => setBaseHue(value[0])}
+                  />
+                  <div
+                    className="h-4 w-full rounded-full mt-2"
+                    style={{
+                      background: `linear-gradient(to right, 
+                        hsl(0, 100%, 50%), 
+                        hsl(60, 100%, 50%), 
+                        hsl(120, 100%, 50%), 
+                        hsl(180, 100%, 50%), 
+                        hsl(240, 100%, 50%), 
+                        hsl(300, 100%, 50%), 
+                        hsl(360, 100%, 50%))`,
+                    }}
+                  />
+                </div>
+                <span className="ml-2 w-8 text-right">{baseHue}</span>
+              </div>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>
+              Set the primary color of your theme. This affects overall color
+              tone
+            </p>
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div>
+              <label className="">UI Saturation:</label>
+              <div className="flex items-center gap-2">
+                <div className="flex-grow">
+                  <Slider
+                    value={[uiSaturation]}
+                    min={0}
+                    max={100}
+                    step={1}
+                    onValueChange={(value) => setUiSaturation(value[0])}
+                  />
+                  <div
+                    className="h-4 w-full rounded-full mt-2"
+                    style={{
+                      background: getSaturationGradient(baseHue),
+                    }}
+                  />
+                </div>
+                <span className="ml-2 w-8 text-right">{uiSaturation}</span>
+              </div>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>
+              Adjust color intensity for user interface elements. Higher values
+              result in more vivid colors
+            </p>
+          </TooltipContent>
+        </Tooltip>
+
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <div>
+              <label className="mr-2">Syntax Saturation:</label>
+              <div className="flex items-center gap-2">
+                <div className="flex-grow">
+                  <Slider
+                    value={[syntaxSaturation]}
+                    min={0}
+                    max={100}
+                    step={1}
+                    onValueChange={(value) => setSyntaxSaturation(value[0])}
+                  />
+                  <div
+                    className="h-4 w-full rounded-full mt-2"
+                    style={{
+                      background: getSaturationGradient(baseHue),
+                    }}
+                  />
+                </div>
+                <span className="ml-2 w-8 text-right">{syntaxSaturation}</span>
+              </div>
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>
+              Control color intensity for syntax highlighting. Higher values
+              make code colors more vibrant
+            </p>
+          </TooltipContent>
+        </Tooltip>
       </div>
-      <div>
-        <label className="">Color Scheme:</label>
-        <Select
-          onValueChange={(value) => setScheme(Number(value) as ColorScheme)}
-          value={scheme.toString()}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Color Scheme">
-              {
-                Object.entries(ColorScheme).filter(
-                  ([key, value]) => value === scheme
-                )[0][0]
-              }
-            </SelectValue>
-          </SelectTrigger>
-          <SelectContent>
-            {Object.entries(ColorScheme)
-              .filter(([key]) => isNaN(Number(key)))
-              .map(([key, value]) => (
-                <SelectItem key={key} value={value as string}>
-                  {key}
-                </SelectItem>
-              ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="flex flex-col gap-2">
-        <div className="flex gap-2">
-          <Button className="" onClick={handleRandomize}>
-            Randomize
-          </Button>
-          <Button className="" onClick={handleRegenerateUnlockedColors}>
-            Regenerate Unlocked
-          </Button>
-        </div>
-        <div>
-          <Button className="w-full" onClick={regenerateAnsiColors}>
-            Regenerate ANSI Colors
-          </Button>
-        </div>
-      </div>
-      <div>
-        <label className="">Base Hue:</label>
-        <div className="flex items-center gap-2">
-          <Slider
-            value={[baseHue]}
-            min={0}
-            max={359}
-            step={1}
-            onValueChange={(value) => setBaseHue(value[0])}
-          />
-          <span className="ml-2">{baseHue}</span>
-        </div>
-      </div>
-      <div>
-        <label className="">UI Saturation:</label>
-        <div className="flex items-center gap-2">
-          <Slider
-            value={[uiSaturation]}
-            min={0}
-            max={100}
-            step={1}
-            onValueChange={(value) => setUiSaturation(value[0])}
-          />
-          <span className="">{uiSaturation}</span>
-        </div>
-      </div>
-      <div>
-        <label className="mr-2">Syntax Saturation:</label>
-        <div className="flex items-center gap-2">
-          <Slider
-            value={[syntaxSaturation]}
-            min={0}
-            max={100}
-            step={1}
-            onValueChange={(value) => setSyntaxSaturation(value[0])}
-          />
-          <span className="">{syntaxSaturation}</span>
-        </div>
-      </div>
-    </div>
+    </TooltipProvider>
   );
 };
 
