@@ -4,6 +4,10 @@ export interface ColorAlphas {
   [key: string]: number;
 }
 
+/**
+ * Generates a random color and returns its hexadecimal representation.
+ * @returns {string} A string representing the randomly generated color in hexadecimal format.
+ */
 export function generateRandomColor(): string {
   return Color.rgb(
     Math.floor(Math.random() * 256),
@@ -12,10 +16,21 @@ export function generateRandomColor(): string {
   ).hex();
 }
 
+/**
+ * Adjusts the brightness of a given color by a specified amount.
+ * @param {string} color - The color to adjust, in any valid CSS color format.
+ * @param {number} amount - The amount to lighten the color, typically between 0 and 1.
+ * @returns {string} The adjusted color in hexadecimal format.
+ */
 export function adjustColorBrightness(color: string, amount: number): string {
   return Color(color).lighten(amount).hex();
 }
 
+/**
+ * Generates a contrasting color based on the given background color.
+ * @param {string} backgroundColor - The background color in a format parsable by the Color library.
+ * @returns {string} A contrasting color in hexadecimal format.
+ */
 export function generateContrastingColor(backgroundColor: string): string {
   const bgColor = Color(backgroundColor);
   return bgColor.isLight()
@@ -23,8 +38,12 @@ export function generateContrastingColor(backgroundColor: string): string {
     : bgColor.lighten(0.6).hex();
 }
 
-// Add these new functions:
-
+/**
+ * Generates a harmonized color based on a given base color and hue offset
+ * @param {string} baseColor - The starting color in any valid CSS color format
+ * @param {number} hueOffset - The amount to rotate the hue of the base color (in degrees)
+ * @returns {string} A new color in hexadecimal format that is harmonized with the base color
+ */
 export function generateHarmonizedColor(
   baseColor: string,
   hueOffset: number
@@ -32,6 +51,15 @@ export function generateHarmonizedColor(
   return Color(baseColor).rotate(hueOffset).saturate(0.1).hex();
 }
 
+/**
+ * Adjusts the color generated color for comments based on the background color to ensure proper contrast and readability.
+ * @param {string} commentColor - The initial color of the comment.
+ * @param {string} backgroundColor - The color of the background.
+ * @param {number} [minContrast=1.1] - The minimum contrast ratio between comment and background.
+ * @param {number} [maxContrast=1.5] - The maximum contrast ratio between comment and background.
+ * @param {number} [targetLuminanceRatio=0.1] - The target luminance ratio between comment and background.
+ * @returns {string} The adjusted comment color in hexadecimal format.
+ */
 export function adjustCommentColor(
   commentColor: string,
   backgroundColor: string,
@@ -87,6 +115,13 @@ export function adjustCommentColor(
   return comment.hex();
 }
 
+/**
+ * Adjusts the foreground color to ensure readability against a background color.
+ * @param {string} foreground - The initial foreground color in a format parsable by the Color function.
+ * @param {string} background - The background color to contrast against, in a format parsable by the Color function.
+ * @param {number} [minContrast=5.5] - The minimum contrast ratio to achieve between foreground and background.
+ * @returns {string} The adjusted foreground color as a hexadecimal string.
+ */
 export function ensureReadability(
   foreground: string,
   background: string,
@@ -125,6 +160,12 @@ export enum ColorScheme {
   SeedOfLife,
 }
 
+/**
+ * Generates an array of hue values based on a given base hue and color scheme.
+ * @param {number} baseHue - The starting hue value (0-359) to generate the color scheme from.
+ * @param {ColorScheme} scheme - The color scheme to apply (e.g., Monochromatic, Analogous, Complementary, etc.).
+ * @returns {number[]} An array of hue values (0-359) representing the generated color scheme.
+ */
 export function generateSchemeColors(
   baseHue: number,
   scheme: ColorScheme
@@ -274,6 +315,12 @@ export const presets = {
   dracula: { baseHue: 260, scheme: ColorScheme.SplitComplementary },
 };
 
+/**
+ * Converts a hexadecimal color code to HSL (Hue, Saturation, Lightness) values.
+ * @param {string} hex - The hexadecimal color code to convert (3 or 6 digits, with or without '#').
+ * @returns {Object} An object containing the HSL values: { h: number, s: number, l: number }.
+ *                   h is in degrees (0-360), s and l are percentages (0-100).
+ */
 export function hexToHSL(hex: string): { h: number; s: number; l: number } {
   let r = 0,
     g = 0,
@@ -320,6 +367,13 @@ export function hexToHSL(hex: string): { h: number; s: number; l: number } {
   return { h: h * 360, s: s * 100, l: l * 100 };
 }
 
+/**
+ * Converts HSL (Hue, Saturation, Lightness) color values to hexadecimal color code.
+ * @param {number} h - The hue value (0-360).
+ * @param {number} s - The saturation value (0-100).
+ * @param {number} l - The lightness value (0-100).
+ * @returns {string} A hexadecimal color code string (e.g., "#RRGGBB").
+ */
 export function hslToHex(h: number, s: number, l: number): string {
   h /= 360;
   s /= 100;
@@ -337,7 +391,7 @@ export function hslToHex(h: number, s: number, l: number): string {
       if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
       return p;
     };
-
+    
     const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
     const p = 2 * l - q;
     r = hue2rgb(p, q, h + 1 / 3);
@@ -353,18 +407,39 @@ export function hslToHex(h: number, s: number, l: number): string {
   return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
+/**
+ * Adjusts the hue value to ensure it falls within the valid range of 0 to 359 degrees.
+ * @param {number} hue - The input hue value to be adjusted.
+ * @returns {number} The adjusted hue value within the range of 0 to 359 degrees.
+ */
 export function adjustHue(hue: number): number {
   return (hue + 360) % 360;
 }
 
+/**
+ * Adjusts the saturation value to ensure it falls within the range of 0 to 100.
+ * @param {number} saturation - The input saturation value to be adjusted.
+ * @returns {number} The adjusted saturation value, clamped between 0 and 100.
+ */
 export function adjustSaturation(saturation: number): number {
   return Math.max(0, Math.min(100, saturation));
 }
 
+/**
+ * Adjusts the lightness value to ensure it falls within the valid range of 0 to 100.
+ * @param {number} lightness - The input lightness value to be adjusted.
+ * @returns {number} The adjusted lightness value, clamped between 0 and 100.
+ */
 export function adjustLightness(lightness: number): number {
   return Math.max(0, Math.min(100, lightness));
 }
 
+/**
+ * Generates additional hues based on a given base hue and color scheme.
+ * @param {number} baseHue - The base hue value in degrees (0-359).
+ * @param {ColorScheme} scheme - The color scheme to use for generating additional hues.
+ * @returns {number[]} An array of additional hue values in degrees (0-359).
+ */
 export function generateAdditionalHues(
   baseHue: number,
   scheme: ColorScheme
