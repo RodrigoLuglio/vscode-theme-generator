@@ -25,6 +25,13 @@ export interface ColorAliases {
   findMatch: string;
 }
 
+/**
+ * Generates theme colors based on provided options and initial colors.
+ * @param {ThemeGenerationOptions} options - Configuration options for theme generation.
+ * @param {Partial<ColorAliases>} initialColors - Initial color values to use (optional).
+ * @param {boolean} forceRegenerate - Flag to force color regeneration (optional).
+ * @returns {Object} An object containing generated colors, scheme hues, accent hues, and color scheme.
+ */
 export function generateThemeColors(
   options: ThemeGenerationOptions,
   initialColors: Partial<ColorAliases> = {},
@@ -48,6 +55,13 @@ export function generateThemeColors(
   const bgBase = isDark ? 12 : 97;
   const fgBase = isDark ? 90 : 10;
 
+  /**
+   * Generates a color based on HSL values with optional randomness.
+   * @param {number} hue - The base hue value (0-360).
+   * @param {number} saturation - The base saturation value (0-100).
+   * @param {number} lightness - The base lightness value (0-100).
+   * @returns {string} A hexadecimal color string.
+   */
   const generateColor = (
     hue: number,
     saturation: number,
@@ -188,14 +202,37 @@ export function generateThemeColors(
   return { colors, schemeHues, ac1Hue, ac2Hue, scheme };
 }
 
+/**
+ * Updates theme colors with new saturation values while respecting locked colors.
+ * @param {ColorAliases} currentColors - The current color aliases object.
+ * @param {number} newUiSaturation - The new UI saturation value to apply.
+ * @param {Set<string>} lockedColors - Set of color keys that should not be modified.
+ * @returns {ColorAliases} Updated color aliases object with new saturation values.
+ */
 export function updateThemeColorsWithSaturation(
   currentColors: ColorAliases,
   newUiSaturation: number,
   lockedColors: Set<string>
 ): ColorAliases {
+  /**
+   * Updates the saturation of a given color by a specified multiplier.
+   * @param {string} color - The input color in any valid CSS color format.
+   * @param {number} saturationMultiplier - The factor by which to multiply the current saturation.
+   * @returns {string} The resulting color in hexadecimal format.
+   */
   const updateColorSaturation = (
     color: string,
     saturationMultiplier: number
+  ```
+  /**
+   * Updates the saturation of non-locked colors in the updatedColors object
+   * @param {Object} updatedColors - The object containing color aliases to be updated
+   * @param {Set} lockedColors - A set of color keys that should not be modified
+   * @param {Object} currentColors - The current color values for each alias
+   * @param {Object} saturationMultipliers - Multipliers for adjusting saturation for each color key
+   * @returns {void} This function doesn't return a value, it modifies the updatedColors object in place
+   */
+  ```
   ) => {
     const hsl = Color(color).hsl();
     const newSaturation = Math.min(100, newUiSaturation * saturationMultiplier);
