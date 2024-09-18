@@ -133,6 +133,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
             extendedSchemeHues,
             fullOptions.syntaxSaturation,
             Object.fromEntries(
+              /**
+               * Filters the entries of syntaxColors object based on locked color keys
+               * @param {Object} syntaxColors - An object containing syntax highlighting color configurations
+               * @param {Set} lockedColorSet - A Set containing keys of locked colors
+               * @returns {Array} An array of key-value pairs for locked syntax colors
+               */
               Object.entries(syntaxColors).filter(([key]) =>
                 lockedColorSet.has(key)
               )
@@ -161,6 +167,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const setIsDark = useCallback(
+    /**
+     * Updates the dark mode state and generates corresponding colors
+     * @param {boolean} value - The new dark mode state (true for dark mode, false for light mode)
+     * @returns {void} This function doesn't return a value
+     */
     (value: boolean) => {
       setIsDarkState(value);
       generateColors({ isDark: value });
@@ -169,6 +180,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const setBaseHue = useCallback(
+    ```
+    /**
+     * Updates the base hue state and generates new colors based on the provided value.
+     * @param {number} value - The new base hue value to set.
+     * @returns {void} This function doesn't return a value.
+     */
+    ```
     (value: number) => {
       setBaseHueState(value);
       generateColors({ baseHue: value });
@@ -177,6 +195,12 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const updateColorsWithSaturation = useCallback(
+    /**
+     * Updates the theme and syntax colors with new saturation values
+     * @param {number} newUiSaturation - The new saturation value for UI colors
+     * @param {number} newSyntaxSaturation - The new saturation value for syntax colors
+     * @returns {void} This function doesn't return a value, it updates state
+     */
     (newUiSaturation: number, newSyntaxSaturation: number) => {
       const newColors = updateThemeColorsWithSaturation(
         colors,
@@ -192,6 +216,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
       );
 
       setColors(newColors);
+      /**
+       * Updates the UI saturation state and applies the new saturation value to colors.
+       * @param {number} value - The new saturation value to be set.
+       * @returns {void} This function doesn't return a value.
+       */
       setSyntaxColors(newSyntaxColors);
     },
     [colors, syntaxColors, lockedColors]
@@ -206,6 +235,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const setSyntaxSaturation = useCallback(
+    /**
+     * Updates the syntax saturation state and refreshes colors with the new saturation value.
+     * @param {number} value - The new saturation value to be applied.
+     * @returns {void} This function doesn't return a value.
+     */
     (value: number) => {
       setSyntaxSaturationState(value);
       updateColorsWithSaturation(uiSaturation, value);
@@ -214,14 +248,30 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const setScheme = useCallback(
+    /**
+     * Updates the color scheme and generates new colors based on the selected scheme.
+     * @param {ColorScheme} value - The new color scheme to be applied.
+     * @returns {void} This function doesn't return a value.
+     */
     (value: ColorScheme) => {
       setSchemeState(value);
+      /**
+       * Toggles the lock state of a color in the color palette.
+       * @param {string} colorKey - The key of the color to toggle the lock state for.
+       * @returns {void} This function doesn't return a value, it updates the state internally.
+       */
       generateColors({ scheme: value });
     },
     [generateColors]
   );
 
   const toggleColorLock = useCallback((colorKey: string) => {
+    /**
+     * Toggles the locked state of a color in the set of locked colors
+     * @param {function} prev - The previous state of the locked colors set
+     * @param {string} colorKey - The key of the color to toggle
+     * @returns {Set} A new Set with the updated locked colors
+     */
     setLockedColors((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(colorKey)) {
@@ -234,14 +284,42 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const handleColorChange = useCallback(
+    /**
+     * Updates color values based on the provided color key and new color.
+     * @param {string} colorKey - The key identifying which color to update (e.g., "ansi", "BG1", or syntax color keys).
+     * @param {string} newColor - The new color value to set.
+     * @returns {void} This function doesn't return a value, it updates state.
+     */
     (colorKey: string, newColor: string) => {
       if (colorKey.startsWith("ansi")) {
+        /**
+         * Updates a specific ANSI color in the state
+         * @param {function} prevColors - A function that receives the previous state of colors
+         * @returns {object} An updated object containing the new color for the specified key
+         */
         setAnsiColors((prevColors) => ({
           ...prevColors,
           [colorKey.slice(4)]: newColor,
         }));
       } else if (colorKey in colors) {
+        /**
+         * Updates a specific color in the colors state object
+         * @param {function} prevColors - Callback function that receives the previous colors state
+         * @returns {object} Updated colors state object with the new color value for the specified key
+         */
+        /**
+         * Updates the syntax colors based on a new color and existing scheme parameters
+         * @param {function} prevSyntaxColors - Callback function to access the previous syntax colors state
+         * @returns {object} Updated syntax colors object
+         */
         setColors((prevColors) => ({
+          ```
+          /**
+           * Updates the syntax colors by setting a new color for a specific color key
+           * @param {function} prevSyntaxColors - A function that returns the previous syntax colors object
+           * @returns {object} An updated syntax colors object with the new color applied to the specified color key
+           */
+          ```
           ...prevColors,
           [colorKey]: newColor,
         }));
@@ -261,6 +339,17 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     [colors, syntaxColors, schemeHues, syntaxSaturation]
   );
 
+  /**
+   * Regenerates ANSI colors based on the current background color.
+   * @param {void} - This function doesn't take any parameters.
+   * @returns {void} This function doesn't return a value, but updates the state with new ANSI colors.
+   /**
+    * A React effect hook that regenerates ANSI colors when specific dependencies change.
+    * @param {Function} regenerateAnsiColors - Function to regenerate ANSI colors.
+    * @param {string} colors.BG1 - The background color that triggers regeneration when changed.
+    * @returns {void} This effect does not return anything.
+    */
+   */
   const regenerateAnsiColors = useCallback(() => {
     setAnsiColors(generateAnsiColors(colors.BG1));
   }, [colors.BG1]);
@@ -299,6 +388,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+/**
+ * A custom hook to access the current theme context
+ * @returns {Object} The current theme context
+ * @throws {Error} If used outside of a ThemeProvider
+ */
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
