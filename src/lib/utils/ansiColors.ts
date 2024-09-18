@@ -20,10 +20,21 @@ export interface AnsiColors {
   BrightWhite: string;
 }
 
+/**
+ * Generates a set of ANSI colors based on a given background color.
+ * @param {string} backgroundColor - The background color to base the generated colors on.
+ * @returns {AnsiColors} An object containing generated ANSI colors with enhanced readability.
+ */
 export function generateAnsiColors(backgroundColor: string): AnsiColors {
   const baseSaturation = 20 + Math.random() * 60; // 20-80
   const baseLightness = 30 + Math.random() * 30; // 30-60
 
+  /**
+   * Generates a color based on the given parameters.
+   * @param {number} baseHue - The base hue value to start from (0-360).
+   * @param {boolean} [isGrayscale=false] - Whether to generate a grayscale color.
+   * @returns {string} A hexadecimal color string.
+   */
   const generateColor = (baseHue: number, isGrayscale: boolean = false) => {
     if (isGrayscale) {
       return Color.hsl(0, 0, baseLightness).hex();
@@ -40,6 +51,11 @@ export function generateAnsiColors(backgroundColor: string): AnsiColors {
     return Color.hsl(hue, saturation, lightness).hex();
   };
 
+  /**
+   * Brightens a given color by increasing its saturation and lightness.
+   * @param {string} color - The input color in any valid CSS color format.
+   * @returns {string} A new color in hexadecimal format with increased brightness.
+   */
   const brightenColor = (color: string) => {
     const c = Color(color);
     const brightSaturation = Math.min(
@@ -53,6 +69,12 @@ export function generateAnsiColors(backgroundColor: string): AnsiColors {
     return c.saturationl(brightSaturation).lightness(brightLightness).hex();
   };
 
+  /**
+   * Ensures the readability of a color against a background color, except for black.
+   * @param {string} color - The foreground color to check and potentially adjust.
+   * @param {string} bgColor - The background color to check against.
+   * @returns {string} The original color if it's black, otherwise a color with sufficient contrast against the background.
+   */
   const ensureReadabilityExceptBlack = (color: string, bgColor: string) => {
     if (color.toLowerCase() === "#000000") return color;
     return ensureReadability(color, bgColor, 4.5);
