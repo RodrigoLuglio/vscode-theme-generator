@@ -57,15 +57,6 @@ function generateHarmonizedColor(
 ): string {
   const hue = (baseHue + shift) % 360;
   return Color.hsl(hue, saturation, lightness).hex();
-/**
- * Generates syntax colors for a code editor based on the given background color and scheme hues.
- * @param {string} backgroundColor - The background color of the editor.
- * @param {number[]} schemeHues - An array of hue values for the color scheme.
- * @param {number} [syntaxSaturation=70] - The base saturation for syntax colors.
- * @param {Partial<SyntaxColors>} [lockedColors={}] - A partial object of locked syntax colors.
- * @param {boolean} [forceRegenerate=false] - Whether to force regeneration of colors without randomness.
- * @returns {SyntaxColors} An object containing generated syntax colors.
- */
 }
 
 /**
@@ -81,6 +72,15 @@ function blendColors(color1: string, color2: string, ratio: number): string {
   return c1.mix(c2, ratio).hex();
 }
 
+/**
+ * Generates syntax colors for a code editor based on the given background color and scheme hues.
+ * @param {string} backgroundColor - The background color of the editor.
+ * @param {number[]} schemeHues - An array of hue values for the color scheme.
+ * @param {number} [syntaxSaturation=70] - The base saturation for syntax colors.
+ * @param {Partial<SyntaxColors>} [lockedColors={}] - A partial object of locked syntax colors.
+ * @param {boolean} [forceRegenerate=false] - Whether to force regeneration of colors without randomness.
+ * @returns {SyntaxColors} An object containing generated syntax colors.
+ */
 export function generateSyntaxColors(
   backgroundColor: string,
   schemeHues: number[],
@@ -283,14 +283,6 @@ export function updateSyntaxColorsWithSaturation(
     controlImport: 1.05,
     tag: 1.1,
     tagPunctuation: 1,
-    /**
-     * Updates the saturation of unlocked colors in a syntax color scheme
-     * @param {Object} updatedColors - Object containing the colors to be updated
-     * @param {Set} lockedColors - Set of color keys that should not be modified
-     * @param {Object} currentColors - Object containing the current color values
-     * @param {Object} saturationMultipliers - Object containing saturation multipliers for each color key
-     * @returns {void} This function does not return a value, it modifies the updatedColors object in place
-     */
     attribute: 0.95,
     support: 1.15,
     unit: 1.1,
@@ -299,6 +291,14 @@ export function updateSyntaxColorsWithSaturation(
 
   Object.keys(updatedColors).forEach((key) => {
     if (!lockedColors.has(key)) {
+      /**
+       * Updates the saturation of unlocked colors in a syntax color scheme
+       * @param {Object} updatedColors - Object containing the colors to be updated
+       * @param {Set} lockedColors - Set of color keys that should not be modified
+       * @param {Object} currentColors - Object containing the current color values
+       * @param {Object} saturationMultipliers - Object containing saturation multipliers for each color key
+       * @returns {void} This function does not return a value, it modifies the updatedColors object in place
+       */
       updatedColors[key as keyof SyntaxColors] = updateColorSaturation(
         currentColors[key as keyof SyntaxColors],
         saturationMultipliers[key as keyof typeof saturationMultipliers]
