@@ -166,7 +166,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     ]
   );
 
-    /**
+  /**
    * Updates the dark mode state and generates corresponding colors
    * @param {boolean} value - The new dark mode state (true for dark mode, false for light mode)
    * @returns {void} This function doesn't return a value
@@ -180,10 +180,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   /**
-     * Updates the base hue state and generates new colors based on the provided value.
-     * @param {number} value - The new base hue value to set.
-     * @returns {void} This function doesn't return a value.
-     */
+   * Updates the base hue state and generates new colors based on the provided value.
+   * @param {number} value - The new base hue value to set.
+   * @returns {void} This function doesn't return a value.
+   */
   const setBaseHue = useCallback(
     (value: number) => {
       setBaseHueState(value);
@@ -214,16 +214,16 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
       );
 
       setColors(newColors);
-      /**
-       * Updates the UI saturation state and applies the new saturation value to colors.
-       * @param {number} value - The new saturation value to be set.
-       * @returns {void} This function doesn't return a value.
-       */
       setSyntaxColors(newSyntaxColors);
     },
     [colors, syntaxColors, lockedColors]
   );
 
+  /**
+   * Updates the UI saturation state and applies the new saturation value to colors.
+   * @param {number} value - The new saturation value to be set.
+   * @returns {void} This function doesn't return a value.
+   */
   const setUiSaturation = useCallback(
     (value: number) => {
       setUiSaturationState(value);
@@ -322,10 +322,10 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       } else if (colorKey in syntaxColors) {
         /**
-           * Updates the syntax colors by setting a new color for a specific color key
-           * @param {function} prevSyntaxColors - A function that returns the previous syntax colors object
-           * @returns {object} An updated syntax colors object with the new color applied to the specified color key
-           */
+         * Updates the syntax colors by setting a new color for a specific color key
+         * @param {function} prevSyntaxColors - A function that returns the previous syntax colors object
+         * @returns {object} An updated syntax colors object with the new color applied to the specified color key
+         */
         setSyntaxColors((prevSyntaxColors) => ({
           ...prevSyntaxColors,
           [colorKey]: newColor,
