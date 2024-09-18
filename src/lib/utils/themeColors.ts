@@ -223,16 +223,6 @@ export function updateThemeColorsWithSaturation(
   const updateColorSaturation = (
     color: string,
     saturationMultiplier: number
-  ```
-  /**
-   * Updates the saturation of non-locked colors in the updatedColors object
-   * @param {Object} updatedColors - The object containing color aliases to be updated
-   * @param {Set} lockedColors - A set of color keys that should not be modified
-   * @param {Object} currentColors - The current color values for each alias
-   * @param {Object} saturationMultipliers - Multipliers for adjusting saturation for each color key
-   * @returns {void} This function doesn't return a value, it modifies the updatedColors object in place
-   */
-  ```
   ) => {
     const hsl = Color(color).hsl();
     const newSaturation = Math.min(100, newUiSaturation * saturationMultiplier);
@@ -262,6 +252,14 @@ export function updateThemeColorsWithSaturation(
 
   Object.keys(updatedColors).forEach((key) => {
     if (!lockedColors.has(key)) {
+      /**
+       * Updates the saturation of non-locked colors in the updatedColors object
+       * @param {Object} updatedColors - The object containing color aliases to be updated
+       * @param {Set} lockedColors - A set of color keys that should not be modified
+       * @param {Object} currentColors - The current color values for each alias
+       * @param {Object} saturationMultipliers - Multipliers for adjusting saturation for each color key
+       * @returns {void} This function doesn't return a value, it modifies the updatedColors object in place
+       */
       updatedColors[key as keyof ColorAliases] = updateColorSaturation(
         currentColors[key as keyof ColorAliases],
         saturationMultipliers[key as keyof typeof saturationMultipliers]
