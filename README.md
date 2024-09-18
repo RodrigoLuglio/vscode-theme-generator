@@ -1,81 +1,84 @@
-# 🎨 VSCode Theme Generator
 
-Generate stunning, customized VSCode themes with our intelligent color algorithm and semantic token system.
+# VS Code Theme Generator Documentation
 
-## ✨ Features
+## Overview
 
-- 🖌️ Intelligent color generation algorithm
-- 🧠 Semantic token support for enhanced syntax highlighting
-- 🎭 Light and dark theme variants
-- 🔧 Customizable color palettes
-- 📦 Easy export to VSCode extension format
+This project is a VS Code Theme Generator that allows users to create custom color themes for Visual Studio Code. It provides a user-friendly interface for adjusting various color settings and previewing the results in real-time.
 
-## 🧬 Color Generation Algorithm
+## Key Components
 
-Our algorithm creates harmonious color schemes by:
+### ThemeContext (src/contexts/ThemeContext.tsx)
 
-1. Selecting a base color
-2. Generating complementary and analogous colors
-3. Adjusting saturation and brightness for optimal contrast
-4. Applying color theory principles for visual appeal
+The ThemeContext is the core of the application, managing the state and providing theme-related functions to all components. It uses React's Context API to share theme data and functions across the component tree.
 
-## 🏷️ Semantic Tokens
+Key features:
+- Manages theme state (isDark, baseHue, uiSaturation, syntaxSaturation, scheme)
+- Provides functions for generating and updating colors
+- Handles color locking and active color selection
 
-We use semantic tokens to provide consistent and meaningful syntax highlighting:
+### ThemeControls (src/components/ThemeControls.tsx)
 
-- `keyword`: Language keywords
-- `string`: String literals
-- `comment`: Comments
-- `function`: Function declarations and calls
-- `variable`: Local variables
-- `type`: Type annotations
-- `constant`: Constant values
-- `class`: Class declarations
-- `number`: Numeric literals
-- `operator`: Operators
-- `parameter`: Function parameters
-- `property`: Object properties
-- `punctuation`: Punctuation marks
-- `selector`: Selectors in CSS/SCSS
-- `storage`: Storage keywords
-- `support`: Support functions and classes
-- `modifier`: Modifiers and access specifiers
-- `control`: Control flow keywords
-- `decorator`: Decorators and annotations
-- `tag`: HTML/XML tags
-- `attribute`: HTML/XML attributes
-- `namespace`: Namespaces and packages
-- `regex`: Regular expressions
-- `escape`: Escape characters
-- `metaBrace`: Meta braces and brackets
-- `docKeyword`: Documentation keywords
-- `heading`: Markdown headings
-- `link`: Hyperlinks
-- `list`: List items
-- `quote`: Quotations
-- `raw`: Raw text blocks
+This component provides the user interface for adjusting theme settings. It includes controls for:
+- Toggling dark/light mode
+- Selecting color scheme
+- Adjusting base hue, UI saturation, and syntax saturation
+- Randomizing colors
+- Regenerating ANSI colors
 
-These tokens ensure a rich and nuanced syntax highlighting experience across various programming languages and file types.
+### ColorList (src/components/ColorList.tsx)
 
-## 🤝 How to Contribute
+Displays a list of theme colors or syntax colors, allowing users to:
+- View current color values
+- Lock/unlock individual colors
+- Copy color values to clipboard
+- Select a color for editing
 
-1. Fork the repository
-2. Create a new branch: `git checkout -b feature/your-feature-name`
-3. Make your changes and commit: `git commit -m "Add your feature"`
-4. Push to your fork: `git push origin feature/your-feature-name`
-5. Create a pull request
+### ActiveColorPicker (src/components/ActiveColorPicker.tsx)
 
-## 🚀 Future Improvements
+Provides a color picker for editing the currently selected color.
 
-- [ ] Improve Monaco editor preview to reflect VSCode themes with higher fidelity
-- [ ] Implement language-specific semantic tokens
-- [ ] Add support for popular frameworks (React, Vue, Angular)
-- [ ] Create theme templates for different coding styles
-- [ ] Improve accessibility options for color-blind users
-- [ ] Develop a web-based theme preview and customization tool
+### ThemePreview (src/components/ThemePreview.tsx)
 
-We welcome contributions and ideas to make this theme generator even better!
+Renders a preview of the generated theme, including:
+- A mock VS Code interface
+- Syntax-highlighted code samples in various languages
+- Real-time updates as theme settings are changed
 
-## 📄 License
+### ExportButton (src/components/ExportButton.tsx)
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+Allows users to export the generated theme as a JSON file compatible with VS Code.
+
+## Color Generation
+
+The color generation process is handled by utility functions in:
+- src/lib/utils/colorUtils.ts
+- src/lib/utils/themeColors.ts
+- src/lib/utils/syntaxColors.ts
+- src/lib/utils/ansiColors.ts
+
+These functions generate harmonious color schemes based on user inputs and ensure proper contrast and readability.
+
+## Inputs
+
+- Dark/Light mode toggle
+- Base hue (0-359)
+- UI Saturation (0-100)
+- Syntax Saturation (0-100)
+- Color Scheme selection
+- Individual color adjustments
+
+## Outputs
+
+- A complete set of theme colors for VS Code
+- Syntax highlighting colors
+- ANSI terminal colors
+- Exportable theme JSON file
+
+## Usage
+
+1. Adjust theme controls to customize colors
+2. Preview changes in real-time
+3. Fine-tune individual colors if needed
+4. Export the theme for use in VS Code
+
+This application provides a powerful and intuitive way for developers to create custom VS Code themes tailored to their preferences.
