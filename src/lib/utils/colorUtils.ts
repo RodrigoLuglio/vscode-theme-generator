@@ -12,14 +12,18 @@ export function generateRandomColor(): string {
   return Color.rgb(
     Math.floor(Math.random() * 256),
     Math.floor(Math.random() * 256),
-    /**
-     * Adjusts the brightness of a given color by a specified amount.
-     * @param {string} color - The color to adjust, in any valid CSS color format.
-     * @param {number} amount - The amount to lighten the color, typically between 0 and 1.
-     * @returns {string} The adjusted color in hexadecimal format.
-     */
     Math.floor(Math.random() * 256)
   ).hex();
+}
+
+/**
+ * Adjusts the brightness of a given color by a specified amount.
+ * @param {string} color - The color to adjust, in any valid CSS color format.
+ * @param {number} amount - The amount to lighten the color, typically between 0 and 1.
+ * @returns {string} The adjusted color in hexadecimal format.
+ */
+export function adjustColorBrightness(color: string, amount: number): string {
+  return Color(color).lighten(amount).hex();
 }
 
 /**
@@ -27,34 +31,19 @@ export function generateRandomColor(): string {
  * @param {string} backgroundColor - The background color in a format parsable by the Color library.
  * @returns {string} A contrasting color in hexadecimal format.
  */
-export function adjustColorBrightness(color: string, amount: number): string {
-  return Color(color).lighten(amount).hex();
-}
-
 export function generateContrastingColor(backgroundColor: string): string {
-  /**
-   * Adjusts the color of a comment based on the background color to ensure proper contrast and readability.
-   * @param {string} commentColor - The initial color of the comment.
-   * @param {string} backgroundColor - The color of the background.
-   * @param {number} [minContrast=1.1] - The minimum contrast ratio between comment and background.
-   * @param {number} [maxContrast=1.5] - The maximum contrast ratio between comment and background.
-   * @param {number} [targetLuminanceRatio=0.1] - The target luminance ratio between comment and background.
-   * @returns {string} The adjusted comment color in hexadecimal format.
-   */
   const bgColor = Color(backgroundColor);
   return bgColor.isLight()
     ? bgColor.darken(0.6).hex()
     : bgColor.lighten(0.6).hex();
+}
+
 /**
  * Generates a harmonized color based on a given base color and hue offset
  * @param {string} baseColor - The starting color in any valid CSS color format
  * @param {number} hueOffset - The amount to rotate the hue of the base color (in degrees)
  * @returns {string} A new color in hexadecimal format that is harmonized with the base color
  */
-}
-
-// Add these new functions:
-
 export function generateHarmonizedColor(
   baseColor: string,
   hueOffset: number
@@ -62,6 +51,15 @@ export function generateHarmonizedColor(
   return Color(baseColor).rotate(hueOffset).saturate(0.1).hex();
 }
 
+/**
+ * Adjusts the color generated color for comments based on the background color to ensure proper contrast and readability.
+ * @param {string} commentColor - The initial color of the comment.
+ * @param {string} backgroundColor - The color of the background.
+ * @param {number} [minContrast=1.1] - The minimum contrast ratio between comment and background.
+ * @param {number} [maxContrast=1.5] - The maximum contrast ratio between comment and background.
+ * @param {number} [targetLuminanceRatio=0.1] - The target luminance ratio between comment and background.
+ * @returns {string} The adjusted comment color in hexadecimal format.
+ */
 export function adjustCommentColor(
   commentColor: string,
   backgroundColor: string,
@@ -107,13 +105,6 @@ export function adjustCommentColor(
   }
 
   // Final adjustment to ensure the color is within the desired range
-  /**
-   * Adjusts the foreground color to ensure readability against a background color.
-   * @param {string} foreground - The initial foreground color in a format parsable by the Color function.
-   * @param {string} background - The background color to contrast against, in a format parsable by the Color function.
-   * @param {number} [minContrast=5.5] - The minimum contrast ratio to achieve between foreground and background.
-   * @returns {string} The adjusted foreground color as a hexadecimal string.
-   */
   if (isDarkTheme) {
     const maxLuminosity = bgColor.luminosity() + 0.2;
     while (comment.luminosity() > maxLuminosity) {
@@ -124,6 +115,13 @@ export function adjustCommentColor(
   return comment.hex();
 }
 
+/**
+ * Adjusts the foreground color to ensure readability against a background color.
+ * @param {string} foreground - The initial foreground color in a format parsable by the Color function.
+ * @param {string} background - The background color to contrast against, in a format parsable by the Color function.
+ * @param {number} [minContrast=5.5] - The minimum contrast ratio to achieve between foreground and background.
+ * @returns {string} The adjusted foreground color as a hexadecimal string.
+ */
 export function ensureReadability(
   foreground: string,
   background: string,
@@ -378,13 +376,6 @@ export function hexToHSL(hex: string): { h: number; s: number; l: number } {
  */
 export function hslToHex(h: number, s: number, l: number): string {
   h /= 360;
-  /**
-   * Converts HSL color values to RGB color values
-   * @param {number} p - The first component in the conversion calculation
-   * @param {number} q - The second component in the conversion calculation
-   * @param {number} t - The third component in the conversion calculation, representing the hue
-   * @returns {number} The resulting RGB value component
-   */
   s /= 100;
   l /= 100;
   let r, g, b;
@@ -400,12 +391,7 @@ export function hslToHex(h: number, s: number, l: number): string {
       if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
       return p;
     };
-
-    /**
-     * Converts a decimal number between 0 and 1 to its hexadecimal representation
-     * @param {number} x - The decimal number to convert (should be between 0 and 1)
-     * @returns {string} A two-character hexadecimal string representation of the input
-     */
+    
     const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
     const p = 2 * l - q;
     r = hue2rgb(p, q, h + 1 / 3);
