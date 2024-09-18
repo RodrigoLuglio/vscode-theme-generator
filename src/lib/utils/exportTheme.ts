@@ -2,6 +2,13 @@ import { ColorAliases } from "./themeColors";
 import { SyntaxColors } from "./syntaxColors";
 import { AnsiColors } from "./ansiColors";
 
+/**
+ * Generates a JSON string representing a VS Code theme based on provided color configurations.
+ * @param {Object} colors - An object containing color aliases.
+ * @param {Object} syntaxColors - An object containing syntax-specific colors.
+ * @param {Object} ansiColors - An object containing ANSI color configurations.
+ * @returns {string} A JSON string representing the generated VS Code theme.
+ */
 export function generateThemeJSON(
   colors: ColorAliases,
   syntaxColors: SyntaxColors,
