@@ -3,26 +3,26 @@ import {
   ThemeGenerationOptions,
   ensureReadability,
   generateSchemeColors,
-} from "./colorUtils";
-import Color from "color";
+} from './colorUtils'
+import Color from 'color'
 
 export interface ColorAliases {
-  BG1: string;
-  BG2: string;
-  BG3: string;
-  FG1: string;
-  FG2: string;
-  FG3: string;
-  AC1: string;
-  AC2: string;
-  BORDER: string;
-  INFO: string;
-  ERROR: string;
-  WARNING: string;
-  SUCCESS: string;
-  lineHighlight: string;
-  selection: string;
-  findMatch: string;
+  BG1: string
+  BG2: string
+  BG3: string
+  FG1: string
+  FG2: string
+  FG3: string
+  AC1: string
+  AC2: string
+  BORDER: string
+  INFO: string
+  ERROR: string
+  WARNING: string
+  SUCCESS: string
+  lineHighlight: string
+  selection: string
+  findMatch: string
 }
 
 export function generateThemeColors(
@@ -30,23 +30,23 @@ export function generateThemeColors(
   initialColors: Partial<ColorAliases> = {},
   forceRegenerate: boolean = false
 ): {
-  colors: ColorAliases;
-  schemeHues: number[];
-  ac1Hue: number;
-  ac2Hue: number;
-  scheme: ColorScheme;
+  colors: ColorAliases
+  schemeHues: number[]
+  ac1Hue: number
+  ac2Hue: number
+  scheme: ColorScheme
 } {
   const {
     isDark,
     baseHue = Math.random() * 360,
     uiSaturation = isDark ? 30 : 70,
     scheme = ColorScheme.Analogous,
-  } = options;
+  } = options
 
-  const schemeHues = generateSchemeColors(baseHue, scheme);
+  const schemeHues = generateSchemeColors(baseHue, scheme)
 
-  const bgBase = isDark ? 12 : 97;
-  const fgBase = isDark ? 90 : 10;
+  const bgBase = isDark ? 12 : 97
+  const fgBase = isDark ? 90 : 10
 
   const generateColor = (
     hue: number,
@@ -55,21 +55,21 @@ export function generateThemeColors(
   ) => {
     if (!forceRegenerate) {
       // Increase randomness
-      const randomHueShift = Math.random() * 30 - 15; // -15 to +15
-      const randomSaturationShift = Math.random() * 20 - 10; // -10 to +10
-      const randomLightnessShift = Math.random() * 10 - 5; // -5 to +5
+      const randomHueShift = Math.random() * 30 - 15 // -15 to +15
+      const randomSaturationShift = Math.random() * 20 - 10 // -10 to +10
+      const randomLightnessShift = Math.random() * 10 - 5 // -5 to +5
 
-      hue = (hue + randomHueShift + 360) % 360;
+      hue = (hue + randomHueShift + 360) % 360
       saturation = Math.max(
         0,
         Math.min(100, saturation + randomSaturationShift)
-      );
-      lightness = Math.max(0, Math.min(100, lightness + randomLightnessShift));
+      )
+      lightness = Math.max(0, Math.min(100, lightness + randomLightnessShift))
     }
 
-    const color = Color.hsl(hue, saturation, lightness).hex();
-    return color;
-  };
+    const color = Color.hsl(hue, saturation, lightness).hex()
+    return color
+  }
 
   const colors: ColorAliases = {
     BG1:
@@ -138,7 +138,7 @@ export function generateThemeColors(
           uiSaturation * 0.3,
           isDark ? bgBase + 5 : bgBase - 5
         )
-      ).hex() + "70",
+      ).hex() + '70',
     selection:
       initialColors.selection ||
       Color(
@@ -147,7 +147,7 @@ export function generateThemeColors(
           uiSaturation * 0.4,
           isDark ? bgBase + 15 : bgBase - 15
         )
-      ).hex() + "70",
+      ).hex() + '70',
     findMatch:
       initialColors.findMatch ||
       Color(
@@ -156,36 +156,34 @@ export function generateThemeColors(
           uiSaturation * 0.6,
           isDark ? bgBase + 20 : bgBase - 20
         )
-      ).hex() + "70",
-  };
+      ).hex() + '70',
+  }
 
   // Ensure readability for specific colors
   Object.keys(colors).forEach((key) => {
     if (
       !initialColors[key as keyof ColorAliases] &&
-      key !== "lineHighlight" &&
-      key !== "selection" &&
-      key !== "findMatch" &&
-      // key !== "AC1" &&
-      // key !== "AC2" &&
-      key !== "BORDER" &&
-      key !== "BG1" &&
-      key !== "BG2" &&
-      key !== "BG3" &&
-      key !== "FG3"
+      key !== 'lineHighlight' &&
+      key !== 'selection' &&
+      key !== 'findMatch' &&
+      key !== 'BORDER' &&
+      key !== 'BG1' &&
+      key !== 'BG2' &&
+      key !== 'BG3' &&
+      key !== 'FG3'
     ) {
       colors[key as keyof ColorAliases] = ensureReadability(
         colors[key as keyof ColorAliases],
         colors.BG1,
-        key.startsWith("BG") ? 1.5 : 4.5
-      );
+        key.startsWith('BG') ? 1.5 : 4.5
+      )
     }
-  });
+  })
 
-  const ac1Hue = Color(colors.AC1).hue();
-  const ac2Hue = Color(colors.AC2).hue();
+  const ac1Hue = Color(colors.AC1).hue()
+  const ac2Hue = Color(colors.AC2).hue()
 
-  return { colors, schemeHues, ac1Hue, ac2Hue, scheme };
+  return { colors, schemeHues, ac1Hue, ac2Hue, scheme }
 }
 
 export function updateThemeColorsWithSaturation(
@@ -197,12 +195,12 @@ export function updateThemeColorsWithSaturation(
     color: string,
     saturationMultiplier: number
   ) => {
-    const hsl = Color(color).hsl();
-    const newSaturation = Math.min(100, newUiSaturation * saturationMultiplier);
-    return Color.hsl(hsl.hue(), newSaturation, hsl.lightness()).hex();
-  };
+    const hsl = Color(color).hsl()
+    const newSaturation = Math.min(100, newUiSaturation * saturationMultiplier)
+    return Color.hsl(hsl.hue(), newSaturation, hsl.lightness()).hex()
+  }
 
-  const updatedColors: ColorAliases = { ...currentColors };
+  const updatedColors: ColorAliases = { ...currentColors }
 
   const saturationMultipliers = {
     BG1: 0.1,
@@ -218,19 +216,18 @@ export function updateThemeColorsWithSaturation(
     ERROR: 1.2,
     WARNING: 1.1,
     SUCCESS: 0.9,
-    lineHighlight: 0.3,
-    selection: 0.4,
-    findMatch: 0.6,
-  };
+  }
 
   Object.keys(updatedColors).forEach((key) => {
-    if (!lockedColors.has(key)) {
-      updatedColors[key as keyof ColorAliases] = updateColorSaturation(
-        currentColors[key as keyof ColorAliases],
-        saturationMultipliers[key as keyof typeof saturationMultipliers]
-      );
+    if (key !== 'lineHighlight' && key !== 'selection' && key !== 'findMatch') {
+      if (!lockedColors.has(key)) {
+        updatedColors[key as keyof ColorAliases] = updateColorSaturation(
+          currentColors[key as keyof ColorAliases],
+          saturationMultipliers[key as keyof typeof saturationMultipliers]
+        )
+      }
     }
-  });
+  })
 
-  return updatedColors;
+  return updatedColors
 }
