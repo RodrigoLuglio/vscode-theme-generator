@@ -75,11 +75,11 @@ export function adjustCommentColor(
         if (contrast > maxContrast) {
           comment = comment.darken(0.2)
           comment = comment.desaturate(0.5)
-          console.log('Escureceu ')
+          // console.log('Escureceu ')
         } else if (contrast < minContrast) {
           comment = comment.lighten(0.2)
           comment = comment.saturate(0.2)
-          console.log('Clareou ')
+          // console.log('Clareou ')
         }
       } else {
         break
@@ -90,11 +90,11 @@ export function adjustCommentColor(
         if (contrast < minContrast) {
           comment = comment.darken(0.2)
           comment = comment.saturate(0.2)
-          console.log('Escureceu ')
+          // console.log('Escureceu ')
         } else if (contrast > maxContrast) {
           comment = comment.lighten(0.2)
           comment = comment.desaturate(0.5)
-          console.log('Clareou ')
+          // console.log('Clareou ')
         }
       } else {
         break
@@ -171,119 +171,134 @@ export function generateSchemeColors(
     case ColorScheme.Analogous:
       result = [
         baseHue,
-        (baseHue + 30) % 360,
-        (baseHue + 60) % 360,
-        (baseHue - 30 + 360) % 360,
+        Math.abs(baseHue + 30) % 360,
+        Math.abs(baseHue + 60) % 360,
+        Math.abs(baseHue - 30 + 360) % 360,
+        Math.abs(baseHue - 60 + 360) % 360,
       ]
       break
     case ColorScheme.Complementary:
-      result = [
-        baseHue,
-        (baseHue + 180) % 360,
-        (baseHue + 30) % 360,
-        (baseHue + 210) % 360,
-      ]
+      result = [baseHue, Math.abs(baseHue + 180) % 360]
       break
     case ColorScheme.SplitComplementary:
       result = [
         baseHue,
-        (baseHue + 150) % 360,
-        (baseHue + 210) % 360,
-        (baseHue + 30) % 360,
+        Math.abs(baseHue + 150) % 360,
+        Math.abs(baseHue + 210) % 360,
       ]
       break
     case ColorScheme.Triadic:
       result = [
         baseHue,
-        (baseHue + 120) % 360,
-        (baseHue + 240) % 360,
-        (baseHue + 60) % 360,
+        Math.abs(baseHue + 60) % 360,
+        Math.abs(baseHue + 120) % 360,
       ]
       break
     case ColorScheme.Tetradic:
       result = [
         baseHue,
-        (baseHue + 90) % 360,
-        (baseHue + 180) % 360,
-        (baseHue + 270) % 360,
+        Math.abs(baseHue + 90) % 360,
+        Math.abs(baseHue + 180) % 360,
+        Math.abs(baseHue + 270) % 360,
       ]
       break
     case ColorScheme.GoldenRatio:
       const goldenRatio = 0.618033988749895
       result = [
         baseHue,
-        (baseHue + 360 * goldenRatio) % 360,
-        (baseHue + 360 * goldenRatio * 2) % 360,
-        (baseHue + 360 * goldenRatio * 3) % 360,
+        Math.abs(baseHue + 360 * goldenRatio) % 360,
+        Math.abs(baseHue + 360 * goldenRatio * 2) % 360,
+        Math.abs(baseHue + 360 * goldenRatio * 3) % 360,
+        Math.abs(baseHue + 360 * goldenRatio * 4) % 360,
+        Math.abs(baseHue + 360 * goldenRatio * 5) % 360,
+        Math.abs(baseHue + 360 * goldenRatio * 6) % 360,
+        Math.abs(baseHue + 360 * goldenRatio * 7) % 360,
       ]
       break
     case ColorScheme.Fibonacci:
       result = [
         baseHue,
-        (baseHue + 360 / 13) % 360,
-        (baseHue + 360 / 8) % 360,
-        (baseHue + 360 / 5) % 360,
+        Math.abs(baseHue + 360 / 2) % 360,
+        Math.abs(baseHue + 360 / 3) % 360,
+        Math.abs(baseHue + 360 / 5) % 360,
+        Math.abs(baseHue + 360 / 8) % 360,
+        Math.abs(baseHue + 360 / 13) % 360,
+        Math.abs(baseHue + 360 / 21) % 360,
+        Math.abs(baseHue + 360 / 34) % 360,
+        Math.abs(baseHue + 360 / 55) % 360,
       ]
       break
     case ColorScheme.PentagramStar:
       result = [
         baseHue,
-        (baseHue + 72) % 360,
-        (baseHue + 144) % 360,
-        (baseHue + 216) % 360,
-        (baseHue + 288) % 360,
+        Math.abs(baseHue + 72) % 360,
+        Math.abs(baseHue + 144) % 360,
+        Math.abs(baseHue + 216) % 360,
+        Math.abs(baseHue + 288) % 360,
       ]
       break
     case ColorScheme.VesicaPiscis:
-      result = [(baseHue + 33) % 360, (baseHue + 66) % 360]
+      result = [
+        baseHue,
+        Math.abs(baseHue + 33) % 360,
+        Math.abs(baseHue + 66) % 360,
+      ]
       break
     case ColorScheme.FlowerOfLife:
       result = [
-        (baseHue + 60) % 360,
-        (baseHue + 120) % 360,
-        (baseHue + 180) % 360,
-        (baseHue + 240) % 360,
-        (baseHue + 300) % 360,
+        baseHue,
+        Math.abs(baseHue + 60) % 360,
+        Math.abs(baseHue + 120) % 360,
+        Math.abs(baseHue + 180) % 360,
+        Math.abs(baseHue + 240) % 360,
+        Math.abs(baseHue + 300) % 360,
       ]
       break
     case ColorScheme.PlatonicSolids:
       result = [
-        (baseHue + 72) % 360,
-        (baseHue + 144) % 360,
-        (baseHue + 216) % 360,
-        (baseHue + 288) % 360,
+        baseHue,
+        Math.abs(baseHue + 72) % 360,
+        Math.abs(baseHue + 144) % 360,
+        Math.abs(baseHue + 216) % 360,
+        Math.abs(baseHue + 288) % 360,
       ]
       break
     case ColorScheme.SpiralOfTheodorus:
       result = [
-        (baseHue + Math.sqrt(2) * 180) % 360,
-        (baseHue + Math.sqrt(3) * 180) % 360,
-        (baseHue + Math.sqrt(4) * 180) % 360,
+        baseHue,
+        Math.abs(baseHue + Math.sqrt(2) * 180) % 360,
+        Math.abs(baseHue + Math.sqrt(3) * 180) % 360,
+        Math.abs(baseHue + Math.sqrt(5) * 180) % 360,
+        Math.abs(baseHue + Math.sqrt(6) * 180) % 360,
+        Math.abs(baseHue + Math.sqrt(7) * 180) % 360,
+        Math.abs(baseHue + Math.sqrt(8) * 180) % 360,
       ]
       break
     case ColorScheme.MetatronsCube:
       result = [
-        (baseHue + 60) % 360,
-        (baseHue + 120) % 360,
-        (baseHue + 180) % 360,
-        (baseHue + 240) % 360,
-        (baseHue + 300) % 360,
-        (baseHue + 30) % 360,
-        (baseHue + 90) % 360,
-        (baseHue + 150) % 360,
-        (baseHue + 210) % 360,
-        (baseHue + 270) % 360,
-        (baseHue + 330) % 360,
+        baseHue,
+        Math.abs(baseHue + 60) % 360,
+        Math.abs(baseHue + 120) % 360,
+        Math.abs(baseHue + 180) % 360,
+        Math.abs(baseHue + 240) % 360,
+        Math.abs(baseHue + 300) % 360,
+        Math.abs(baseHue + 30) % 360,
+        Math.abs(baseHue + 90) % 360,
+        Math.abs(baseHue + 150) % 360,
+        Math.abs(baseHue + 210) % 360,
+        Math.abs(baseHue + 270) % 360,
+        Math.abs(baseHue + 330) % 360,
       ]
       break
     case ColorScheme.SeedOfLife:
       result = [
-        (baseHue + 51.4) % 360,
-        (baseHue + 102.8) % 360,
-        (baseHue + 154.2) % 360,
-        (baseHue + 205.6) % 360,
-        (baseHue + 257) % 360,
-        (baseHue + 308.4) % 360,
+        baseHue,
+        Math.abs(baseHue + 51.4) % 360,
+        Math.abs(baseHue + 102.8) % 360,
+        Math.abs(baseHue + 154.2) % 360,
+        Math.abs(baseHue + 205.6) % 360,
+        Math.abs(baseHue + 257) % 360,
+        Math.abs(baseHue + 308.4) % 360,
       ]
       break
     default:
@@ -416,6 +431,7 @@ export function generateAdditionalHues(
       return [(baseHue + 120) % 360, (baseHue + 240) % 360]
     case ColorScheme.Tetradic:
       return [
+        baseHue,
         (baseHue + 90) % 360,
         (baseHue + 180) % 360,
         (baseHue + 270) % 360,
@@ -423,18 +439,29 @@ export function generateAdditionalHues(
     case ColorScheme.GoldenRatio:
       const goldenRatio = 0.618033988749895
       return [
+        baseHue,
         (baseHue + 360 * goldenRatio) % 360,
         (baseHue + 360 * goldenRatio * 2) % 360,
         (baseHue + 360 * goldenRatio * 3) % 360,
+        (baseHue + 360 * goldenRatio * 4) % 360,
+        (baseHue + 360 * goldenRatio * 5) % 360,
+        (baseHue + 360 * goldenRatio * 6) % 360,
       ]
     case ColorScheme.Fibonacci:
       return [
-        (baseHue + 360 / 13) % 360,
-        (baseHue + 360 / 8) % 360,
+        baseHue,
+        (baseHue + 360 / 2) % 360,
+        (baseHue + 360 / 3) % 360,
         (baseHue + 360 / 5) % 360,
+        (baseHue + 360 / 8) % 360,
+        (baseHue + 360 / 13) % 360,
+        (baseHue + 360 / 21) % 360,
+        (baseHue + 360 / 34) % 360,
+        (baseHue + 360 / 55) % 360,
       ]
     case ColorScheme.PentagramStar:
       return [
+        baseHue,
         (baseHue + 72) % 360,
         (baseHue + 144) % 360,
         (baseHue + 216) % 360,

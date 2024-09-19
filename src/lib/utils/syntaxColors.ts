@@ -1,3 +1,4 @@
+import { randomInteger } from './index'
 import {
   adjustCommentColor,
   ensureReadability,
@@ -52,6 +53,8 @@ export function generateSyntaxColors(
   const baseLightness = isDark ? 70 : 40
   const inverseBaseLightness = isDark ? 20 : 90
 
+  console.log('Syntax Hues: ', schemeHues)
+
   const generateColor = (
     hueIndex: number,
     saturationMultiplier: number = 1,
@@ -71,87 +74,257 @@ export function generateSyntaxColors(
       )
     )
 
-    if (!forceRegenerate) {
-      const randomHueShift = Math.random() * 10 - 5
-      const randomSaturationShift = Math.random() * 5 - 2.5
-      const randomLightnessShift = Math.random() * 5 - 2.5
+    // if (!forceRegenerate) {
+    //   const randomHueShift = Math.random() * 10 - 5
+    //   const randomSaturationShift = Math.random() * 5 - 2.5
+    //   const randomLightnessShift = Math.random() * 5 - 2.5
 
-      return Color.hsl(
-        (hue + randomHueShift + 360) % 360,
-        Math.max(0, Math.min(100, saturation + randomSaturationShift)),
-        Math.max(0, Math.min(100, lightness + randomLightnessShift))
-      ).hex()
-    }
+    //   return Color.hsl(
+    //     (hue + randomHueShift + 360) % 360,
+    //     Math.max(0, Math.min(100, saturation + randomSaturationShift)),
+    //     Math.max(0, Math.min(100, lightness + randomLightnessShift))
+    //   ).hex()
+    // }
 
     return Color.hsl(hue, saturation, lightness).hex()
   }
 
+  const functionHueIndex = randomInteger(0, schemeHues.length - 1)
+  const variableHueIndex = randomInteger(0, schemeHues.length - 1)
+  const typeHueIndex = randomInteger(0, schemeHues.length - 1)
+  const punctuationHueIndex = randomInteger(0, schemeHues.length - 1)
+  const tagHueIndex = randomInteger(0, schemeHues.length - 1)
+  const controlHueIndex = randomInteger(0, schemeHues.length - 1)
+
   const syntaxColors: SyntaxColors = {
-    keyword: lockedColors.keyword || generateColor(0, 1.1, 5),
-    comment: lockedColors.comment || generateColor(1, 0.5, 0, 0, false),
-    function: lockedColors.function || generateColor(2, 1.05, 10),
-    functionCall: lockedColors.functionCall || generateColor(2, 1, 8),
-    variable: lockedColors.variable || generateColor(3, 0.9, 5),
+    keyword:
+      lockedColors.keyword ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        1.1,
+        randomInteger(0, 13)
+      ),
+    comment:
+      lockedColors.comment ||
+      generateColor(randomInteger(0, schemeHues.length - 1), 0.5, 0, 0, false),
+    function:
+      lockedColors.function ||
+      generateColor(functionHueIndex, 1.05, randomInteger(0, 7)),
+    functionCall:
+      lockedColors.functionCall ||
+      generateColor(
+        functionHueIndex,
+        1,
+        randomInteger(5, 13),
+        randomInteger(13, 26)
+      ),
+    variable:
+      lockedColors.variable ||
+      generateColor(variableHueIndex, 0.9, randomInteger(0, 3)),
     variableDeclaration:
-      lockedColors.variableDeclaration || generateColor(3, 0.95, 7),
+      lockedColors.variableDeclaration ||
+      generateColor(
+        variableHueIndex,
+        0.95,
+        randomInteger(0, 9),
+        randomInteger(13, 26)
+      ),
     variableProperty:
-      lockedColors.variableProperty || generateColor(3, 0.85, 3),
-    type: lockedColors.type || generateColor(1, 1.05, 0),
-    typeParameter: lockedColors.typeParameter || generateColor(1, 1, -2),
-    constant: lockedColors.constant || generateColor(0, 1.15, 5),
-    class: lockedColors.class || generateColor(2, 1.1, 0),
-    parameter: lockedColors.parameter || generateColor(1, 0.9, 5),
-    property: lockedColors.property || generateColor(3, 0.95, 5),
-    operator: lockedColors.operator || generateColor(0, 0.7, 10),
-    storage: lockedColors.storage || generateColor(1, 1.05, 0),
-    punctuation: lockedColors.punctuation || generateColor(0, 0.5, 15),
+      lockedColors.variableProperty ||
+      generateColor(
+        variableHueIndex,
+        0.85,
+        randomInteger(0, 6),
+        randomInteger(17, 39)
+      ),
+    type:
+      lockedColors.type ||
+      generateColor(typeHueIndex, 1.05, randomInteger(0, 5)),
+    typeParameter:
+      lockedColors.typeParameter ||
+      generateColor(
+        typeHueIndex,
+        1,
+        -randomInteger(0, 5),
+        randomInteger(15, 27)
+      ),
+    constant:
+      lockedColors.constant ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        1.15,
+        randomInteger(0, 9)
+      ),
+    class:
+      lockedColors.class ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        1.1,
+        randomInteger(0, 3)
+      ),
+    parameter:
+      lockedColors.parameter ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        0.9,
+        randomInteger(0, 7)
+      ),
+    property:
+      lockedColors.property ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        0.95,
+        randomInteger(3, 9)
+      ),
+    operator:
+      lockedColors.operator ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        0.7,
+        randomInteger(0, 13)
+      ),
+    storage:
+      lockedColors.storage ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        1.05,
+        randomInteger(0, 5)
+      ),
+    punctuation:
+      lockedColors.punctuation ||
+      generateColor(punctuationHueIndex, 0.5, randomInteger(10, 20)),
     punctuationQuote:
-      lockedColors.punctuationQuote || generateColor(0, 0.45, 17),
+      lockedColors.punctuationQuote ||
+      generateColor(
+        punctuationHueIndex,
+        0.45,
+        randomInteger(13, 21),
+        randomInteger(9, 17)
+      ),
     punctuationBrace:
-      lockedColors.punctuationBrace || generateColor(0, 0.55, 12),
+      lockedColors.punctuationBrace ||
+      generateColor(
+        punctuationHueIndex,
+        0.55,
+        randomInteger(6, 17),
+        randomInteger(13, 21)
+      ),
     punctuationComma:
-      lockedColors.punctuationComma || generateColor(0, 0.4, 10),
-    selector: lockedColors.selector || generateColor(2, 1.05, 0),
-    modifier: lockedColors.modifier || generateColor(1, 1, 5),
-    other: lockedColors.other || generateColor(3, 1.1, -1),
-    language: lockedColors.language || generateColor(0, 1.2, -7),
-    control: lockedColors.control || generateColor(2, 1.15, -10),
-    controlFlow: lockedColors.controlFlow || generateColor(2, 1.1, -5),
-    controlImport: lockedColors.controlImport || generateColor(2, 1.05, -7),
-    tag: lockedColors.tag || generateColor(1, 1.1, 5),
-    tagPunctuation: lockedColors.tagPunctuation || generateColor(1, 1, 3),
-    attribute: lockedColors.attribute || generateColor(3, 0.95, 10),
-    support: lockedColors.support || generateColor(0, 1.15, -5),
-    unit: lockedColors.unit || generateColor(1, 1.1, -5),
-    datetime: lockedColors.datetime || generateColor(3, 1.05, 0),
+      lockedColors.punctuationComma ||
+      generateColor(
+        punctuationHueIndex,
+        0.4,
+        randomInteger(0, 10),
+        randomInteger(6, 15)
+      ),
+    selector:
+      lockedColors.selector ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        1.05,
+        randomInteger(0, 7)
+      ),
+    modifier:
+      lockedColors.modifier ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        1,
+        randomInteger(0, 5)
+      ),
+    other:
+      lockedColors.other ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        1.1,
+        -randomInteger(0, 6)
+      ),
+    language:
+      lockedColors.language ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        1.2,
+        -randomInteger(0, 9)
+      ),
+    control:
+      lockedColors.control ||
+      generateColor(controlHueIndex, 1.15, -randomInteger(0, 13)),
+    controlFlow:
+      lockedColors.controlFlow ||
+      generateColor(
+        controlHueIndex,
+        1.1,
+        -randomInteger(0, 5),
+        randomInteger(15, 27)
+      ),
+    controlImport:
+      lockedColors.controlImport ||
+      generateColor(
+        controlHueIndex,
+        1.05,
+        -randomInteger(0, 7),
+        randomInteger(9, 17)
+      ),
+    tag:
+      lockedColors.tag || generateColor(tagHueIndex, 1.1, randomInteger(3, 9)),
+    tagPunctuation:
+      lockedColors.tagPunctuation ||
+      generateColor(tagHueIndex, 1, randomInteger(0, 6), randomInteger(9, 17)),
+    attribute:
+      lockedColors.attribute ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        0.95,
+        randomInteger(0, 10)
+      ),
+    support:
+      lockedColors.support ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        1.15,
+        -randomInteger(0, 7)
+      ),
+    unit:
+      lockedColors.unit ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        1.1,
+        -randomInteger(0, 5)
+      ),
+    datetime:
+      lockedColors.datetime ||
+      generateColor(
+        randomInteger(0, schemeHues.length - 1),
+        1.05,
+        randomInteger(0, 5)
+      ),
   }
 
-  // Apply color harmony and blending
-  syntaxColors.functionCall = blendColors(
-    syntaxColors.function,
-    syntaxColors.functionCall,
-    0.3
-  )
-  syntaxColors.variableProperty = blendColors(
-    syntaxColors.variable,
-    syntaxColors.property,
-    0.5
-  )
-  syntaxColors.typeParameter = blendColors(
-    syntaxColors.type,
-    syntaxColors.parameter,
-    0.5
-  )
-  syntaxColors.controlFlow = blendColors(
-    syntaxColors.control,
-    syntaxColors.keyword,
-    0.3
-  )
-  syntaxColors.controlImport = blendColors(
-    syntaxColors.control,
-    syntaxColors.keyword,
-    0.6
-  )
+  // // Apply color harmony and blending
+  // syntaxColors.functionCall = blendColors(
+  //   syntaxColors.function,
+  //   syntaxColors.functionCall,
+  //   0.3
+  // )
+  // syntaxColors.variableProperty = blendColors(
+  //   syntaxColors.variable,
+  //   syntaxColors.property,
+  //   0.5
+  // )
+  // syntaxColors.typeParameter = blendColors(
+  //   syntaxColors.type,
+  //   syntaxColors.parameter,
+  //   0.5
+  // )
+  // syntaxColors.controlFlow = blendColors(
+  //   syntaxColors.control,
+  //   syntaxColors.keyword,
+  //   0.3
+  // )
+  // syntaxColors.controlImport = blendColors(
+  //   syntaxColors.control,
+  //   syntaxColors.keyword,
+  //   0.6
+  // )
 
   // Ensure readability and harmony
   Object.keys(syntaxColors).forEach((key) => {

@@ -988,7 +988,6 @@ export function generateThemeJSON(
       {
         scope: [
           'entity.name.class',
-          'entity.name.type',
           'entity.name.type.class',
           'entity.other.inherited-class',
           'entity.name.fragment.graphql',
@@ -1036,8 +1035,7 @@ export function generateThemeJSON(
       },
       {
         scope: [
-          'source.css',
-          'entity.other.attribute-name.class.css',
+          // "source.css",
           'entity.name.variable.parameter',
           'meta.selector.css',
           'meta.at-rule.function variable',
@@ -1050,11 +1048,13 @@ export function generateThemeJSON(
         },
       },
       {
-        scope: [
-          'support',
-          'entity.other.attribute-name.pseudo-class.css',
-          'entity.other.attribute-name.pseudo-element.css',
-        ],
+        scope: ['entity.other.attribute-name.class.css'],
+        settings: {
+          foreground: colors.AC1,
+        },
+      },
+      {
+        scope: ['support'],
         settings: {
           foreground: syntaxColors.support,
           // fontStyle: "bold",
@@ -1072,7 +1072,14 @@ export function generateThemeJSON(
         },
       },
       {
+        scope: ['entity.name.type'],
+        settings: {
+          foreground: syntaxColors.type,
+        },
+      },
+      {
         scope: [
+          'entity.name.type.module',
           'entity.name.type.type-parameter',
           'meta.indexer.mappedtype.declaration entity.name.type',
           'meta.type.parameters entity.name.type',
@@ -1082,7 +1089,11 @@ export function generateThemeJSON(
         },
       },
       {
-        scope: ['entity.other.attribute-name', 'meta.object-literal.key.js'],
+        scope: [
+          'entity.other.attribute-name',
+          'meta.object-literal.key.js',
+          'entity.other.attribute-name.pseudo-class.css',
+        ],
         settings: {
           foreground: syntaxColors.attribute,
           // fontStyle: "bold",
@@ -1102,7 +1113,7 @@ export function generateThemeJSON(
           'source.postcss support.type.property-name',
         ],
         settings: {
-          foreground: syntaxColors.property,
+          foreground: colors.AC2,
         },
       },
 
@@ -1112,7 +1123,6 @@ export function generateThemeJSON(
 
       {
         scope: [
-          'entity.name.type',
           'keyword.primitive-datatypes.swift',
           'keyword.type.cs',
           'meta.protocol-list.objc',
@@ -1281,7 +1291,11 @@ export function generateThemeJSON(
         },
       },
       {
-        scope: ['keyword.control.new', 'keyword.operator.new'],
+        scope: [
+          'keyword.control.new',
+          'keyword.operator.new',
+          'keyword.other.important.css',
+        ],
         settings: {
           foreground: colors.AC2,
           // fontStyle: "bold"
@@ -1296,7 +1310,6 @@ export function generateThemeJSON(
       },
       {
         scope: [
-          'keyword.other.important.css',
           'keyword.control.flow',
           'keyword.control.loop',
           'keyword.control.conditional',
@@ -1311,23 +1324,60 @@ export function generateThemeJSON(
         },
       },
       {
+        name: 'Tag names in Stylesheets',
+        scope: [
+          'entity.name.tag.css',
+          'entity.name.tag.less',
+          'entity.name.tag.custom.css',
+        ],
+        settings: {
+          foreground: syntaxColors.tag,
+          fontStyle: '',
+        },
+      },
+      {
+        name: 'Wildcard(*) selector in Stylesheets',
+        scope: [
+          'entity.name.tag.wildcard.css',
+          'entity.name.tag.wildcard.less',
+          'entity.name.tag.wildcard.scss',
+          'entity.name.tag.wildcard.sass',
+        ],
+        settings: {
+          foreground: syntaxColors.tagPunctuation,
+        },
+      },
+      {
+        name: 'Constant property values in Stylesheets',
+        scope: ['support.constant.property-value.css', 'constant.numeric.css'],
+        settings: {
+          foreground: colors.FG2,
+          fontStyle: '',
+        },
+      },
+      {
         scope: ['keyword.control.at-rule.apply.tailwind'],
         settings: {
-          foreground: syntaxColors.control,
+          foreground: syntaxColors.controlImport,
           // fontStyle: "bold",
+        },
+      },
+      {
+        scope: ['keyword.control.at-rule.tailwind.tailwind'],
+        settings: {
+          foreground: syntaxColors.control,
+        },
+      },
+      {
+        scope: ['keyword.control.at-rule.layer.tailwind'],
+        settings: {
+          foreground: syntaxColors.controlFlow,
         },
       },
       {
         scope: ['meta.selector'],
         settings: {
           foreground: syntaxColors.selector,
-        },
-      },
-
-      {
-        scope: ['meta.at-rule.apply.tailwind'],
-        settings: {
-          foreground: syntaxColors.class,
         },
       },
       {
@@ -1369,9 +1419,13 @@ export function generateThemeJSON(
         },
       },
       {
-        scope: ['punctuation.definition.keyword.css'],
+        scope: [
+          'punctuation.definition.keyword.css',
+          'punctuation.section.property-list.begin.bracket.curly.css',
+          'punctuation.section.property-list.end.bracket.curly.css',
+        ],
         settings: {
-          foreground: syntaxColors.other,
+          foreground: syntaxColors.punctuation,
           // fontStyle: "bold",
         },
       },
@@ -1500,12 +1554,12 @@ export function generateThemeJSON(
       //--------------------------------------------------------------------
       // VARIABLES
       //--------------------------------------------------------------------
-      // {
-      //   scope: ["variable.parameter"],
-      //   settings: {
-      //     foreground: "#99B999"
-      //   }
-      // },
+      {
+        scope: ['variable'],
+        settings: {
+          foreground: syntaxColors.variable,
+        },
+      },
       {
         scope: ['variable.other.alias.yaml'],
         settings: {
@@ -1532,7 +1586,7 @@ export function generateThemeJSON(
         },
       },
       {
-        scope: [],
+        scope: ['variable.other.readwrite'],
         settings: {
           foreground: syntaxColors.variableDeclaration,
         },
@@ -1544,7 +1598,6 @@ export function generateThemeJSON(
           'meta.export variable.other.readwrite.alias',
           'meta.object-binding-pattern-variable variable.object.property',
           'meta.variable.assignment.destructured.object.coffee variable',
-          'variable.other.readwrite.js',
           'variable.other.constant',
         ],
         settings: {

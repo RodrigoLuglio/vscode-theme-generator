@@ -6,7 +6,11 @@ import React, {
   useRef,
   useEffect,
 } from 'react'
-import { ColorScheme, ThemeGenerationOptions } from '@/lib/utils/colorUtils'
+import {
+  ColorScheme,
+  generateSchemeColors,
+  ThemeGenerationOptions,
+} from '@/lib/utils/colorUtils'
 import {
   ColorAliases,
   generateThemeColors,
@@ -19,7 +23,6 @@ import {
 } from '@/lib/utils/syntaxColors'
 import { AnsiColors, generateAnsiColors } from '@/lib/utils/ansiColors'
 import { initialColors, initialSyntaxColors } from '@/lib/utils/exportTheme'
-import { generateAdditionalHues } from '@/lib/utils/colorUtils'
 
 interface ThemeContextType {
   isDark: boolean
@@ -104,8 +107,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
           const {
             colors: newColors,
             schemeHues: newSchemeHues,
-            ac1Hue,
-            ac2Hue,
             scheme: newScheme,
           } = generateThemeColors(
             fullOptions,
@@ -114,23 +115,15 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
             ) as Partial<ColorAliases>,
             options.forceRegenerate
           )
-
-          // Generate additional hues based on AC1 and AC2, respecting the color scheme
-          const ac1AdditionalHues = generateAdditionalHues(ac1Hue, newScheme)
-          const ac2AdditionalHues = generateAdditionalHues(ac2Hue, newScheme)
-
-          // Extend schemeHues with hues derived from AC1 and AC2
-          const extendedSchemeHues = [
-            ...newSchemeHues,
-            ac1Hue,
-            ...ac1AdditionalHues,
-            ac2Hue,
-            ...ac2AdditionalHues,
-          ]
+          console.log('Scheme returned from generateThemeColors: ', newScheme)
+          console.log(
+            'Scheme hues returned from generateThemeColors: ',
+            newSchemeHues
+          )
 
           const newSyntaxColors = generateSyntaxColors(
             newColors.BG1,
-            extendedSchemeHues,
+            newSchemeHues,
             fullOptions.syntaxSaturation,
             Object.fromEntries(
               Object.entries(syntaxColors).filter(([key]) =>

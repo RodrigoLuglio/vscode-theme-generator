@@ -1,24 +1,24 @@
-import React from "react";
-import { ColorScheme } from "@/lib/utils/colorUtils";
-import { useTheme } from "@/contexts/ThemeContext";
+import React, { use, useEffect } from 'react'
+import { ColorScheme } from '@/lib/utils/colorUtils'
+import { useTheme } from '@/contexts/ThemeContext'
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Slider } from "@/components/ui/slider";
+import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Slider } from '@/components/ui/slider'
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/tooltip'
+import { cn } from '@/lib/utils'
 
 const ThemeControls: React.FC = () => {
   const {
@@ -35,24 +35,28 @@ const ThemeControls: React.FC = () => {
     generateColors,
     lockedColors,
     regenerateAnsiColors,
-  } = useTheme();
+  } = useTheme()
+
+  useEffect(() => {
+    handleRandomize()
+  }, [])
 
   const handleRandomize = () => {
-    const newBaseHue = Math.floor(Math.random() * 360);
-    const newUiSaturation = Math.floor(Math.random() * 100);
-    const newSyntaxSaturation = Math.floor(Math.random() * 100);
+    const newBaseHue = Math.floor(Math.random() * 360)
+    const newUiSaturation = Math.floor(Math.random() * 100)
+    const newSyntaxSaturation = Math.floor(Math.random() * 100)
     const schemeValues = Object.values(ColorScheme).filter(
-      (value) => typeof value === "number"
-    ) as number[];
+      (value) => typeof value === 'number'
+    ) as number[]
     const newScheme = schemeValues[
       Math.floor(Math.random() * schemeValues.length)
-    ] as ColorScheme;
+    ] as ColorScheme
 
     // Update the state values immediately
-    setBaseHue(newBaseHue);
-    setUiSaturation(newUiSaturation);
-    setSyntaxSaturation(newSyntaxSaturation);
-    setScheme(newScheme);
+    setBaseHue(newBaseHue)
+    setUiSaturation(newUiSaturation)
+    setSyntaxSaturation(newSyntaxSaturation)
+    setScheme(newScheme)
 
     // Then generate colors with these new values
     generateColors({
@@ -63,14 +67,15 @@ const ThemeControls: React.FC = () => {
       scheme: newScheme,
       lockedColors: Array.from(lockedColors),
       forceRegenerate: true,
-    });
-  };
+    })
+  }
 
   const handleRegenerateUnlockedColors = () => {
     // Add small random variations to the current values
-    const hueVariation = Math.floor(Math.random() * 30) - 15; // -15 to +15
-    const saturationVariation = Math.floor(Math.random() * 20) - 10; // -10 to +10
+    const hueVariation = Math.floor(Math.random() * 30) - 15 // -15 to +15
+    const saturationVariation = Math.floor(Math.random() * 20) - 10 // -10 to +10
 
+    console.log('Scheme Regenerate: ', scheme)
     generateColors({
       isDark,
       baseHue: (baseHue + hueVariation + 360) % 360, // Ensure it stays within 0-359
@@ -85,23 +90,23 @@ const ThemeControls: React.FC = () => {
       scheme,
       lockedColors: Array.from(lockedColors),
       forceRegenerate: true, // Add this flag to force regeneration
-    });
-  };
+    })
+  }
 
   const getSaturationGradient = (baseHue: number) => `
     linear-gradient(to right, 
       hsl(${baseHue}, 0%, 50%), 
       hsl(${baseHue}, 100%, 50%)
     )
-  `;
+  `
 
   const handleSchemeChange = (newScheme: ColorScheme) => {
-    setScheme(newScheme);
+    setScheme(newScheme)
     generateColors({
       scheme: newScheme,
       forceRegenerate: true,
-    });
-  };
+    })
+  }
 
   return (
     <TooltipProvider>
@@ -302,7 +307,7 @@ const ThemeControls: React.FC = () => {
         </Tooltip>
       </div>
     </TooltipProvider>
-  );
-};
+  )
+}
 
-export default ThemeControls;
+export default ThemeControls

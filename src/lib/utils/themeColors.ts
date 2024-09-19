@@ -1,3 +1,4 @@
+import { randomInteger } from '.'
 import {
   ColorScheme,
   ThemeGenerationOptions,
@@ -32,21 +33,21 @@ export function generateThemeColors(
 ): {
   colors: ColorAliases
   schemeHues: number[]
-  ac1Hue: number
-  ac2Hue: number
   scheme: ColorScheme
 } {
   const {
     isDark,
     baseHue = Math.random() * 360,
-    uiSaturation = isDark ? 30 : 70,
+    uiSaturation = isDark ? randomInteger(15, 45) : randomInteger(45, 75),
     scheme = ColorScheme.Analogous,
   } = options
 
   const schemeHues = generateSchemeColors(baseHue, scheme)
 
-  const bgBase = isDark ? 12 : 97
-  const fgBase = isDark ? 90 : 10
+  console.log('schemeHues GT: ', schemeHues)
+
+  const bgBase = isDark ? randomInteger(0, 7) : randomInteger(93, 100)
+  const fgBase = isDark ? randomInteger(85, 100) : randomInteger(0, 15)
 
   const generateColor = (
     hue: number,
@@ -74,48 +75,64 @@ export function generateThemeColors(
   const colors: ColorAliases = {
     BG1:
       initialColors.BG1 ||
-      generateColor(schemeHues[0], uiSaturation * 0.1, bgBase),
+      generateColor(
+        schemeHues[randomInteger(0, schemeHues.length - 1)],
+        uiSaturation * 0.1,
+        isDark ? bgBase + randomInteger(0, 5) : bgBase - randomInteger(0, 2)
+      ),
     BG2:
       initialColors.BG2 ||
       generateColor(
-        schemeHues[0],
+        schemeHues[randomInteger(0, schemeHues.length - 1)],
         uiSaturation * 0.15,
-        isDark ? bgBase + 3 : bgBase - 3
+        isDark ? bgBase + randomInteger(0, 9) : bgBase - randomInteger(0, 5)
       ),
     BG3:
       initialColors.BG3 ||
       generateColor(
-        schemeHues[0],
+        schemeHues[randomInteger(0, schemeHues.length - 1)],
         uiSaturation * 0.2,
-        isDark ? bgBase + 6 : bgBase - 6
+        isDark ? bgBase + randomInteger(0, 13) : bgBase - randomInteger(0, 7)
       ),
     FG1:
       initialColors.FG1 ||
-      generateColor(schemeHues[0], uiSaturation * 0.05, fgBase),
+      generateColor(
+        schemeHues[randomInteger(0, schemeHues.length - 1)],
+        uiSaturation * 0.45,
+        isDark ? fgBase - randomInteger(0, 7) : fgBase + randomInteger(0, 9)
+      ),
     FG2:
       initialColors.FG2 ||
       generateColor(
-        schemeHues[0],
-        uiSaturation * 0.1,
-        isDark ? fgBase - 15 : fgBase + 15
+        schemeHues[randomInteger(0, schemeHues.length - 1)],
+        uiSaturation * 0.45,
+        isDark ? fgBase - randomInteger(3, 15) : fgBase + randomInteger(3, 15)
       ),
     FG3:
       initialColors.FG3 ||
       generateColor(
-        schemeHues[0],
+        schemeHues[randomInteger(0, schemeHues.length - 1)],
         uiSaturation * 0.05,
-        isDark ? bgBase : bgBase
+        isDark ? bgBase + randomInteger(0, 5) : bgBase - randomInteger(0, 5)
       ),
     AC1:
       initialColors.AC1 ||
-      generateColor(schemeHues[1], uiSaturation * 1.2, isDark ? 60 : 40),
+      generateColor(
+        schemeHues[randomInteger(0, schemeHues.length - 1)],
+        uiSaturation * 1.2,
+        isDark ? 60 : 40
+      ),
     AC2:
       initialColors.AC2 ||
-      generateColor(schemeHues[2], uiSaturation * 1.1, isDark ? 65 : 45),
+      generateColor(
+        schemeHues[randomInteger(0, schemeHues.length - 1)],
+        uiSaturation * 1.1,
+        isDark ? 65 : 45
+      ),
     BORDER:
       initialColors.BORDER ||
       generateColor(
-        schemeHues[0],
+        schemeHues[randomInteger(0, schemeHues.length - 1)],
         uiSaturation * 0.2,
         isDark ? bgBase + 10 : bgBase - 10
       ),
@@ -134,7 +151,7 @@ export function generateThemeColors(
       initialColors.lineHighlight ||
       Color(
         generateColor(
-          schemeHues[0],
+          schemeHues[randomInteger(0, schemeHues.length - 1)],
           uiSaturation * 0.3,
           isDark ? bgBase + 5 : bgBase - 5
         )
@@ -143,7 +160,7 @@ export function generateThemeColors(
       initialColors.selection ||
       Color(
         generateColor(
-          schemeHues[3],
+          schemeHues[randomInteger(0, schemeHues.length - 1)],
           uiSaturation * 0.4,
           isDark ? bgBase + 15 : bgBase - 15
         )
@@ -152,7 +169,7 @@ export function generateThemeColors(
       initialColors.findMatch ||
       Color(
         generateColor(
-          schemeHues[1],
+          schemeHues[randomInteger(0, schemeHues.length - 1)],
           uiSaturation * 0.6,
           isDark ? bgBase + 20 : bgBase - 20
         )
@@ -183,7 +200,18 @@ export function generateThemeColors(
   const ac1Hue = Color(colors.AC1).hue()
   const ac2Hue = Color(colors.AC2).hue()
 
-  return { colors, schemeHues, ac1Hue, ac2Hue, scheme }
+  const ac1AdditionalHues = generateSchemeColors(ac1Hue, scheme)
+  const ac2AdditionalHues = generateSchemeColors(ac2Hue, scheme)
+
+  const updatedSchemeHues = [
+    ...schemeHues,
+    ...ac1AdditionalHues,
+    ...ac2AdditionalHues,
+  ]
+
+  console.log('Updated scheme hues: ', updatedSchemeHues)
+
+  return { colors, schemeHues: updatedSchemeHues, scheme }
 }
 
 export function updateThemeColorsWithSaturation(
