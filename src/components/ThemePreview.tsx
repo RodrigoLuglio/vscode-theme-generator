@@ -1673,134 +1673,144 @@ const ThemePreview: React.FC = () => {
   }
 
   return (
-    <div
-      style={{
-        height: '600px',
-        display: 'flex',
-        flexDirection: 'column',
-        border: `1px solid ${colors.BORDER}`,
-      }}
-    >
-      {/* Mock VS Code title bar */}
+    <section>
+      <h3 className="text-xl mb-2 font-semibold">Theme Preview</h3>
       <div
         style={{
-          backgroundColor: colors.BG3,
-          padding: '5px 10px',
+          height: '400px',
           display: 'flex',
-          justifyContent: 'space-between',
+          flexDirection: 'column',
+          border: `1px solid ${colors.BORDER}`,
         }}
       >
-        <span style={{ color: colors.FG1 }}>VS Code Theme Preview</span>
-        <span style={{ color: colors.FG2 }}>File Edit View Help</span>
-      </div>
-
-      <div style={{ display: 'flex', flex: 1 }}>
-        {/* Mock VS Code sidebar */}
+        {/* Mock VS Code title bar */}
         <div
           style={{
-            width: '50px',
-            backgroundColor: colors.BG2,
+            backgroundColor: colors.BG3,
+            padding: '5px 10px',
             display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            padding: '10px 0',
+            justifyContent: 'space-between',
           }}
         >
-          <div
-            style={{
-              width: '24px',
-              height: '24px',
-              backgroundColor: colors.AC1,
-              marginBottom: '10px',
-            }}
-          ></div>
-          <div
-            style={{
-              width: '24px',
-              height: '24px',
-              backgroundColor: colors.AC2,
-              marginBottom: '10px',
-            }}
-          ></div>
-          <div
-            style={{
-              width: '24px',
-              height: '24px',
-              backgroundColor: colors.FG2,
-            }}
-          ></div>
+          <span style={{ color: colors.FG1 }} className="text-xs">
+            VS Code Theme Preview
+          </span>
+          <span style={{ color: colors.FG2 }} className="text-xs">
+            File Edit View Help
+          </span>
         </div>
 
-        {/* Mock VS Code explorer */}
-        <div
-          style={{
-            width: '200px',
-            backgroundColor: colors.BG2,
-            borderRight: `1px solid ${colors.BORDER}`,
-            padding: '10px',
-          }}
-        >
-          <div style={{ color: colors.FG1, marginBottom: '5px' }}>EXPLORER</div>
-          {Object.keys(codeSnippets).map((filename) => (
+        <div style={{ display: 'flex', flex: 1 }} className="text-xs">
+          {/* Mock VS Code sidebar */}
+          <div
+            style={{
+              width: '25px',
+              backgroundColor: colors.BG2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              padding: '10px 0',
+            }}
+          >
             <div
-              key={filename}
               style={{
-                color: selectedFile === filename ? colors.AC1 : colors.FG2,
-                cursor: 'pointer',
-                marginLeft: '10px',
+                width: '15px',
+                height: '15px',
+                backgroundColor: colors.AC1,
                 marginBottom: '5px',
               }}
-              onClick={() => setSelectedFile(filename as CodeSnippetKey)}
-            >
-              📄 {filename}
+            ></div>
+            <div
+              style={{
+                width: '15px',
+                height: '15px',
+                backgroundColor: colors.AC2,
+                marginBottom: '5px',
+              }}
+            ></div>
+            <div
+              style={{
+                width: '15px',
+                height: '15px',
+                backgroundColor: colors.FG2,
+              }}
+            ></div>
+          </div>
+
+          {/* Mock VS Code explorer */}
+          <div
+            style={{
+              width: '150px',
+              backgroundColor: colors.BG2,
+              borderRight: `1px solid ${colors.BORDER}`,
+              padding: '10px',
+            }}
+          >
+            <div style={{ color: colors.FG1, marginBottom: '5px' }}>
+              EXPLORER
             </div>
-          ))}
+            {Object.keys(codeSnippets).map((filename) => (
+              <div
+                key={filename}
+                style={{
+                  color: selectedFile === filename ? colors.AC1 : colors.FG2,
+                  cursor: 'pointer',
+                  marginLeft: '10px',
+                  marginBottom: '5px',
+                }}
+                onClick={() => setSelectedFile(filename as CodeSnippetKey)}
+              >
+                📄 {filename}
+              </div>
+            ))}
+          </div>
+
+          {/* Monaco Editor */}
+          <div style={{ flex: 1 }}>
+            <Editor
+              height="100%"
+              language={getLanguage(selectedFile)}
+              value={codeSnippets[selectedFile]}
+              theme="custom-theme"
+              options={{
+                minimap: { enabled: true },
+                scrollBeyondLastLine: false,
+                fontSize: 12,
+                readOnly: true,
+                'semanticHighlighting.enabled': true,
+                bracketPairColorization: {
+                  enabled: false,
+                },
+              }}
+              onMount={handleEditorDidMount}
+              beforeMount={(monaco) => {
+                monaco.editor.defineTheme('custom-theme', getTheme())
+                monaco.editor.setTheme('custom-theme')
+              }}
+              onChange={() => {
+                updateTheme()
+              }}
+            />
+          </div>
         </div>
 
-        {/* Monaco Editor */}
-        <div style={{ flex: 1 }}>
-          <Editor
-            height="100%"
-            language={getLanguage(selectedFile)}
-            value={codeSnippets[selectedFile]}
-            theme="custom-theme"
-            options={{
-              minimap: { enabled: true },
-              scrollBeyondLastLine: false,
-              fontSize: 14,
-              readOnly: true,
-              'semanticHighlighting.enabled': true,
-              bracketPairColorization: {
-                enabled: false,
-              },
-            }}
-            onMount={handleEditorDidMount}
-            beforeMount={(monaco) => {
-              monaco.editor.defineTheme('custom-theme', getTheme())
-              monaco.editor.setTheme('custom-theme')
-            }}
-            onChange={() => {
-              updateTheme()
-            }}
-          />
+        {/* Mock VS Code status bar */}
+        <div
+          style={{
+            backgroundColor: colors.AC2,
+            padding: '2px 10px',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+          className="text-xs"
+        >
+          <span style={{ color: colors.FG3 }}>
+            {selectedFile.split('.').pop()?.toUpperCase()}
+          </span>
+          <span style={{ color: colors.FG3 }}>Ln 1, Col 1</span>
         </div>
       </div>
-
-      {/* Mock VS Code status bar */}
-      <div
-        style={{
-          backgroundColor: colors.AC2,
-          padding: '2px 10px',
-          display: 'flex',
-          justifyContent: 'space-between',
-        }}
-      >
-        <span style={{ color: colors.FG3 }}>
-          {selectedFile.split('.').pop()?.toUpperCase()}
-        </span>
-        <span style={{ color: colors.FG3 }}>Ln 1, Col 1</span>
-      </div>
-    </div>
+    </section>
   )
 }
 

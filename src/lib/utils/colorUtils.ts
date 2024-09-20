@@ -313,6 +313,7 @@ export interface ThemeGenerationOptions {
   uiSaturation?: number
   syntaxSaturation?: number
   scheme?: ColorScheme
+  few?: boolean
 }
 
 export const presets = {

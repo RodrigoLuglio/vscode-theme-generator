@@ -43,6 +43,7 @@ interface ThemeContextType {
     options: Partial<ThemeGenerationOptions> & {
       lockedColors?: string[]
       forceRegenerate?: boolean
+      few?: boolean
     }
   ) => void
   updateColorsWithSaturation: (
@@ -84,6 +85,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
       options: Partial<ThemeGenerationOptions> & {
         lockedColors?: string[]
         forceRegenerate?: boolean
+        few?: boolean
       }
     ) => {
       if (generateColorsTimeoutRef.current) {
@@ -98,6 +100,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
             uiSaturation: options.uiSaturation ?? uiSaturation,
             syntaxSaturation: options.syntaxSaturation ?? syntaxSaturation,
             scheme: options.scheme ?? scheme,
+            few: options.few,
           }
 
           const lockedColorSet = new Set(

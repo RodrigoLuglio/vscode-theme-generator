@@ -6,6 +6,7 @@ import { ColorAliases } from '@/lib/utils/themeColors'
 import { Lock, Unlock, Copy } from 'lucide-react'
 
 import { Button } from './ui/button'
+import { get } from 'http'
 
 interface ColorListProps {
   title: string
@@ -62,45 +63,51 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
   return (
     <div className="mb-4">
       <h2 className="text-xl font-semibold mb-2">{title}</h2>
+
       <div
-        className="grid grid-cols-3 gap-2 p-4"
+        className="grid grid-cols-4 gap-4 p-4"
         style={{ background: colors.BG1 }}
       >
         {Object.entries(displayColors).map(([key, value]) => (
-          <div key={key} className="relative">
+          <div
+            key={key}
+            style={{
+              borderBottom: '1px solid',
+              borderBottomColor: getDisplayColor(key, value),
+            }}
+            onClick={() => setActiveColor(key)}
+            className="cursor-pointer"
+          >
             <div
-              className="w-full h-12 cursor-pointer flex items-center justify-between px-2"
-              style={{ backgroundColor: getDisplayColor(key, value) }}
-              onClick={() => setActiveColor(key)}
+              className="w-full cursor-pointer flex items-center justify-between"
+              style={{}}
             >
-              <span
-                className="text-xs font-semibold truncate"
-                style={{ color: Color(value).isLight() ? '#000' : '#fff' }}
+              <h3
+                className="text-sm truncate first-letter:uppercase pt-1 pb-3"
+                style={{
+                  color: getDisplayColor(key, value),
+                  // borderTop: '1px solid',
+                  // borderTopColor: getDisplayColor(key, value),
+                }}
               >
                 {key}
-              </span>
-              <div className="flex space-x-1">
+              </h3>
+              <div>
                 <Button
                   variant="ghost"
                   size="icon"
-                  className=""
+                  className="h-5 w-5"
                   onClick={(e) => {
                     e.stopPropagation()
                     copyToClipboard(value)
                   }}
-                  style={{
-                    backgroundColor: Color(value).isLight()
-                      ? 'rgba(0,0,0,0.1)'
-                      : 'rgba(255,255,255,0.1)',
-                  }}
                 >
-                  <Copy
-                    size={16}
-                    color={Color(value).isLight() ? '#000' : '#fff'}
-                  />
+                  <Copy size={16} color={getDisplayColor(key, value)} />
                 </Button>
-                <button
-                  className="text-xs p-1 rounded"
+                <Button
+                  value="ghost"
+                  size="icon"
+                  className="h-5 w-5"
                   onClick={(e) => {
                     e.stopPropagation()
                     toggleColorLock(key)
@@ -112,22 +119,24 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
                   }}
                 >
                   {lockedColors.has(key) ? (
-                    <Lock color={Color(value).isLight() ? '#000' : '#fff'} />
+                    <Lock size={16} color={getDisplayColor(key, value)} />
                   ) : (
-                    <Unlock color={Color(value).isLight() ? '#000' : '#fff'} />
+                    <Unlock size={16} color={getDisplayColor(key, value)} />
                   )}
-                </button>
+                </Button>
               </div>
             </div>
           </div>
         ))}
-        <div className="relative">
-          <button
-            className="w-full h-12 bg-gray-200 text-gray-700 text-xs font-semibold"
+        <div className="self-end w-full place-self-center">
+          <Button
+            variant="outline"
+            className="w-full"
+            size={'sm'}
             onClick={handleUnlockAll}
           >
             Unlock All
-          </button>
+          </Button>
         </div>
       </div>
     </div>

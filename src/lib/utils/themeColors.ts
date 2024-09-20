@@ -40,11 +40,12 @@ export function generateThemeColors(
     baseHue = Math.random() * 360,
     uiSaturation = isDark ? randomInteger(15, 45) : randomInteger(45, 75),
     scheme = ColorScheme.Analogous,
+    few,
   } = options
 
   const schemeHues = generateSchemeColors(baseHue, scheme)
 
-  console.log('schemeHues GT: ', schemeHues)
+  console.log('schemeHues', scheme, ' GT: ', schemeHues)
 
   const bgBase = isDark ? randomInteger(0, 7) : randomInteger(93, 100)
   const fgBase = isDark ? randomInteger(85, 100) : randomInteger(0, 15)
@@ -202,14 +203,15 @@ export function generateThemeColors(
 
   const ac1AdditionalHues = generateSchemeColors(ac1Hue, scheme)
   const ac2AdditionalHues = generateSchemeColors(ac2Hue, scheme)
+  console.log('AC1 additional hues: ', ac1AdditionalHues)
+  console.log('AC2 additional hues: ', ac2AdditionalHues)
 
   const updatedSchemeHues = [
     ...schemeHues,
     ...ac1AdditionalHues,
     ...ac2AdditionalHues,
   ]
-
-  console.log('Updated scheme hues: ', updatedSchemeHues)
+  console.log('ALL SCHEME HUES: ', updatedSchemeHues)
 
   return { colors, schemeHues: updatedSchemeHues, scheme }
 }
