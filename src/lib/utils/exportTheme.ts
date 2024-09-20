@@ -67,7 +67,7 @@ export function generateThemeJSON(
       disabledForeground: syntaxColors.comment, // Overall foreground for disabled elements. This color is only used if not overridden by a component.
       'widget.border': colors.BORDER, // Border color of widgets such as Find/Replace inside the editor.
       // "widget.shadow": colors.FG2, // Shadow color of widgets such as Find/Replace inside the editor
-      'selection.background': colors.AC2 + '80', // Background color of text selections in the workbench (for input fields or text areas, does not apply to selections within the editor and the terminal)
+      'selection.background': colors.AC2 + '50', // Background color of text selections in the workbench (for input fields or text areas, does not apply to selections within the editor and the terminal)
       // 'selection.foreground': Color(colors.AC2).isDark() ? colors.FG1 : colors.FG3, // Foreground color of text selections in the workbench
       descriptionForeground: colors.FG2, // Foreground color for description text providing additional information, for example for a label.
       errorForeground: colors.ERROR, // Overall foreground color for error messages (this color is only used if not overridden by a component)
@@ -277,6 +277,7 @@ export function generateThemeJSON(
       // Editor
       'editor.background': colors.BG1,
       'editor.foreground': colors.FG1,
+      'editor.lineHighlightBackground': '#00000010',
       'editorLineNumber.foreground': syntaxColors.comment,
       'editorLineNumber.activeForeground': colors.AC1,
       'editorLineNumber.dimmedForeground': syntaxColors.comment + '90',
