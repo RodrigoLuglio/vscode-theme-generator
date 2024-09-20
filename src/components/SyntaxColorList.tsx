@@ -86,8 +86,6 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
                 className="text-sm truncate first-letter:uppercase pt-1 pb-3"
                 style={{
                   color: getDisplayColor(key, value),
-                  // borderTop: '1px solid',
-                  // borderTopColor: getDisplayColor(key, value),
                 }}
               >
                 {key}
@@ -129,12 +127,7 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
           </div>
         ))}
         <div className="self-end w-full place-self-center">
-          <Button
-            variant="outline"
-            className="w-full"
-            size={'sm'}
-            onClick={handleUnlockAll}
-          >
+          <Button className="" size={'sm'} onClick={handleUnlockAll}>
             Unlock All
           </Button>
         </div>

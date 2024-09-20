@@ -18,7 +18,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { cn } from '@/lib/utils'
+import { ModeToggle } from './ModeToggle'
 
 const ThemeControls: React.FC = () => {
   const {
@@ -120,13 +120,9 @@ const ThemeControls: React.FC = () => {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <div className="flex items-center justify-between gap-4 border border-border rounded-md px-4 py-2">
-                      <label className="text-xs">Dark Theme</label>
-                      <Checkbox
-                        checked={isDark}
-                        onCheckedChange={(checked) =>
-                          setIsDark(checked as boolean)
-                        }
-                      />
+                      <label className="text-xs">Mode</label>
+
+                      <ModeToggle />
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>

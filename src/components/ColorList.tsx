@@ -79,11 +79,10 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
               >
                 {key}
               </span>
-              <div className="flex space-x-1">
+              <div className="flex gap-2">
                 <Button
-                  variant="ghost"
                   size="icon"
-                  className=""
+                  className="h-5 w-5"
                   onClick={(e) => {
                     e.stopPropagation()
                     copyToClipboard(value)
@@ -99,8 +98,9 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
                     color={Color(value).isLight() ? '#000' : '#fff'}
                   />
                 </Button>
-                <button
-                  className="text-xs p-1 rounded"
+                <Button
+                  className="h-5 w-5"
+                  size="icon"
                   onClick={(e) => {
                     e.stopPropagation()
                     toggleColorLock(key)
@@ -112,22 +112,25 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
                   }}
                 >
                   {lockedColors.has(key) ? (
-                    <Lock color={Color(value).isLight() ? '#000' : '#fff'} />
+                    <Lock
+                      size={16}
+                      color={Color(value).isLight() ? '#000' : '#fff'}
+                    />
                   ) : (
-                    <Unlock color={Color(value).isLight() ? '#000' : '#fff'} />
+                    <Unlock
+                      size={16}
+                      color={Color(value).isLight() ? '#000' : '#fff'}
+                    />
                   )}
-                </button>
+                </Button>
               </div>
             </div>
           </div>
         ))}
-        <div className="relative">
-          <button
-            className="w-full h-12 bg-gray-200 text-gray-700 text-xs font-semibold"
-            onClick={handleUnlockAll}
-          >
+        <div className="relative self-center place-self-center">
+          <Button size={'sm'} className="" onClick={handleUnlockAll}>
             Unlock All
-          </button>
+          </Button>
         </div>
       </div>
     </div>
