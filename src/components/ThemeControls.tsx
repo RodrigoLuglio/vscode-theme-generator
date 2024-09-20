@@ -181,7 +181,7 @@ const ThemeControls: React.FC = () => {
                   <Button
                     className="w-full text-xs"
                     size="sm"
-                    onClick={() => handleRandomize(true)}
+                    onClick={() => handleRandomize(false)}
                   >
                     Randomize Full
                   </Button>
@@ -200,7 +200,7 @@ const ThemeControls: React.FC = () => {
                   <Button
                     className="w-full text-xs"
                     size="sm"
-                    onClick={() => handleRandomize(false)}
+                    onClick={() => handleRandomize(true)}
                   >
                     Randomize with Few Colors
                   </Button>

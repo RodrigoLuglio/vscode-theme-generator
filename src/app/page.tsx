@@ -51,7 +51,7 @@ const ThemeGenerator = () => {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">VS Code Theme Generator</h1>
-      <div className="flex gap-10">
+      <div className="flex flex-wrap lg:flex-nowrap gap-10">
         <div className="flex flex-col gap-4 w-full lg:w-7/12">
           <div className="flex gap-10 items-end">
             <ThemeControls />

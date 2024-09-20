@@ -201,16 +201,21 @@ export function generateThemeColors(
   const ac1Hue = Color(colors.AC1).hue()
   const ac2Hue = Color(colors.AC2).hue()
 
-  const ac1AdditionalHues = generateSchemeColors(ac1Hue, scheme)
-  const ac2AdditionalHues = generateSchemeColors(ac2Hue, scheme)
-  console.log('AC1 additional hues: ', ac1AdditionalHues)
-  console.log('AC2 additional hues: ', ac2AdditionalHues)
+  let updatedSchemeHues = [...schemeHues]
 
-  const updatedSchemeHues = [
-    ...schemeHues,
-    ...ac1AdditionalHues,
-    ...ac2AdditionalHues,
-  ]
+  if (!few) {
+    const ac1AdditionalHues = generateSchemeColors(ac1Hue, scheme)
+    const ac2AdditionalHues = generateSchemeColors(ac2Hue, scheme)
+    console.log('AC1 additional hues: ', ac1AdditionalHues)
+    console.log('AC2 additional hues: ', ac2AdditionalHues)
+
+    updatedSchemeHues = [
+      ...schemeHues,
+      ...ac1AdditionalHues,
+      ...ac2AdditionalHues,
+    ]
+  }
+
   console.log('ALL SCHEME HUES: ', updatedSchemeHues)
 
   return { colors, schemeHues: updatedSchemeHues, scheme }
