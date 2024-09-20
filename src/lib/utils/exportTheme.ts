@@ -58,7 +58,7 @@ export function generateThemeJSON(
       // "terminal.initialHintForeground": //# Foreground color of the terminal initial hint.
 
       // # Contrast Colors
-      contrastBorder: colors.BORDER, // An extra border around elements to separate them from others for greater contrast
+      // contrastBorder: colors.BORDER, // An extra border around elements to separate them from others for greater contrast
       // contrastActiveBorder: colors.BORDER, // An extra border around active elements to separate them from others for greater contrast
 
       // # Base Colors
