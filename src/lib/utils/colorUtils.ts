@@ -157,6 +157,15 @@ export enum ColorScheme {
   SpiralOfTheodorus,
   MetatronsCube,
   SeedOfLife,
+  // New schemes
+  FibonacciSequence,
+  GoldenSpiral,
+  MetallicMeans,
+  ContinuedFraction,
+  GoldenTrisection,
+  FareySequence,
+  NobleNumbers,
+  GoldenTriangle,
 }
 
 export function generateSchemeColors(
@@ -164,6 +173,7 @@ export function generateSchemeColors(
   scheme: ColorScheme
 ): number[] {
   let result: number[]
+  const goldenRatio = 0.618033988749895
   switch (scheme) {
     case ColorScheme.Monochromatic:
       result = [baseHue, baseHue, baseHue, baseHue]
@@ -203,7 +213,6 @@ export function generateSchemeColors(
       ]
       break
     case ColorScheme.GoldenRatio:
-      const goldenRatio = 0.618033988749895
       result = [
         baseHue,
         Math.abs(baseHue + 360 * goldenRatio) % 360,
@@ -299,6 +308,70 @@ export function generateSchemeColors(
         Math.abs(baseHue + 205.6) % 360,
         Math.abs(baseHue + 257) % 360,
         Math.abs(baseHue + 308.4) % 360,
+      ]
+      break
+    case ColorScheme.FibonacciSequence:
+      const fibSequence = [1, 1, 2, 3, 5, 8, 13, 21]
+      result = [
+        baseHue,
+        ...fibSequence.slice(1).map((n) => Math.abs(baseHue * n) % 360),
+      ]
+      break
+    case ColorScheme.GoldenSpiral:
+      const goldenAngle = 137.5077640500378 // (3 - Math.sqrt(5)) * 180
+      result = [
+        baseHue,
+        ...Array.from(
+          { length: 7 },
+          (_, i) => Math.abs(baseHue + (i + 1) * goldenAngle) % 360
+        ),
+      ]
+      break
+    case ColorScheme.MetallicMeans:
+      const metallicRatios = [1.618, 2.414, 3.303, 4.236] // Golden, Silver, Bronze, Copper
+      result = [
+        baseHue,
+        ...metallicRatios.flatMap(
+          (ratio) => Math.abs(baseHue + 360 / ratio) % 360
+        ),
+      ]
+      break
+    case ColorScheme.ContinuedFraction:
+      const piConvergents = [22 / 7, 333 / 106, 355 / 113, 103993 / 33102]
+      result = [
+        baseHue,
+        ...piConvergents.map((frac) => Math.abs(baseHue + frac * 360) % 360),
+      ]
+      break
+    case ColorScheme.GoldenTrisection:
+      const rho = 0.4656
+      const sigma = 0.6823
+      result = [
+        baseHue,
+        Math.abs(baseHue + 360 * rho) % 360,
+        Math.abs(baseHue + 360 * sigma) % 360,
+      ]
+      break
+    case ColorScheme.FareySequence:
+      const fareySequence = [0, 1 / 3, 1 / 2, 2 / 3, 1]
+      result = [
+        baseHue,
+        ...fareySequence.map((frac) => Math.abs(baseHue + frac * 360) % 360),
+      ]
+      break
+    case ColorScheme.NobleNumbers:
+      const nobleNumbers = [1.618, 2.414, 3.303, 4.236, 5.192]
+      result = [
+        baseHue,
+        ...nobleNumbers.map((n) => Math.abs(baseHue * n) % 360),
+      ]
+      break
+    case ColorScheme.GoldenTriangle:
+      const angle = Math.atan(1 / goldenRatio) * (180 / Math.PI)
+      result = [
+        baseHue,
+        Math.abs(baseHue + angle) % 360,
+        Math.abs(baseHue - angle + 360) % 360,
       ]
       break
     default:
