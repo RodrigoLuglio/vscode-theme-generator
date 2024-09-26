@@ -5,7 +5,7 @@ import { ThemeProvider } from '@/contexts/ThemeContext'
 
 import ActiveColorPicker from '@/components/ActiveColorPicker'
 import ExportButton from '@/components/ExportButton'
-
+import ExportSemanticButton from '@/components/ExportSemanticButton'
 import ThemePreview from '@/components/ThemePreview'
 import ThemeControls from '@/components/ThemeControls'
 import SyntaxColorList from '@/components/SyntaxColorList'
@@ -65,8 +65,9 @@ const ThemeGenerator = () => {
           </div>
         </div>
         <AnsiColorList />
-        <div className="mt-4 flex justify-end">
+        <div className="mt-4 flex justify-end gap-4">
           <ExportButton />
+          <ExportSemanticButton />
         </div>
       </div>
     </section>
