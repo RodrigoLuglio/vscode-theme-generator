@@ -1,9 +1,11 @@
-import type { UIColors, SyntaxColors, AnsiColors } from '@/lib/types/colors'
+import type { ColorAliases } from './themeColors'
+import type { SyntaxColors } from './syntaxColors'
+import type { AnsiColors } from './ansiColors'
 
 import Color from 'color'
 
 export function generateSemanticThemeJSON(
-  colors: UIColors,
+  colors: ColorAliases,
   syntaxColors: SyntaxColors,
   ansiColors: AnsiColors
 ): string {
@@ -1830,7 +1832,7 @@ export function generateSemanticThemeJSON(
       'type.defaultLibrary': syntaxColors.type, //type
       typeParameter: syntaxColors.typeParameter, //typeParameter
       interface: syntaxColors.type, //type
-      class: colors.class, //class
+      class: syntaxColors.class, //class
       'class.declaration': syntaxColors.class, //class
       enum: syntaxColors.class, //class,
       enumMember: colors.FG2, //FG2
