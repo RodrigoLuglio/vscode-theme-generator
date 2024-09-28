@@ -22,7 +22,6 @@
     "lucide-react": "^0.438.0",
     "monaco-editor": "^0.52.0",
     "monaco-editor-textmate": "^4.0.0",
-    "monaco-editor-webpack-plugin": "^7.1.0",
     "monaco-textmate": "^3.0.1",
     "next": "15.0.0-rc.0",
     "next-themes": "^0.3.0",

@@ -620,26 +620,6 @@ const ThemePreview: React.FC = () => {
     }
   }, [])
 
-  function getTokenType(token: string, defaultType: string): string[] {
-    if (/^[A-Z][a-zA-Z]*$/.test(token)) {
-      return ['support.class.tsx']
-    } else if (/^[a-z]+$/.test(token)) {
-      return ['entity.name.tag.tsx']
-    } else if (/^[<>\/]$/.test(token)) {
-      return ['punctuation.definition.tag.tsx']
-    } else if (/^["']/.test(token)) {
-      return ['string.tsx']
-    } else if (/^\d+$/.test(token)) {
-      return ['constant.numeric.tsx']
-    } else if (
-      /^(const|let|var|function|return|import|from|export)$/.test(token)
-    ) {
-      return ['keyword.control.tsx']
-    } else {
-      return [defaultType || 'source.tsx']
-    }
-  }
-
   useEffect(() => {
     if (isEditorReady && editorRef.current) {
       updateTheme()
