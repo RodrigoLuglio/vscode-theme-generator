@@ -44,26 +44,28 @@ const ThemeGenerator = () => {
   const { colors } = useTheme()
   return (
     <section style={{ backgroundColor: colors.BG1 }}>
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto p-4 flex flex-col gap-5">
         <h1 className="text-2xl font-bold mb-4">VS Code Theme Generator</h1>
         <div className="flex flex-wrap lg:flex-nowrap gap-10">
-          <div className="flex flex-col gap-4 w-full lg:w-7/12">
-            <div className="flex gap-10 items-end">
-              <ThemeControls />
+          <div className="w-full lg:w-10/12">
+            <ThemePreview />
+          </div>
+          <div className="flex flex-col items-center justify-between w-full lg:w-2/12">
+            <ThemeControls />
+            <div className="">
               <ActiveColorPicker />
             </div>
-            <SyntaxColorList title="Syntax Colors" isThemeColors={false} />
-          </div>
-
-          <div className="flex flex-col gap-2 w-full lg:w-5/12">
-            <div className="">
-              <ThemePreview />
-            </div>
-            <ColorList title="Theme Colors" isThemeColors={true} />
-
-            <div className=""></div>
           </div>
         </div>
+        <div className="flex gap-10 w-full">
+          <div className="lg:w-9/12">
+            <SyntaxColorList title="Syntax Colors" isThemeColors={false} />
+          </div>
+          <div className="lg:w-3/12">
+            <ColorList title="Theme Colors" isThemeColors={true} />
+          </div>
+        </div>
+
         <AnsiColorList />
         <div className="mt-4 flex justify-end gap-4">
           <ExportButton />
@@ -74,7 +76,7 @@ const ThemeGenerator = () => {
   )
 }
 
-export default function Home() {
+export default function Page() {
   return (
     <ErrorBoundary>
       <ThemeProvider>

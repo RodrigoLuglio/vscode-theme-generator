@@ -3,15 +3,16 @@ import type { SyntaxColors } from './syntaxColors'
 import type { AnsiColors } from './ansiColors'
 
 import Color from 'color'
+import { VSCodeTheme } from '../types/theme'
 
 export function generateSemanticThemeJSON(
   colors: ColorAliases,
   syntaxColors: SyntaxColors,
   ansiColors: AnsiColors
-): string {
+): { themeJSON: string; themeObject: VSCodeTheme } {
   const theme = {
     name: 'Generated Color Theme',
-    type: Color(colors.BG1).isDark() ? 'dark' : 'light',
+    type: Color(colors.BG1).isDark() ? ('dark' as const) : ('light' as const),
     semanticClass: 'theme.rlabs',
     semanticHighlighting: true,
     colors: {
@@ -1862,5 +1863,5 @@ export function generateSemanticThemeJSON(
     },
   }
 
-  return JSON.stringify(theme, null, 2)
+  return { themeJSON: JSON.stringify(theme, null, 2), themeObject: theme }
 }

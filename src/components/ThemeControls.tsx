@@ -1,9 +1,8 @@
 import React, { use, useEffect } from 'react'
-import { ColorScheme } from '@/lib/utils/colorUtils'
+
 import { useTheme } from '@/contexts/ThemeContext'
 
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Slider } from '@/components/ui/slider'
 import {
   Select,
@@ -20,20 +19,21 @@ import {
 } from '@/components/ui/tooltip'
 import { ModeToggle } from './ModeToggle'
 
+import { ColorScheme } from '@/lib/utils/colorUtils'
+
 const ThemeControls: React.FC = () => {
   const {
     isDark,
     baseHue,
+    scheme,
     uiSaturation,
     syntaxSaturation,
-    scheme,
-    setIsDark,
+    lockedColors,
     setBaseHue,
     setUiSaturation,
     setSyntaxSaturation,
     setScheme,
     generateColors,
-    lockedColors,
     regenerateAnsiColors,
   } = useTheme()
 
@@ -75,8 +75,6 @@ const ThemeControls: React.FC = () => {
     // Add small random variations to the current values
     const hueVariation = Math.floor(Math.random() * 30) - 15 // -15 to +15
     const saturationVariation = Math.floor(Math.random() * 20) - 10 // -10 to +10
-
-    console.log('Scheme Regenerate: ', scheme)
     generateColors({
       isDark,
       baseHue: (baseHue + hueVariation + 360) % 360, // Ensure it stays within 0-359
@@ -114,7 +112,7 @@ const ThemeControls: React.FC = () => {
       <h2 className="text-xl font-semibold">Theme Controls</h2>
       <TooltipProvider>
         <div className="flex flex-col gap-4 w-full">
-          <div className="flex gap-5">
+          <div className="flex flex-wrap gap-5">
             <div className="flex flex-col gap-2 w-full">
               <div>
                 <Tooltip>
@@ -171,7 +169,7 @@ const ThemeControls: React.FC = () => {
                 </Tooltip>
               </div>
             </div>
-            <div className="flex flex-col justify-between w-full">
+            <div className="flex flex-1 flex-col justify-between gap-5">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -209,7 +207,7 @@ const ThemeControls: React.FC = () => {
                 </TooltipContent>
               </Tooltip>
             </div>
-            <div className="flex flex-col justify-between w-full">
+            <div className="flex flex-1 flex-col justify-between gap-5">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button
@@ -296,12 +294,11 @@ const ThemeControls: React.FC = () => {
                           max={100}
                           step={1}
                           bg={getSaturationGradient(baseHue)}
-                          onValueChange={(value) => setUiSaturation(value[0])}
+                          onValueChange={(value: number[]) =>
+                            setUiSaturation(value[0])
+                          }
                         />
                       </div>
-                      {/* <span className="ml-2 w-8 text-right text-xs">
-                        {uiSaturation}
-                      </span> */}
                     </div>
                   </div>
                 </TooltipTrigger>
@@ -326,14 +323,11 @@ const ThemeControls: React.FC = () => {
                           max={100}
                           step={1}
                           bg={getSaturationGradient(baseHue)}
-                          onValueChange={(value) =>
+                          onValueChange={(value: number[]) =>
                             setSyntaxSaturation(value[0])
                           }
                         />
                       </div>
-                      {/* <span className="ml-2 w-8 text-right text-xs">
-                        {syntaxSaturation}
-                      </span> */}
                     </div>
                   </div>
                 </TooltipTrigger>
