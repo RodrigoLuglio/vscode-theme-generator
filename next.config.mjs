@@ -8,8 +8,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  transpilePackages: ['onigasm'],
   experimental: {
-    optimizePackageImports: ['onigasm'],
     turbo: {
       resolveAlias: {
         'monaco-editor': 'monaco-editor/esm/vs/editor/editor.api',
