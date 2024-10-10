@@ -9,15 +9,8 @@ const nextConfig = {
     unoptimized: true,
   },
   experimental: {
+    optimizePackageImports: ['onigasm'],
     turbo: {
-      asyncWebAssembly: true,
-      rules: {
-        webassemblyModuleFilename: [
-          process.env.NODE_ENV === 'production'
-            ? '../public/onigasm.wasm'
-            : 'onigasm.wasm',
-        ],
-      },
       resolveAlias: {
         'monaco-editor': 'monaco-editor/esm/vs/editor/editor.api',
       },
