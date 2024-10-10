@@ -8,9 +8,15 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  transpilePackages: ['onigasm'],
   experimental: {
+    useWasmBinary: true,
     turbo: {
+      rules: {
+        '*.wasm': {
+          loaders: ['onigasm'],
+          as: '*.wasm',
+        },
+      },
       resolveAlias: {
         'monaco-editor': 'monaco-editor/esm/vs/editor/editor.api',
       },
