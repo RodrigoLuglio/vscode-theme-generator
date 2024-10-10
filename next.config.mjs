@@ -8,7 +8,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  outputFileTracingIncludes: ['/onigasm.wasm'],
+  webpack: function (config, options) {
+    config.options = { ...options, asyncWebAssembly: true }
+    return config
+  },
   experimental: {
     turbo: {
       resolveAlias: {
