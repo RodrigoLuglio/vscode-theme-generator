@@ -1,172 +1,5 @@
+import { ColorScheme } from '@/lib/types/colors'
 import Color from 'color'
-
-export interface ColorAlphas {
-  [key: string]: number
-}
-
-export function generateRandomColor(): string {
-  return Color.rgb(
-    Math.floor(Math.random() * 256),
-    Math.floor(Math.random() * 256),
-    Math.floor(Math.random() * 256)
-  ).hex()
-}
-
-export function adjustColorBrightness(color: string, amount: number): string {
-  return Color(color).lighten(amount).hex()
-}
-
-export function generateContrastingColor(backgroundColor: string): string {
-  const bgColor = Color(backgroundColor)
-  return bgColor.isLight()
-    ? bgColor.darken(0.6).hex()
-    : bgColor.lighten(0.6).hex()
-}
-
-export function blendColors(
-  color1: string,
-  color2: string,
-  ratio: number
-): string {
-  const c1 = Color(color1)
-  const c2 = Color(color2)
-  return c1.mix(c2, ratio).hex()
-}
-
-export function generateHarmonizedColor(
-  baseColor: string,
-  hueOffset: number
-): string {
-  return Color(baseColor).rotate(hueOffset).saturate(0.1).hex()
-}
-
-// function generateHarmonizedColor(
-//   baseHue: number,
-//   saturation: number,
-//   lightness: number,
-//   shift: number
-// ): string {
-//   const hue = (baseHue + shift) % 360
-//   return Color.hsl(hue, saturation, lightness).hex()
-// }
-
-export function adjustCommentColor(
-  commentColor: string,
-  backgroundColor: string,
-  minContrast: number,
-  maxContrast: number
-): string {
-  const bgColor = Color(backgroundColor)
-  let comment = Color(commentColor)
-  const bgLuminosity = bgColor.luminosity()
-  const isDarkTheme = bgColor.isDark()
-  const maxSaturation = isDarkTheme ? 15 : 35
-  console.log('Ajusta comentário')
-  // Adjust the comment color until it meets our criteria
-  while (true) {
-    const contrast = comment.contrast(bgColor)
-    const luminanceRatio =
-      Math.abs(comment.luminosity() - bgLuminosity) /
-      Math.max(comment.luminosity(), bgLuminosity)
-
-    if (isDarkTheme) {
-      // For dark themes, we want to darken the comment color
-      if (contrast < minContrast || contrast > maxContrast) {
-        if (contrast > maxContrast) {
-          comment = comment.darken(0.2)
-          comment = comment.desaturate(0.5)
-          // console.log('Escureceu ')
-        } else if (contrast < minContrast) {
-          comment = comment.lighten(0.2)
-          comment = comment.saturate(0.2)
-          // console.log('Clareou ')
-        }
-      } else {
-        break
-      }
-    } else {
-      // For light themes, keep the current behavior
-      if (contrast < minContrast || contrast > maxContrast) {
-        if (contrast < minContrast) {
-          comment = comment.darken(0.2)
-          comment = comment.saturate(0.2)
-          // console.log('Escureceu ')
-        } else if (contrast > maxContrast) {
-          comment = comment.lighten(0.2)
-          comment = comment.desaturate(0.5)
-          // console.log('Clareou ')
-        }
-      } else {
-        break
-      }
-    }
-    // Prevent infinite loop and ensure the color doesn't get too dark or too light
-    if (isDarkTheme && comment.luminosity() < 0.05) break
-    if (!isDarkTheme && comment.luminosity() > 0.95) break
-  }
-
-  // Ensure maxSaturation
-  while (Color(comment).hsl().saturationl() > maxSaturation) {
-    comment = comment.desaturate(0.01)
-  }
-
-  // // Final adjustment to ensure the color is within the desired range
-  // if (isDarkTheme) {
-  //   const maxLuminosity = bgColor.luminosity() + 0.3
-  //   while (comment.luminosity() > maxLuminosity) {
-  //     comment = comment.darken(0.01)
-  //   }
-  // }
-
-  return comment.hex()
-}
-
-export function ensureReadability(
-  foreground: string,
-  background: string,
-  minContrast = 5.5
-): string {
-  let color = Color(foreground)
-  const bgColor = Color(background)
-  let iterations = 0
-  const maxIterations = 100
-
-  while (color.contrast(bgColor) < minContrast && iterations < maxIterations) {
-    color = color.isLight()
-      ? color.darken(0.05).saturate(0.05)
-      : color.lighten(0.05).saturate(0.05)
-    iterations++
-  }
-
-  return color.hex()
-}
-
-export enum ColorScheme {
-  Monochromatic,
-  Analogous,
-  Complementary,
-  SplitComplementary,
-  Triadic,
-  Tetradic,
-  GoldenRatio,
-  Fibonacci,
-  PentagramStar,
-  VesicaPiscis,
-  FlowerOfLife,
-  PlatonicSolids,
-  SpiralOfTheodorus,
-  MetatronsCube,
-  SeedOfLife,
-  // New schemes
-  FibonacciSequence,
-  GoldenSpiral,
-  MetallicMeans,
-  ContinuedFraction,
-  GoldenTrisection,
-  FareySequence,
-  NobleNumbers,
-  GoldenTriangle,
-}
 
 export function generateSchemeColors(
   baseHue: number,
@@ -215,13 +48,27 @@ export function generateSchemeColors(
     case ColorScheme.GoldenRatio:
       result = [
         baseHue,
-        Math.abs(baseHue + 360 * goldenRatio) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio) % 360,
         Math.abs(baseHue + 360 * goldenRatio * 2) % 360,
-        Math.abs(baseHue + 360 * goldenRatio * 3) % 360,
-        Math.abs(baseHue + 360 * goldenRatio * 4) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 3) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 4) % 360,
         Math.abs(baseHue + 360 * goldenRatio * 5) % 360,
-        Math.abs(baseHue + 360 * goldenRatio * 6) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 6) % 360,
         Math.abs(baseHue + 360 * goldenRatio * 7) % 360,
+      ]
+      break
+    case ColorScheme.GoldenRatio3:
+      result = [
+        baseHue,
+        // Math.abs(baseHue + 360 * goldenRatio) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 2) % 360,
+        Math.abs(baseHue + 360 * goldenRatio * 3) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 4) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 5) % 360,
+        Math.abs(baseHue + 360 * goldenRatio * 6) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 7) % 360,
+        // Math.abs(baseHue + 360 * goldenRatio * 8) % 360,
+        Math.abs(baseHue + 360 * goldenRatio * 9) % 360,
       ]
       break
     case ColorScheme.Fibonacci:
@@ -235,6 +82,7 @@ export function generateSchemeColors(
         Math.abs(baseHue + 360 / 21) % 360,
         Math.abs(baseHue + 360 / 34) % 360,
         Math.abs(baseHue + 360 / 55) % 360,
+        Math.abs(baseHue + 360 / 89) % 360,
       ]
       break
     case ColorScheme.PentagramStar:
@@ -311,7 +159,8 @@ export function generateSchemeColors(
       ]
       break
     case ColorScheme.FibonacciSequence:
-      const fibSequence = [1, 1, 2, 3, 5, 8, 13, 21]
+      // const fibSequence = [1, 1, 2, 3, 5, 8, 13, 21]
+      const fibSequence = [8, 13, 21, 34]
       result = [
         baseHue,
         ...fibSequence.slice(1).map((n) => Math.abs(baseHue * n) % 360),
@@ -322,7 +171,7 @@ export function generateSchemeColors(
       result = [
         baseHue,
         ...Array.from(
-          { length: 7 },
+          { length: 3 },
           (_, i) => Math.abs(baseHue + (i + 1) * goldenAngle) % 360
         ),
       ]
@@ -374,27 +223,260 @@ export function generateSchemeColors(
         Math.abs(baseHue - angle + 360) % 360,
       ]
       break
+    case ColorScheme.SriYantra:
+      const angles: number[] = []
+      for (let i = 1; i <= 9; i++) {
+        angles.push((baseHue + i * 20) % 360)
+      }
+      result = [baseHue, ...angles]
+      break
+    case ColorScheme.KabbalahTreeOfLife:
+      const values: number[] = []
+      for (let i = 1; i <= 10; i++) {
+        values.push((baseHue + i * 15) % 360)
+      }
+      result = [baseHue, ...values]
+      break
+    case ColorScheme.Torus:
+      const u = degreesToRadians(baseHue % 360)
+      const v = degreesToRadians((baseHue * 2) % 360)
+      const R = 1 // Major radius
+      const r = 0.5 // Minor radius
+      const x = ((R + r * Math.cos(v)) * Math.cos(u)) % 360
+      const y = ((R + r * Math.cos(v)) * Math.sin(u)) % 360
+      const z = (r * Math.sin(v)) % 360
+      result = [baseHue, x, y, z]
+      break
+    case ColorScheme.MandelbrotSet:
+      const c_re = Math.cos(degreesToRadians(baseHue))
+      const c_im = Math.sin(degreesToRadians(baseHue))
+      const maxIterations = 10
+      let z_re = 0
+      let z_im = 0
+      const iterations: number[] = []
+      for (let i = 0; i < maxIterations; i++) {
+        const z_re_new = z_re * z_re - z_im * z_im + c_re
+        const z_im_new = 2 * z_re * z_im + c_im
+        z_re = z_re_new
+        z_im = z_im_new
+        iterations.push(Math.sqrt(z_re * z_re + z_im * z_im) % 360)
+        if (z_re * z_re + z_im * z_im > 4) break
+      }
+      result = [baseHue, ...iterations]
+      break
+    case ColorScheme.SierpinskiTriangle:
+      const triangleIterations = 5
+      const areas: number[] = []
+      let area = baseHue
+      for (let i = 0; i < triangleIterations; i++) {
+        areas.push(area % 360)
+        area = area / 2
+      }
+      result = [baseHue, ...areas]
+      break
+    // case ColorScheme.SierpinskiCarpet:
+    //   result = [baseHue, ...sierpinskiCarpet(baseHue)]
+    //   break
+    case ColorScheme.KochSnowflake:
+      const flakeIterations = 5
+      const lengths: number[] = []
+      let length = baseHue
+      for (let i = 0; i < flakeIterations; i++) {
+        lengths.push(length % 360)
+        length = length / 3
+      }
+      result = [baseHue, ...lengths]
+      break
+    case ColorScheme.CelticKnot:
+      const knotAngles: number[] = []
+      for (let i = 1; i <= 8; i++) {
+        const angle = (baseHue + i * 45) % 360
+        knotAngles.push(angle)
+      }
+      result = [baseHue, ...knotAngles]
+      break
+    case ColorScheme.Labirinth:
+      const paths: number[] = []
+      for (let i = 1; i <= 7; i++) {
+        paths.push((baseHue + i * 10) % 360)
+      }
+      result = [baseHue, ...paths]
+      break
+    case ColorScheme.YinYang:
+      const proportion = Math.abs(Math.sin(degreesToRadians(baseHue)))
+      result = [
+        baseHue,
+        (proportion * 360) % 360,
+        ((1 - proportion) * 360) % 360,
+      ]
+      break
+    case ColorScheme.StarTetrahedron:
+      const starAngles: number[] = []
+      for (let i = 0; i < 4; i++) {
+        starAngles.push((baseHue + i * 90) % 360)
+      }
+      result = [baseHue, ...starAngles]
+      break
+    case ColorScheme.Hamsa:
+      const hamsaLengths: number[] = [
+        (baseHue * 0.5) % 360,
+        (baseHue * 0.6) % 360,
+        (baseHue * 0.7) % 360,
+      ]
+      result = [baseHue, ...hamsaLengths]
+      break
+    case ColorScheme.Enneagram:
+      const enneagramAngles: number[] = []
+      for (let i = 0; i < 9; i++) {
+        enneagramAngles.push((baseHue + i * 40) % 360)
+      }
+      result = [baseHue, ...enneagramAngles]
+      break
+    case ColorScheme.Hexagram:
+      const hexagramAngles: number[] = []
+      for (let i = 0; i < 6; i++) {
+        hexagramAngles.push((baseHue + i * 60) % 360)
+      }
+      result = [baseHue, ...hexagramAngles]
+      break
+    case ColorScheme.ChakraSymbols:
+      const chakraValues: number[] = []
+      for (let i = 1; i <= 7; i++) {
+        chakraValues.push((baseHue + i * 30) % 360)
+      }
+      result = [baseHue, ...chakraValues]
+      break
+    case ColorScheme.SpiralDynamics:
+      const spiralValues: number[] = []
+      for (let i = 1; i <= 6; i++) {
+        spiralValues.push((baseHue * Math.pow(1.5, i)) % 360)
+      }
+      result = [baseHue, ...spiralValues]
+      break
+    case ColorScheme.DoubleTorus:
+      const du = degreesToRadians(baseHue % 360)
+      const dv = degreesToRadians((baseHue * 2) % 360)
+      const R1 = 1 // Major radius of the first torus
+      const r1 = 0.5 // Minor radius of the first torus
+      const R2 = 1 // Major radius of the second torus
+      const r2 = 0.5 // Minor radius of the second torus
+
+      // First torus coordinates
+      const x1 = ((R1 + r1 * Math.cos(dv)) * Math.cos(du)) % 360
+      const y1 = ((R1 + r1 * Math.cos(dv)) * Math.sin(du)) % 360
+      const z1 = (r1 * Math.sin(dv)) % 360
+
+      // Second torus coordinates (shifted)
+      const x2 =
+        ((R2 + r2 * Math.cos(dv + Math.PI)) * Math.cos(du + Math.PI)) % 360
+      const y2 =
+        ((R2 + r2 * Math.cos(dv + Math.PI)) * Math.sin(du + Math.PI)) % 360
+      const z2 = (r2 * Math.sin(dv + Math.PI)) % 360
+
+      result = [baseHue, x1, y1, z1, x2, y2, z2]
+      break
+    case ColorScheme.RosettePattern:
+      const k = ((baseHue % 360) / 360) * 10 + 2 // Number of petals between 2 and 12
+      const points: number[] = []
+      const numPoints = 10
+      for (let i = 0; i < numPoints; i++) {
+        const theta = (2 * Math.PI * i) / numPoints
+        const r = Math.cos(k * theta) % 360
+        points.push(r)
+      }
+      result = [baseHue, ...points]
+      break
+    case ColorScheme.NestedPolygons:
+      const sides = Math.floor((baseHue % 360) / 30) + 3 // Number of sides from 3 to 15
+      const layers = 5 // Number of nested layers
+      const polygons: number[] = []
+      for (let i = 1; i <= layers; i++) {
+        polygons.push((sides * i) % 360)
+      }
+      result = [baseHue, ...polygons]
+      break
     default:
       result = [baseHue]
   }
   return result
 }
 
-export interface ThemeGenerationOptions {
-  isDark: boolean
-  baseHue?: number
-  uiSaturation?: number
-  syntaxSaturation?: number
-  scheme?: ColorScheme
-  few?: boolean
+export function adjustCommentColor(
+  commentColor: string,
+  backgroundColor: string,
+  minContrast: number,
+  maxContrast: number
+): string {
+  const bgColor = Color(backgroundColor)
+  let comment = Color(commentColor)
+  const bgLuminosity = bgColor.luminosity()
+  const isDarkTheme = bgColor.isDark()
+  const maxSaturation = isDarkTheme ? 15 : 35
+  // Adjust the comment color until it meets our criteria
+  while (true) {
+    const contrast = comment.contrast(bgColor)
+    const luminanceRatio =
+      Math.abs(comment.luminosity() - bgLuminosity) /
+      Math.max(comment.luminosity(), bgLuminosity)
+
+    if (isDarkTheme) {
+      // For dark themes, we want to darken the comment color
+      if (contrast < minContrast || contrast > maxContrast) {
+        if (contrast > maxContrast) {
+          comment = comment.darken(0.2)
+          comment = comment.desaturate(0.5)
+        } else if (contrast < minContrast) {
+          comment = comment.lighten(0.2)
+          comment = comment.saturate(0.2)
+        }
+      } else {
+        break
+      }
+    } else {
+      // For light themes, keep the current behavior
+      if (contrast < minContrast || contrast > maxContrast) {
+        if (contrast < minContrast) {
+          comment = comment.darken(0.2)
+          comment = comment.saturate(0.2)
+        } else if (contrast > maxContrast) {
+          comment = comment.lighten(0.2)
+          comment = comment.desaturate(0.5)
+        }
+      } else {
+        break
+      }
+    }
+    // Prevent infinite loop and ensure the color doesn't get too dark or too light
+    if (isDarkTheme && comment.luminosity() < 0.05) break
+    if (!isDarkTheme && comment.luminosity() > 0.95) break
+  }
+
+  // Ensure maxSaturation
+  while (Color(comment).hsl().saturationl() > maxSaturation) {
+    comment = comment.desaturate(0.01)
+  }
+
+  return comment.hex()
 }
 
-export const presets = {
-  vscode: { baseHue: 210, scheme: ColorScheme.Analogous },
-  monokai: { baseHue: 70, scheme: ColorScheme.Complementary },
-  solarized: { baseHue: 45, scheme: ColorScheme.Triadic },
-  nord: { baseHue: 220, scheme: ColorScheme.Analogous },
-  dracula: { baseHue: 260, scheme: ColorScheme.SplitComplementary },
+export function ensureReadability(
+  foreground: string,
+  background: string,
+  minContrast = 5.5
+): string {
+  let color = Color(foreground)
+  const bgColor = Color(background)
+  let iterations = 0
+  const maxIterations = 100
+
+  while (color.contrast(bgColor) < minContrast && iterations < maxIterations) {
+    color = color.isLight()
+      ? color.darken(0.05).saturate(0.05)
+      : color.lighten(0.05).saturate(0.05)
+    iterations++
+  }
+
+  return color.hex()
 }
 
 export function hexToHSL(hex: string): { h: number; s: number; l: number } {
@@ -487,61 +569,7 @@ export function adjustSaturation(saturation: number): number {
 export function adjustLightness(lightness: number): number {
   return Math.max(0, Math.min(100, lightness))
 }
-
-export function generateAdditionalHues(
-  baseHue: number,
-  scheme: ColorScheme
-): number[] {
-  switch (scheme) {
-    case ColorScheme.Monochromatic:
-      return [baseHue]
-    case ColorScheme.Analogous:
-      return [(baseHue + 30) % 360, (baseHue - 30 + 360) % 360]
-    case ColorScheme.Complementary:
-      return [(baseHue + 180) % 360]
-    case ColorScheme.SplitComplementary:
-      return [(baseHue + 150) % 360, (baseHue + 210) % 360]
-    case ColorScheme.Triadic:
-      return [(baseHue + 120) % 360, (baseHue + 240) % 360]
-    case ColorScheme.Tetradic:
-      return [
-        baseHue,
-        (baseHue + 90) % 360,
-        (baseHue + 180) % 360,
-        (baseHue + 270) % 360,
-      ]
-    case ColorScheme.GoldenRatio:
-      const goldenRatio = 0.618033988749895
-      return [
-        baseHue,
-        (baseHue + 360 * goldenRatio) % 360,
-        (baseHue + 360 * goldenRatio * 2) % 360,
-        (baseHue + 360 * goldenRatio * 3) % 360,
-        (baseHue + 360 * goldenRatio * 4) % 360,
-        (baseHue + 360 * goldenRatio * 5) % 360,
-        (baseHue + 360 * goldenRatio * 6) % 360,
-      ]
-    case ColorScheme.Fibonacci:
-      return [
-        baseHue,
-        (baseHue + 360 / 2) % 360,
-        (baseHue + 360 / 3) % 360,
-        (baseHue + 360 / 5) % 360,
-        (baseHue + 360 / 8) % 360,
-        (baseHue + 360 / 13) % 360,
-        (baseHue + 360 / 21) % 360,
-        (baseHue + 360 / 34) % 360,
-        (baseHue + 360 / 55) % 360,
-      ]
-    case ColorScheme.PentagramStar:
-      return [
-        baseHue,
-        (baseHue + 72) % 360,
-        (baseHue + 144) % 360,
-        (baseHue + 216) % 360,
-        (baseHue + 288) % 360,
-      ]
-    default:
-      return []
-  }
+// Utility function to convert degrees to radians
+function degreesToRadians(degrees: number): number {
+  return (degrees * Math.PI) / 180
 }

@@ -1,45 +1,7 @@
-import { randomInteger } from './index'
-import {
-  adjustCommentColor,
-  ensureReadability,
-  blendColors,
-} from './colorUtils'
+import { randomInteger } from '@/lib/utils/math'
+import { adjustCommentColor, ensureReadability } from './colorUtils'
+import { SyntaxColors } from '@/lib/types/colors'
 import Color from 'color'
-
-export interface SyntaxColors {
-  keyword: string
-  comment: string
-  function: string
-  functionCall: string
-  variable: string
-  variableDeclaration: string
-  variableProperty: string
-  type: string
-  typeParameter: string
-  constant: string
-  class: string
-  parameter: string
-  property: string
-  operator: string
-  storage: string
-  other: string
-  language: string
-  punctuation: string
-  punctuationQuote: string
-  punctuationBrace: string
-  punctuationComma: string
-  selector: string
-  support: string
-  modifier: string
-  control: string
-  controlFlow: string
-  controlImport: string
-  tag: string
-  tagPunctuation: string
-  attribute: string
-  unit: string
-  datetime: string
-}
 
 export function generateSyntaxColors(
   backgroundColor: string,
@@ -50,10 +12,8 @@ export function generateSyntaxColors(
 ): SyntaxColors {
   const baseColor = Color(backgroundColor)
   const isDark = baseColor.isDark()
-  const baseLightness = isDark ? 70 : 40
-  const inverseBaseLightness = isDark ? 20 : 90
-
-  console.log('Syntax Hues: ', schemeHues)
+  const baseLightness = isDark ? 80 : 25
+  const inverseBaseLightness = isDark ? 15 : 85
 
   const generateColor = (
     hueIndex: number,
@@ -63,7 +23,10 @@ export function generateSyntaxColors(
     highContrast: boolean = true
   ) => {
     const hue = (schemeHues[hueIndex % schemeHues.length] + hueShift) % 360
-    const saturation = Math.min(100, syntaxSaturation * saturationMultiplier)
+    const saturation = Math.max(
+      2,
+      Math.min(100, syntaxSaturation * saturationMultiplier)
+    )
     const lightness = Math.min(
       100,
       Math.max(
@@ -73,19 +36,6 @@ export function generateSyntaxColors(
           : inverseBaseLightness - lightnessShift
       )
     )
-
-    // if (!forceRegenerate) {
-    //   const randomHueShift = Math.random() * 10 - 5
-    //   const randomSaturationShift = Math.random() * 5 - 2.5
-    //   const randomLightnessShift = Math.random() * 5 - 2.5
-
-    //   return Color.hsl(
-    //     (hue + randomHueShift + 360) % 360,
-    //     Math.max(0, Math.min(100, saturation + randomSaturationShift)),
-    //     Math.max(0, Math.min(100, lightness + randomLightnessShift))
-    //   ).hex()
-    // }
-
     return Color.hsl(hue, saturation, lightness).hex()
   }
 
@@ -192,30 +142,30 @@ export function generateSyntaxColors(
       ),
     punctuation:
       lockedColors.punctuation ||
-      generateColor(punctuationHueIndex, 0.5, randomInteger(10, 20)),
+      generateColor(punctuationHueIndex, 0.4, randomInteger(3, 15)),
     punctuationQuote:
       lockedColors.punctuationQuote ||
       generateColor(
         punctuationHueIndex,
         0.45,
-        randomInteger(13, 21),
+        randomInteger(5, 23),
         randomInteger(9, 17)
       ),
     punctuationBrace:
       lockedColors.punctuationBrace ||
       generateColor(
         punctuationHueIndex,
-        0.55,
-        randomInteger(6, 17),
+        0.4,
+        randomInteger(6, 19),
         randomInteger(13, 21)
       ),
     punctuationComma:
       lockedColors.punctuationComma ||
       generateColor(
         punctuationHueIndex,
-        0.4,
-        randomInteger(0, 10),
-        randomInteger(6, 15)
+        0.45,
+        randomInteger(5, 23),
+        randomInteger(0, 15)
       ),
     selector:
       lockedColors.selector ||
@@ -260,7 +210,7 @@ export function generateSyntaxColors(
       lockedColors.controlImport ||
       generateColor(
         controlHueIndex,
-        1.05,
+        0.75,
         -randomInteger(0, 7),
         randomInteger(9, 17)
       ),
@@ -299,33 +249,6 @@ export function generateSyntaxColors(
       ),
   }
 
-  // // Apply color harmony and blending
-  // syntaxColors.functionCall = blendColors(
-  //   syntaxColors.function,
-  //   syntaxColors.functionCall,
-  //   0.3
-  // )
-  // syntaxColors.variableProperty = blendColors(
-  //   syntaxColors.variable,
-  //   syntaxColors.property,
-  //   0.5
-  // )
-  // syntaxColors.typeParameter = blendColors(
-  //   syntaxColors.type,
-  //   syntaxColors.parameter,
-  //   0.5
-  // )
-  // syntaxColors.controlFlow = blendColors(
-  //   syntaxColors.control,
-  //   syntaxColors.keyword,
-  //   0.3
-  // )
-  // syntaxColors.controlImport = blendColors(
-  //   syntaxColors.control,
-  //   syntaxColors.keyword,
-  //   0.6
-  // )
-
   // Ensure readability and harmony
   Object.keys(syntaxColors).forEach((key) => {
     if (!lockedColors[key as keyof SyntaxColors]) {
@@ -361,9 +284,9 @@ export function updateSyntaxColorsWithSaturation(
     saturationMultiplier: number
   ) => {
     const hsl = Color(color).hsl()
-    const newSaturation = Math.min(
-      100,
-      newSyntaxSaturation * saturationMultiplier
+    let newSaturation = Math.max(
+      2,
+      Math.min(100, newSyntaxSaturation * saturationMultiplier)
     )
     return Color.hsl(hsl.hue(), newSaturation, hsl.lightness()).hex()
   }
@@ -386,10 +309,10 @@ export function updateSyntaxColorsWithSaturation(
     property: 0.95,
     operator: 0.7,
     storage: 1.05,
-    punctuation: 0.5,
+    punctuation: 0.4,
     punctuationQuote: 0.45,
-    punctuationBrace: 0.55,
-    punctuationComma: 0.4,
+    punctuationBrace: 0.4,
+    punctuationComma: 0.45,
     selector: 1.05,
     modifier: 1,
     other: 1.1,
@@ -428,17 +351,6 @@ export function updateSyntaxColorsWithSaturation(
       }
     }
   })
-
-  // // Apply the new comment color adjustment
-  // if (!lockedColors.has('comment')) {
-  //   const isDark = Color(backgroundColor).isDark()
-  //   updatedColors.comment = adjustCommentColor(
-  //     updatedColors.comment,
-  //     backgroundColor,
-  //     isDark ? 3 : 1.5, // minContrast
-  //     isDark ? 3.25 : 2.5 // maxContrast
-  //   )
-  // }
 
   return updatedColors
 }

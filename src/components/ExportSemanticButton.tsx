@@ -9,6 +9,7 @@ const ExportSemanticButton: React.FC = () => {
 
   const exportSemanticTheme = () => {
     const { themeJSON, themeObject } = generateSemanticThemeJSON(
+      'Generated Color Theme',
       colors,
       syntaxColors,
       ansiColors

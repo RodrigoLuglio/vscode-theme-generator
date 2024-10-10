@@ -1,8 +1,7 @@
 import React from 'react'
 import { useTheme } from '@/contexts/ThemeContext'
-import { SyntaxColors } from '@/lib/utils/syntaxColors'
 import Color from 'color'
-import { ColorAliases } from '@/lib/utils/themeColors'
+import type { UIColors, SyntaxColors } from '@/lib/types/colors'
 import { Lock, Unlock, Copy } from 'lucide-react'
 
 import { Button } from './ui/button'
@@ -27,7 +26,7 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
 
   const colorList = isThemeColors ? colors : syntaxColors
 
-  const displayColors: ColorAliases | SyntaxColors = isThemeColors
+  const displayColors: UIColors | SyntaxColors = isThemeColors
     ? colorList
     : { ...colorList, selector: (colorList as SyntaxColors).selector }
 
@@ -60,22 +59,29 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
   }
 
   return (
-    <div className="mb-4">
-      <h2 className="text-xl font-semibold mb-2">{title}</h2>
-      <div
-        className="grid grid-cols-3 gap-2 p-4"
-        style={{ background: colors.BG1 }}
-      >
+    <div
+      style={{ backgroundColor: colors.BG1 }}
+      className="p-4 border-border border rounded-lg shadow-md"
+    >
+      <div className="flex justify-between">
+        <h2 className="text-xl font-semibold mb-5">{title}</h2>
+        <Button size={'sm'} className="" onClick={handleUnlockAll}>
+          Unlock All
+        </Button>
+      </div>
+      <div className="grid grid-rows-8 grid-flow-col-dense auto-cols-fr gap-2">
         {Object.entries(displayColors).map(([key, value]) => (
           <div key={key} className="relative">
             <div
-              className="w-full h-12 cursor-pointer flex items-center justify-between px-2"
-              style={{ backgroundColor: getDisplayColor(key, value) }}
+              className="h-8 cursor-pointer flex items-center justify-between px-2 rounded-md shadow-sm"
+              style={{ backgroundColor: getDisplayColor(key, value as string) }}
               onClick={() => setActiveColor(key)}
             >
               <span
                 className="text-xs font-semibold truncate"
-                style={{ color: Color(value).isLight() ? '#000' : '#fff' }}
+                style={{
+                  color: Color(value as string).isLight() ? '#000' : '#fff',
+                }}
               >
                 {key}
               </span>
@@ -85,17 +91,17 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
                   className="h-5 w-5"
                   onClick={(e) => {
                     e.stopPropagation()
-                    copyToClipboard(value)
+                    copyToClipboard(value as string)
                   }}
                   style={{
-                    backgroundColor: Color(value).isLight()
+                    backgroundColor: Color(value as string).isLight()
                       ? 'rgba(0,0,0,0.1)'
                       : 'rgba(255,255,255,0.1)',
                   }}
                 >
                   <Copy
                     size={16}
-                    color={Color(value).isLight() ? '#000' : '#fff'}
+                    color={Color(value as string).isLight() ? '#000' : '#fff'}
                   />
                 </Button>
                 <Button
@@ -106,7 +112,7 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
                     toggleColorLock(key)
                   }}
                   style={{
-                    backgroundColor: Color(value).isLight()
+                    backgroundColor: Color(value as string).isLight()
                       ? 'rgba(0,0,0,0.1)'
                       : 'rgba(255,255,255,0.1)',
                   }}
@@ -114,12 +120,12 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
                   {lockedColors.has(key) ? (
                     <Lock
                       size={16}
-                      color={Color(value).isLight() ? '#000' : '#fff'}
+                      color={Color(value as string).isLight() ? '#000' : '#fff'}
                     />
                   ) : (
                     <Unlock
                       size={16}
-                      color={Color(value).isLight() ? '#000' : '#fff'}
+                      color={Color(value as string).isLight() ? '#000' : '#fff'}
                     />
                   )}
                 </Button>
@@ -127,11 +133,6 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
             </div>
           </div>
         ))}
-        <div className="relative self-center place-self-center">
-          <Button size={'sm'} className="" onClick={handleUnlockAll}>
-            Unlock All
-          </Button>
-        </div>
       </div>
     </div>
   )

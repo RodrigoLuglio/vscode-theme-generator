@@ -1,4 +1,4 @@
-import { ColorAliases } from './themeColors'
+import { ColorAliases } from './uiColors'
 import { SyntaxColors } from './syntaxColors'
 import { AnsiColors } from './ansiColors'
 

@@ -7,22 +7,27 @@ import React, {
   useEffect,
 } from 'react'
 import {
-  ColorScheme,
-  generateSchemeColors,
-  ThemeGenerationOptions,
-} from '@/lib/utils/colorUtils'
-import {
-  ColorAliases,
   generateThemeColors,
   updateThemeColorsWithSaturation,
-} from '@/lib/utils/themeColors'
+} from '@/lib/utils/uiColors'
 import {
-  SyntaxColors,
   generateSyntaxColors,
   updateSyntaxColorsWithSaturation,
 } from '@/lib/utils/syntaxColors'
-import { AnsiColors, generateAnsiColors } from '@/lib/utils/ansiColors'
-import { initialColors, initialSyntaxColors } from '@/lib/utils/exportTheme'
+import { generateAnsiColors } from '@/lib/utils/ansiColors'
+import {
+  initialColors,
+  initialSyntaxColors,
+  ColorScheme,
+} from '@/lib/types/colors'
+import { useTheme as useNextTheme } from 'next-themes'
+
+import type {
+  UIColors,
+  SyntaxColors,
+  AnsiColors,
+  ThemeGenerationOptions,
+} from '@/lib/types/colors'
 
 interface ThemeContextType {
   isDark: boolean
@@ -30,7 +35,7 @@ interface ThemeContextType {
   uiSaturation: number
   syntaxSaturation: number
   scheme: ColorScheme
-  colors: ColorAliases
+  colors: UIColors
   syntaxColors: SyntaxColors
   lockedColors: Set<string>
   activeColor: string | null
@@ -60,15 +65,17 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [isDark, setIsDarkState] = useState(true)
+export const ThemeProvider: React.FC<{
+  children: React.ReactNode
+  userId?: string // Change this to string to match Clerk's user ID type
+}> = ({ children, userId }) => {
+  const { setTheme, theme } = useNextTheme()
+  const [isDark, setIsDarkState] = useState(theme === 'dark' ? true : false)
   const [baseHue, setBaseHueState] = useState(Math.floor(Math.random() * 360))
   const [uiSaturation, setUiSaturationState] = useState(30)
   const [syntaxSaturation, setSyntaxSaturationState] = useState(70)
   const [scheme, setSchemeState] = useState<ColorScheme>(ColorScheme.Analogous)
-  const [colors, setColors] = useState<ColorAliases>(initialColors)
+  const [colors, setColors] = useState<UIColors>(initialColors)
   const [syntaxColors, setSyntaxColors] =
     useState<SyntaxColors>(initialSyntaxColors)
   const [lockedColors, setLockedColors] = useState<Set<string>>(new Set())
@@ -77,7 +84,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     generateAnsiColors(initialColors.BG1)
   )
   const [schemeHues, setSchemeHues] = useState<number[]>([])
-
   const generateColorsTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const generateColors = useCallback(
@@ -115,15 +121,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
             fullOptions,
             Object.fromEntries(
               Object.entries(colors).filter(([key]) => lockedColorSet.has(key))
-            ) as Partial<ColorAliases>,
+            ) as Partial<UIColors>,
             options.forceRegenerate
           )
-          console.log('Scheme returned from generateThemeColors: ', newScheme)
-          console.log(
-            'Scheme hues returned from generateThemeColors: ',
-            newSchemeHues
-          )
-
           const newSyntaxColors = generateSyntaxColors(
             newColors.BG1,
             newSchemeHues,
@@ -159,15 +159,16 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   const setIsDark = useCallback(
     (value: boolean) => {
       setIsDarkState(value)
+      setTheme(value ? 'dark' : 'light')
       generateColors({ isDark: value })
     },
-    [generateColors]
+    [generateColors, setTheme]
   )
 
   const setBaseHue = useCallback(
     (value: number) => {
       setBaseHueState(value)
-      generateColors({ baseHue: value })
+      generateColors({ baseHue: value, few: true })
     },
     [generateColors]
   )
@@ -217,7 +218,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   const setScheme = useCallback(
     (value: ColorScheme) => {
       setSchemeState(value)
-      generateColors({ scheme: value })
+      generateColors({ scheme: value, few: true })
     },
     [generateColors]
   )
@@ -242,18 +243,18 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
           [colorKey.slice(4)]: newColor,
         }))
       } else if (colorKey in colors) {
-        setColors((prevColors) => ({
+        setColors((prevColors: UIColors) => ({
           ...prevColors,
           [colorKey]: newColor,
         }))
         if (colorKey === 'BG1') {
-          setSyntaxColors((prevSyntaxColors) => ({
+          setSyntaxColors((prevSyntaxColors: SyntaxColors) => ({
             ...prevSyntaxColors,
             ...generateSyntaxColors(newColor, schemeHues, syntaxSaturation),
           }))
         }
       } else if (colorKey in syntaxColors) {
-        setSyntaxColors((prevSyntaxColors) => ({
+        setSyntaxColors((prevSyntaxColors: SyntaxColors) => ({
           ...prevSyntaxColors,
           [colorKey]: newColor,
         }))

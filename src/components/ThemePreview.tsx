@@ -6,6 +6,8 @@ import { loadWASM } from 'onigasm'
 import { IGrammarDefinition, Registry, RegistryOptions } from 'monaco-textmate'
 import { wireTmGrammars } from 'monaco-editor-textmate'
 import { generateSemanticThemeJSON } from '@/lib/utils/export'
+import { convertTheme } from '@/lib/utils/convertTheme'
+import Color from 'color'
 
 interface ITokenEntry {
   name?: string
@@ -21,8 +23,6 @@ const MonacoEditor = dynamic(() => import('@monaco-editor/react'), {
   ssr: false,
   loading: () => <p>Loading editor...</p>,
 })
-
-let isOnigasmInitialized = false
 
 const codeSnippets = {
   'typescript.tsx':
@@ -92,7 +92,59 @@ const codeSnippets = {
     '  );\n' +
     '};\n' +
     '\n' +
-    'export default UserProfile;\n',
+    'export default UserProfile;\n' +
+    'import type {\n' +
+    '  UIColors,\n' +
+    '  SyntaxColors,\n' +
+    '  AnsiColors,\n' +
+    '  VSCodeTheme,\n' +
+    '} from "@/lib/types/colors"\n' +
+    '\n' +
+    'import Color from "color"\n' +
+    '\n' +
+    'export function generateSemanticThemeJSON(\n' +
+    '  name: string = "Generated Color Theme",\n' +
+    '  colors: UIColors,\n' +
+    '  syntaxColors: SyntaxColors,\n' +
+    '  ansiColors: AnsiColors\n' +
+    '): { themeJSON: string; themeObject: VSCodeTheme } {\n' +
+    '  const theme = {\n' +
+    '    name: name,\n' +
+    '    type: Color(colors.BG1).isDark()\n' +
+    '      ? ("dark" as "dark" | "light")\n' +
+    '      : ("light" as "dark" | "light"),\n' +
+    '    semanticClass: "theme.rlabs",\n' +
+    '    semanticHighlighting: true,\n' +
+    '    colors: {\n' +
+    '      // # Integrated Terminal Colors\n' +
+    '      "terminal.background": colors.BG1,\n' +
+    '      "terminal.foreground": colors.FG1,\n' +
+    '      "terminal.border": colors.BORDER,\n' +
+    '      "terminal.ansiBrightBlack": ansiColors.BrightBlack,\n' +
+    '      "terminal.ansiBrightRed": ansiColors.BrightRed,\n' +
+    '      "terminal.ansiBrightGreen": ansiColors.BrightGreen,\n' +
+    '      "terminal.ansiBrightYellow": ansiColors.BrightYellow,\n' +
+    '      "terminal.ansiBrightBlue": ansiColors.BrightBlue,\n' +
+    '      "terminal.ansiBrightMagenta": ansiColors.BrightMagenta,\n' +
+    '      "terminal.ansiBrightCyan": ansiColors.BrightCyan,\n' +
+    '      "terminal.ansiBrightWhite": ansiColors.BrightWhite,\n' +
+    '      "terminal.ansiBlack": ansiColors.Black,\n' +
+    '      "terminal.ansiRed": ansiColors.Red,\n' +
+    '      "terminal.ansiGreen": ansiColors.Green,\n' +
+    '      "terminal.ansiYellow": ansiColors.Yellow,\n' +
+    '      "terminal.ansiBlue": ansiColors.Blue,\n' +
+    '      "terminal.ansiMagenta": ansiColors.Magenta,\n' +
+    '      "terminal.ansiCyan": ansiColors.Cyan,\n' +
+    '      "terminal.ansiWhite": ansiColors.White,\n' +
+    '      "terminal.selectionBackground": colors.selection,\n' +
+    '    }\n' +
+    '  };\n' +
+    '\n' +
+    '  return {\n' +
+    '    themeJSON: JSON.stringify(theme),\n' +
+    '    themeObject: theme\n' +
+    '  };\n' +
+    '}\n',
 
   'javascript.js':
     '// Class definition\n' +
@@ -464,6 +516,7 @@ type CodeSnippetKey = keyof typeof codeSnippets
 const ThemePreview: React.FC = () => {
   const { colors, syntaxColors, ansiColors } = useTheme()
   const [isEditorReady, setIsEditorReady] = useState(false)
+  const [isOnigasmInitialized, setIsOnigasmInitialized] = useState(false)
   const editorRef = useRef<{
     editor: editor.IStandaloneCodeEditor
     monaco: typeof import('monaco-editor')
@@ -474,56 +527,14 @@ const ThemePreview: React.FC = () => {
 
   const getTheme = useCallback((): editor.IStandaloneThemeData => {
     const { themeJSON, themeObject } = generateSemanticThemeJSON(
+      'Generated Color Theme',
       colors,
       syntaxColors,
       ansiColors
     )
 
-    const tokenRules: editor.ITokenThemeRule[] =
-      themeObject.tokenColors?.flatMap(
-        (entry: ITokenEntry): editor.ITokenThemeRule[] => {
-          const scopes = Array.isArray(entry.scope)
-            ? entry.scope
-            : [entry.scope]
-          return scopes.map(
-            (scope: string): editor.ITokenThemeRule => ({
-              token: scope,
-              foreground: entry.settings.foreground?.slice(1), // Remove the leading '#'
-              background: entry.settings.background?.slice(1),
-              fontStyle: entry.settings.fontStyle,
-            })
-          )
-        }
-      ) ?? []
-
-    return {
-      base: themeObject.type === 'light' ? 'vs' : 'vs-dark',
-      inherit: false,
-      rules: tokenRules,
-      colors: { ...themeObject.colors },
-    }
+    return convertTheme(themeObject)
   }, [colors, syntaxColors, ansiColors])
-
-  const handleEditorDidMount = useCallback(
-    (
-      editor: editor.IStandaloneCodeEditor,
-      monaco: typeof import('monaco-editor')
-    ) => {
-      editorRef.current = { editor, monaco }
-      const model = editor.getModel()
-      if (model) {
-        model.updateOptions({
-          bracketColorizationOptions: {
-            enabled: false,
-            independentColorPoolPerBracketType: false,
-          },
-        })
-      }
-      setIsEditorReady(true)
-      updateTheme()
-    },
-    []
-  )
 
   const updateTheme = useCallback(() => {
     if (editorRef.current) {
@@ -545,7 +556,7 @@ const ThemePreview: React.FC = () => {
 
     if (!isOnigasmInitialized) {
       await loadWASM('/onigasm.wasm')
-      isOnigasmInitialized = true
+      setIsOnigasmInitialized(true)
     }
 
     const registry = new Registry({
@@ -564,8 +575,6 @@ const ThemePreview: React.FC = () => {
           'source.yaml': '/yaml.tmLanguage.json',
         }
 
-        console.log(`Requested grammar for scope: ${scopeName}`)
-
         if (scopeName in grammarMap) {
           try {
             const response = await fetch(grammarMap[scopeName])
@@ -573,9 +582,7 @@ const ThemePreview: React.FC = () => {
               throw new Error(`HTTP error! status: ${response.status}`)
             }
             const content = await response.text()
-            console.log(
-              `Successfully loaded grammar ${grammarMap[scopeName]} for ${scopeName}`
-            )
+
             return {
               format: 'json' as const,
               content,
@@ -585,7 +592,7 @@ const ThemePreview: React.FC = () => {
           }
         }
 
-        console.warn(`Grammar for scope ${scopeName} not found, using default`)
+        // console.warn(`Grammar for scope ${scopeName} not found, using default`)
         return {
           format: 'json',
           content: JSON.stringify({
@@ -613,19 +620,38 @@ const ThemePreview: React.FC = () => {
           ['yaml', 'source.yaml'],
         ])
       )
-
-      console.log('TextMate grammars wired successfully')
     } catch (error) {
       console.error('Error setting up TextMate:', error)
     }
-  }, [])
+  }, [isOnigasmInitialized])
+
+  const handleEditorDidMount = useCallback(
+    (
+      editor: editor.IStandaloneCodeEditor,
+      monaco: typeof import('monaco-editor')
+    ) => {
+      editorRef.current = { editor, monaco }
+      const model = editor.getModel()
+      if (model) {
+        model.updateOptions({
+          bracketColorizationOptions: {
+            enabled: false,
+            independentColorPoolPerBracketType: false,
+          },
+        })
+      }
+      setIsEditorReady(true)
+      setupTextmate()
+      updateTheme()
+    },
+    [setupTextmate, updateTheme]
+  )
 
   useEffect(() => {
     if (isEditorReady && editorRef.current) {
       updateTheme()
-      setupTextmate()
     }
-  }, [isEditorReady, setupTextmate, updateTheme])
+  }, [isEditorReady, updateTheme])
 
   const getLanguage = (filename: string) => {
     const extension = filename.split('.').pop()
@@ -653,10 +679,9 @@ const ThemePreview: React.FC = () => {
 
   return (
     <section>
-      <h3 className="text-xl mb-2 font-semibold">Theme Preview</h3>
       <div
         style={{
-          height: '700px',
+          height: '800px',
           display: 'flex',
           flexDirection: 'column',
           border: `1px solid ${colors.BORDER}`,
@@ -763,13 +788,6 @@ const ThemePreview: React.FC = () => {
                 'semanticHighlighting.enabled': true,
               }}
               onMount={handleEditorDidMount}
-              beforeMount={(monaco) => {
-                monaco.editor.defineTheme('custom-theme', getTheme())
-                monaco.editor.setTheme('custom-theme')
-              }}
-              onChange={() => {
-                updateTheme()
-              }}
             />
           </div>
         </div>
@@ -790,6 +808,11 @@ const ThemePreview: React.FC = () => {
           <span style={{ color: colors.FG3 }}>Ln 1, Col 1</span>
         </div>
       </div>
+      <p className="text-xs text-center mt-2">
+        * This is a preview of the theme. The colors and tokens are not accurate
+        because of limitations in monaco editor. The result in vscode can be
+        more granular and slightly different.
+      </p>
     </section>
   )
 }

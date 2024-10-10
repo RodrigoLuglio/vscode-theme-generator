@@ -1,20 +1,15 @@
 import React from 'react'
-import { useTheme } from '@/contexts/ThemeContext'
-import { SyntaxColors } from '@/lib/utils/syntaxColors'
 import Color from 'color'
-import { ColorAliases } from '@/lib/utils/themeColors'
 import { Lock, Unlock, Copy } from 'lucide-react'
-
 import { Button } from './ui/button'
-import { get } from 'http'
 
-interface ColorListProps {
+import { useTheme } from '@/contexts/ThemeContext'
+
+import type { SyntaxColors, UIColors } from '@/lib/types/colors'
+
+type ColorListProps = {
   title: string
   isThemeColors: boolean
-}
-
-interface DisplayColors {
-  [key: string]: string
 }
 
 const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
@@ -28,7 +23,7 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
 
   const colorList = isThemeColors ? colors : syntaxColors
 
-  const displayColors: ColorAliases | SyntaxColors = isThemeColors
+  const displayColors: UIColors | SyntaxColors = isThemeColors
     ? colorList
     : { ...colorList, selector: (colorList as SyntaxColors).selector }
 
@@ -61,13 +56,18 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
   }
 
   return (
-    <div className="mb-4">
-      <h2 className="text-xl font-semibold mb-2">{title}</h2>
+    <div
+      style={{ backgroundColor: colors.BG1 }}
+      className="p-4 border-border border rounded-lg shadow-md"
+    >
+      <div className="flex justify-between">
+        <h2 className="text-xl font-semibold mb-5">{title}</h2>
 
-      <div
-        className="grid grid-cols-4 gap-4 p-4"
-        style={{ background: colors.BG1 }}
-      >
+        <Button size={'sm'} className="" onClick={handleUnlockAll}>
+          Unlock All
+        </Button>
+      </div>
+      <div className="grid grid-rows-4 grid-flow-col auto-cols-auto gap-3 w-full">
         {Object.entries(displayColors).map(([key, value]) => (
           <div
             key={key}
@@ -83,7 +83,7 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
               style={{}}
             >
               <h3
-                className="text-sm truncate first-letter:uppercase pt-1 pb-3"
+                className="text-sm truncate first-letter:uppercase pt-1"
                 style={{
                   color: getDisplayColor(key, value),
                 }}
@@ -126,11 +126,6 @@ const ColorList: React.FC<ColorListProps> = ({ title, isThemeColors }) => {
             </div>
           </div>
         ))}
-        <div className="self-end w-full place-self-center">
-          <Button className="" size={'sm'} onClick={handleUnlockAll}>
-            Unlock All
-          </Button>
-        </div>
       </div>
     </div>
   )

@@ -2,7 +2,7 @@ import React, { useRef, useCallback, useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 import { useTheme } from '../contexts/ThemeContext'
 import { editor } from 'monaco-editor'
-import { ColorAliases } from '@/lib/utils/themeColors'
+import { ColorAliases } from '@/lib/utils/uiColors'
 import { SyntaxColors } from '@/lib/utils/syntaxColors'
 import { AnsiColors } from '@/lib/utils/ansiColors'
 
