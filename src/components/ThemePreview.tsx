@@ -7,7 +7,6 @@ import { IGrammarDefinition, Registry, RegistryOptions } from 'monaco-textmate'
 import { wireTmGrammars } from 'monaco-editor-textmate'
 import { generateSemanticThemeJSON } from '@/lib/utils/export'
 import { convertTheme } from '@/lib/utils/convertTheme'
-import Color from 'color'
 
 interface ITokenEntry {
   name?: string
