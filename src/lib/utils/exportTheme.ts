@@ -1,11 +1,9 @@
-import { ColorAliases } from './uiColors'
-import { SyntaxColors } from './syntaxColors'
-import { AnsiColors } from './ansiColors'
+import type { UIColors, SyntaxColors, AnsiColors } from '@/lib/types/colors'
 
 import Color from 'color'
 
 export function generateThemeJSON(
-  colors: ColorAliases,
+  colors: UIColors,
   syntaxColors: SyntaxColors,
   ansiColors: AnsiColors
 ): string {
@@ -1829,59 +1827,4 @@ export function generateThemeJSON(
   }
 
   return JSON.stringify(theme, null, 2)
-}
-
-// Add these exports
-export const initialColors: ColorAliases = {
-  BG1: '#1E1E1E',
-  BG2: '#252526',
-  BG3: '#2D2D30',
-  FG1: '#D4D4D4',
-  FG2: '#CCCCCC',
-  FG3: '#121212',
-  AC1: '#007ACC',
-  AC2: '#0098FF',
-  BORDER: '#474747',
-  INFO: '#9CDCFE',
-  ERROR: '#F48771',
-  WARNING: '#CCA700',
-  SUCCESS: '#89D185',
-  lineHighlight: '#2F313710',
-  selection: '#264F7820',
-  findMatch: '#515C6A20',
-}
-
-export const initialSyntaxColors: SyntaxColors = {
-  keyword: '#569CD6',
-  comment: '#6A9955',
-  function: '#DCDCAA',
-  variable: '#9CDCFE',
-  type: '#4EC9B0',
-  constant: '#4FC1FF',
-  class: '#4EC9B0',
-  operator: '#D4D4D4',
-  parameter: '#9CDCFE',
-  property: '#9CDCFE',
-  other: '#D4D4D4',
-  punctuation: '#D4D4D4',
-  punctuationQuote: '#D4D4D4',
-  punctuationBrace: '#D4D4D4',
-  punctuationComma: '#D4D4D4',
-  selector: '#D7BA7D',
-  storage: '#C586C0',
-  support: '#C586C0',
-  modifier: '#C586C0',
-  control: '#C586C0',
-  controlFlow: '#C586C0',
-  controlImport: '#C586C0',
-  tag: '#C586C0',
-  tagPunctuation: '#C586C0',
-  attribute: '#C586C0',
-  functionCall: '#DCDCAA',
-  variableDeclaration: '#9CDCFE',
-  variableProperty: '#9CDCFE',
-  typeParameter: '#4EC9B0',
-  language: '#D4D4D4',
-  unit: '#D4D4D4',
-  datetime: '#D4D4D4',
 }
