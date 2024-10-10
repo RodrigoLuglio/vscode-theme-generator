@@ -554,7 +554,7 @@ const ThemePreview: React.FC = () => {
     if (!editorRef.current) return
 
     if (!isOnigasmInitialized) {
-      await loadWASM('/onigasm.wasm')
+      await loadWASM('onigasm.wasm')
       setIsOnigasmInitialized(true)
     }
 
