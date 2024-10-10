@@ -563,15 +563,15 @@ const ThemePreview: React.FC = () => {
         scopeName: string
       ): Promise<IGrammarDefinition> => {
         const grammarMap: { [key: string]: string } = {
-          'source.tsx': '/TypeScriptReact.tmLanguage.json',
-          'source.js.jsx': '/JavaScriptReact.tmLanguage.json',
-          'source.ts': '/TypeScript.tmLanguage.json',
-          'source.js': '/JavaScript.tmLanguage.json',
-          'source.css': '/css.tmLanguage.json',
-          'text.html.markdown': '/markdown.tmLanguage.json',
-          'text.html.basic': '/html.tmLanguage.json',
-          'source.python': '/MagicPython.tmLanguage.json',
-          'source.yaml': '/yaml.tmLanguage.json',
+          'source.tsx': 'TypeScriptReact.tmLanguage.json',
+          'source.js.jsx': 'JavaScriptReact.tmLanguage.json',
+          'source.ts': 'TypeScript.tmLanguage.json',
+          'source.js': 'JavaScript.tmLanguage.json',
+          'source.css': 'css.tmLanguage.json',
+          'text.html.markdown': 'markdown.tmLanguage.json',
+          'text.html.basic': 'html.tmLanguage.json',
+          'source.python': 'MagicPython.tmLanguage.json',
+          'source.yaml': 'yaml.tmLanguage.json',
         }
 
         if (scopeName in grammarMap) {
