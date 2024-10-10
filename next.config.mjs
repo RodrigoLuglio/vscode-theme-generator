@@ -8,8 +8,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  outputFileTracingIncludes: ['/onigasm.wasm'],
   experimental: {
-    outputFileTracingIncludes: ['/onigasm.wasm'],
     turbo: {
       resolveAlias: {
         'monaco-editor': 'monaco-editor/esm/vs/editor/editor.api',
