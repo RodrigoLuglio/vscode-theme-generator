@@ -1,5 +1,6 @@
 import React from 'react'
 import { useTheme } from '../contexts/ThemeContext'
+import ColorInput from './ColorInput'
 import ColorPicker from './ColorPicker'
 
 const ActiveColorPicker: React.FC = () => {
@@ -19,12 +20,18 @@ const ActiveColorPicker: React.FC = () => {
   }
 
   return (
-    <div className="mb-4">
+    <div className="mb-4 space-y-2">
       <ColorPicker
         color={currentColor}
         onChange={(newColor) => handleColorChange(activeColor, newColor)}
       />
-      <h3 className="text-lg font-semibold mt-2 text-center first-letter:uppercase">
+      <ColorInput
+        color={currentColor}
+        onValidColorInput={(newColor) =>
+          handleColorChange(activeColor, newColor)
+        }
+      />
+      <h3 className="text-lg font-semibold text-center first-letter:uppercase">
         {activeColor}
       </h3>
     </div>

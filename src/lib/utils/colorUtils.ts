@@ -573,3 +573,7 @@ export function adjustLightness(lightness: number): number {
 function degreesToRadians(degrees: number): number {
   return (degrees * Math.PI) / 180
 }
+
+export function isHexColor(color: string): boolean {
+  return /^#[A-Fa-f0-9]{6}$/.test(color)
+}
